@@ -1,0 +1,6350 @@
+[
+  {
+    "word": "abbreviate",
+    "translation": "לקצר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "abdomen",
+    "translation": "בטן",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "ability",
+    "translation": "יכולת",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "abnormal",
+    "translation": "לא נורמלי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "abolish",
+    "translation": "לבטל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "absolute",
+    "translation": "מוחלט",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "absorb",
+    "translation": "לספוג",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "abstract",
+    "translation": "מופשט, תקציר",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "absurd",
+    "translation": "אבסורד",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "abundant",
+    "translation": "בשפע",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "abuse",
+    "translation": "לנצל לרעה",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "accelerate",
+    "translation": "להאיץ",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "access",
+    "translation": "גישה",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "accommodate",
+    "translation": "להכיל, לאכסן",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "accomplish",
+    "translation": "להשיג, לבצע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "accountable",
+    "translation": "אחראי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "accumulate",
+    "translation": "לצבור",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "accuracy",
+    "translation": "דיוק",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "accurate",
+    "translation": "מדויק",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "accuse",
+    "translation": "האשים",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "achieve",
+    "translation": "להשיג",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "achievement",
+    "translation": "השג",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "acknowledge",
+    "translation": "להכיר, להודות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "acknowledgment",
+    "translation": "הכרה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "acquire",
+    "translation": "לרכוש",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "acquisition",
+    "translation": "רכישה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "acute",
+    "translation": "חמור, קריטי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "adapt",
+    "translation": "להתאים",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "addiction",
+    "translation": "התמכרות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "adequate",
+    "translation": "מספיק, הולם",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "adhere",
+    "translation": "לדבוק",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "adjust",
+    "translation": "להתאים, לכוון",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "administer",
+    "translation": "לנהל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "administration",
+    "translation": "ניהול",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "admittedly",
+    "translation": "מוסכם",
+    "pos": "Adverb",
+    "level": 3
+  },
+  {
+    "word": "adolescence",
+    "translation": "גיל ההתבגרות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "adopt",
+    "translation": "לאמץ",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "adversary",
+    "translation": "יריב",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "advocate",
+    "translation": "לדגול, סנגור",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "affect",
+    "translation": "להשפיע",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "afflict",
+    "translation": "לייסר",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "agenda",
+    "translation": "סדר יום",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "aggregate",
+    "translation": "מצרפי, לצבור",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "aggression",
+    "translation": "תוקפנות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "aggressive",
+    "translation": "תוקפני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "agile",
+    "translation": "זריז",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "aid",
+    "translation": "סיוע, לסייע",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "albeit",
+    "translation": "אף על פי כן",
+    "pos": "Conjunction",
+    "level": 3
+  },
+  {
+    "word": "allegation",
+    "translation": "טענה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "allegedly",
+    "translation": "לכאורה",
+    "pos": "Adverb",
+    "level": 3
+  },
+  {
+    "word": "alleviate",
+    "translation": "הקל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "alliance",
+    "translation": "ברית",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "allocate",
+    "translation": "להקצות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "allocation",
+    "translation": "הקצבה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "ally",
+    "translation": "בעל ברית",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "alter",
+    "translation": "לשנות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "alternative",
+    "translation": "חלופה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "alternatively",
+    "translation": "לחלופין",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "ambiguity",
+    "translation": "עמימות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "ambiguous",
+    "translation": "עמום, דו-משמעי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "ambition",
+    "translation": "שאיפה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "ambitious",
+    "translation": "שאפתן",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "ambivalence",
+    "translation": "אמביוולנטיות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "ambivalent",
+    "translation": "סותר, אמביוולנטי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "amplify",
+    "translation": "הגביר",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "analogous",
+    "translation": "אנלוגי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "analogy",
+    "translation": "אנלוגיה, דמיון",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "analysis",
+    "translation": "אנליזה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "analytical",
+    "translation": "אנליטי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "analyze",
+    "translation": "לנתח",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "ancestor",
+    "translation": "אב קדמון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "ancient",
+    "translation": "עתיק",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "animosity",
+    "translation": "איבה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "annotate",
+    "translation": "להוסיף הערות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "annual",
+    "translation": "חד-שנתי (צמח)",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "annually",
+    "translation": "מדי שנה בשנה",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "antagonist",
+    "translation": "יריב",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "anticipate",
+    "translation": "לצפות מראש",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "anxiety",
+    "translation": "חרדה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "apathy",
+    "translation": "אפתיה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "apparent",
+    "translation": "ברור, לכאורה",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "apparently",
+    "translation": "כפי הנראה",
+    "pos": "Adverb",
+    "level": 3
+  },
+  {
+    "word": "apprehend",
+    "translation": "לכד",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "approach",
+    "translation": "גישה, להתקרב",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "appropriate",
+    "translation": "מתאים",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "appropriately",
+    "translation": "באופן הולם",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "approve",
+    "translation": "הסכים",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "approximate",
+    "translation": "משוער, לקרב",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "approximately",
+    "translation": "בקרוב",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "arbitrary",
+    "translation": "שרירותי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "arduous",
+    "translation": "מפרך",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "area",
+    "translation": "אזור, תחום",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "arrest",
+    "translation": "עצר",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "arrogant",
+    "translation": "יהיר",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "articulate",
+    "translation": "דיבר בהטעמה",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "ascertain",
+    "translation": "לוודא",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "ascribe",
+    "translation": "לייחס",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "aspect",
+    "translation": "הבט",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "assert",
+    "translation": "לטעון בתקיפות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "assertion",
+    "translation": "טענה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "assertive",
+    "translation": "נחרץ",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "assess",
+    "translation": "להעריך, לאמוד",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "assessment",
+    "translation": "הערכה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "asset",
+    "translation": "נכס",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "assign",
+    "translation": "לשייך, למנות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "assignment",
+    "translation": "משימה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "assimilate",
+    "translation": "להיטמע",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "assist",
+    "translation": "סיוע",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "assistance",
+    "translation": "סיוע",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "assume",
+    "translation": "להניח",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "assumption",
+    "translation": "הנחה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "assure",
+    "translation": "להבטיח",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "astute",
+    "translation": "פקח",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "atrocity",
+    "translation": "זועה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "attach",
+    "translation": "חבר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "attain",
+    "translation": "להשיג",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "attempt",
+    "translation": "נסה",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "attitude",
+    "translation": "עמדה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "attribute",
+    "translation": "לייחס, תכונה",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "audacious",
+    "translation": "נועז",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "augment",
+    "translation": "",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "authentic",
+    "translation": "אמיתי, מקורי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "authenticate",
+    "translation": "אשר",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "author",
+    "translation": "כתב",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "authority",
+    "translation": "סמכות, רשות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "autonomous",
+    "translation": "אוטונומי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "autonomy",
+    "translation": "אוטונומיה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "available",
+    "translation": "זמין, פנוי",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "avarice",
+    "translation": "תאוות בצע",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "aversion",
+    "translation": "סלידה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "avid",
+    "translation": "להוט",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "awareness",
+    "translation": "מודעות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "awe",
+    "translation": "יראת כבוד",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "balance",
+    "translation": "איזון, לאזן",
+    "pos": "Multi",
+    "level": 1
+  },
+  {
+    "word": "bamboozle",
+    "translation": "לרמות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "ban",
+    "translation": "החרים",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "bankruptcy",
+    "translation": "פשיטת רגל",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "barrier",
+    "translation": "מחסום",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "benefit",
+    "translation": "תועלת, יתרון",
+    "pos": "Multi",
+    "level": 1
+  },
+  {
+    "word": "benevolent",
+    "translation": "נדיב",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "betray",
+    "translation": "לבגוד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "bias",
+    "translation": "הטיה, דעה קדומה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "bizarre",
+    "translation": "מוזר",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "blackmail",
+    "translation": "סחטנות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "blasphemy",
+    "translation": "חילול השם",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "blunt",
+    "translation": "בוטה",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "breakdown",
+    "translation": "התמוטטות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "brevity",
+    "translation": "קצור",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "bribe",
+    "translation": "שחד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "brief",
+    "translation": "קצר, תדריך",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "brutality",
+    "translation": "אכזריות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "bulk",
+    "translation": "רוב, מסה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "burden",
+    "translation": "עול",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "camouflage",
+    "translation": "הסוואה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "campaign",
+    "translation": "ניהל מסע (בחירות, תעמולה וכדומה)",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "candid",
+    "translation": "כן, גלוי לב",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "capable",
+    "translation": "מסגל",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "capacity",
+    "translation": "כושר, קיבולת",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "catastrophe",
+    "translation": "אסון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "categorize",
+    "translation": "מין",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "category",
+    "translation": "קטגוריה, סיווג",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "cease",
+    "translation": "להפסיק",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "celebrate",
+    "translation": "חגג",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "censure",
+    "translation": "גנה",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "challenge",
+    "translation": "אתגר, לאתגר",
+    "pos": "Multi",
+    "level": 1
+  },
+  {
+    "word": "channel",
+    "translation": "תעלה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "chaos",
+    "translation": "תוהו ובוהו",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "chapter",
+    "translation": "חילק לפרקים",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "characteristic",
+    "translation": "אופייני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "chronic",
+    "translation": "כרוני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "circumstance",
+    "translation": "נסיבה, מצב",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "circumvent",
+    "translation": "נמנע",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "cite",
+    "translation": "לצטט",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "civil",
+    "translation": "אזרחי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "civilian",
+    "translation": "אזרחי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "clarify",
+    "translation": "להבהיר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "clarity",
+    "translation": "בהירות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "classification",
+    "translation": "קלסיפיקציה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "classify",
+    "translation": "לסווג",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "code",
+    "translation": "קודד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "coerce",
+    "translation": "אלץ",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "cognizant",
+    "translation": "מודע",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "coherence",
+    "translation": "עקביות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "coherent",
+    "translation": "קוהרנטי, עקיב",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "coincide",
+    "translation": "חפף",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "coincidence",
+    "translation": "צרוף מקרים",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "collaborate",
+    "translation": "לשתף פעולה",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "collapse",
+    "translation": "להתמוטט",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "collide",
+    "translation": "התנגש",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "comment",
+    "translation": "העיר",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "commission",
+    "translation": "עמלה, ועדה, לצוות",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "commit",
+    "translation": "להתחייב, לבצע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "commitment",
+    "translation": "מחיבות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "communicate",
+    "translation": "לתקשר",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "communication",
+    "translation": "תקשרת",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "community",
+    "translation": "קהילה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "compassion",
+    "translation": "רחמים",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "compatible",
+    "translation": "מתאים",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "compelling",
+    "translation": "מרתק",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "compensate",
+    "translation": "לפצות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "compensation",
+    "translation": "פצוי",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "competent",
+    "translation": "כשיר",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "compilation",
+    "translation": "אסף",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "compile",
+    "translation": "קבץ",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "complacent",
+    "translation": "שבע רצון (מעצמו)",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "complaint",
+    "translation": "תלונה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "complement",
+    "translation": "השלים",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "complex",
+    "translation": "מורכב",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "complexity",
+    "translation": "מרכבות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "comply",
+    "translation": "נענה",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "component",
+    "translation": "מרכיב",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "compound",
+    "translation": "מורכב, תרכובת",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "comprehend",
+    "translation": "הבין",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "comprehensive",
+    "translation": "מקיף, יסודי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "comprise",
+    "translation": "להיות מורכב מ",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "compulsory",
+    "translation": "שהוא חובה",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "compute",
+    "translation": "חשוב",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "concede",
+    "translation": "הודה",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "concentrate",
+    "translation": "להתרכז",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "concentration",
+    "translation": "רכוז",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "concept",
+    "translation": "מושג",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "concise",
+    "translation": "תמציתי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "conclude",
+    "translation": "להסיק, לסיים",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "conclusion",
+    "translation": "מסקנה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "condemn",
+    "translation": "גנה",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "conduct",
+    "translation": "לנהל, התנהגות",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "confer",
+    "translation": "נועץ",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "conference",
+    "translation": "ועידה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "confess",
+    "translation": "הודה",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "conflict",
+    "translation": "סכסוך, לסתור",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "connotation",
+    "translation": "קונוטציה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "conscience",
+    "translation": "מצפון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "conscientious",
+    "translation": "מצפוני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "conscious",
+    "translation": "בעל הכרה",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "consensus",
+    "translation": "קונצנזוס",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "consent",
+    "translation": "הסכמה, להסכים",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "consequence",
+    "translation": "תוצאה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "consequent",
+    "translation": "עוקב",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "consequently",
+    "translation": "כתוצאה",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "considerable",
+    "translation": "ניכר, משמעותי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "considerably",
+    "translation": "הרבה",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "consist",
+    "translation": "הרכב",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "consistent",
+    "translation": "עקבי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "conspicuous",
+    "translation": "בולט",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "conspiracy",
+    "translation": "קונספירציה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "constant",
+    "translation": "(מתמטיקה) קבוע",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "constantly",
+    "translation": "תדיר",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "constitute",
+    "translation": "להרכיב, לכונן",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "constraint",
+    "translation": "מגבלה, אילוץ",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "construct",
+    "translation": "לבנות, לייצר",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "construction",
+    "translation": "בניה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "consume",
+    "translation": "צרך",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "consumption",
+    "translation": "צריכה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "contemplate",
+    "translation": "שקל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "contempt",
+    "translation": "בוז",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "contention",
+    "translation": "מחלוקת",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "contentious",
+    "translation": "פולמוסי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "context",
+    "translation": "הקשר, רקע",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "contextual",
+    "translation": "הקשרי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "contraband",
+    "translation": "מברח",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "contract",
+    "translation": "ערך הסכם",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "contradict",
+    "translation": "לסתור",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "contradiction",
+    "translation": "סתירה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "contrast",
+    "translation": "ניגוד, להשוות",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "contribute",
+    "translation": "לתרום",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "contribution",
+    "translation": "תרומה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "controversial",
+    "translation": "שנוי במחלוקת",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "controversy",
+    "translation": "מחלוקת",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "convention",
+    "translation": "ועידה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "conventional",
+    "translation": "שגרתי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "convert",
+    "translation": "להמיר, לשנות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "convey",
+    "translation": "להעביר, למסור",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "conviction",
+    "translation": "הרשעה, אמונה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "convince",
+    "translation": "שכנע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "convincing",
+    "translation": "משכנע",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "cooperate",
+    "translation": "לשתף פעולה",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "cooperation",
+    "translation": "שתוף פעלה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "coordinate",
+    "translation": "לתאם",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "coordination",
+    "translation": "תאום",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "core",
+    "translation": "הוציא את ליבת הפרי",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "corporate",
+    "translation": "משתף",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "correlate",
+    "translation": "לתאם",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "correlation",
+    "translation": "מתאם",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "correspond",
+    "translation": "התכתב",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "correspondence",
+    "translation": "התכתבות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "corrupt",
+    "translation": "משחת",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "corruption",
+    "translation": "שחיתות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "counterpart",
+    "translation": "עמית",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "create",
+    "translation": "יצר",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "creation",
+    "translation": "בריאה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "creative",
+    "translation": "יצירתי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "credibility",
+    "translation": "מהימנות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "credible",
+    "translation": "אמין, מהימן",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "credit",
+    "translation": "האמין",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "crisis",
+    "translation": "משבר",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "criteria",
+    "translation": "קריטריונים",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "criterion",
+    "translation": "קריטריון",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "crucial",
+    "translation": "מכריע, חיוני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "cultural",
+    "translation": "תרבותי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "culture",
+    "translation": "תרבת",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "cumulative",
+    "translation": "מצטבר",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "cunning",
+    "translation": "ערמומי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "currency",
+    "translation": "מטבע",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "curriculum",
+    "translation": "תוכנית לימודים",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "custody",
+    "translation": "משמרת",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "cycle",
+    "translation": "נע במעגל",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "cynical",
+    "translation": "ציני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "data",
+    "translation": "נתונים",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "daunting",
+    "translation": "מבהיל",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "deadline",
+    "translation": "מועד אחרון",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "debate",
+    "translation": "דיון, עימות",
+    "pos": "Multi",
+    "level": 1
+  },
+  {
+    "word": "deceit",
+    "translation": "רמאות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "deceive",
+    "translation": "רמה",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "decisive",
+    "translation": "החלטי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "decline",
+    "translation": "ירידה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "deduce",
+    "translation": "להסיק",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "deduction",
+    "translation": "דדוקציה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "defend",
+    "translation": "הגן",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "defer",
+    "translation": "עכב",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "defiant",
+    "translation": "מתריס",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "deficit",
+    "translation": "גירעון",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "define",
+    "translation": "להגדיר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "definite",
+    "translation": "מחלט",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "definition",
+    "translation": "הגדרה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "degrade",
+    "translation": "לפגוע, לשחית",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "deliberate",
+    "translation": "מכוון, לשקול",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "democracy",
+    "translation": "דמוקרטיה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "demonstrate",
+    "translation": "להדגים, להפגין",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "demonstration",
+    "translation": "הפגנה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "demoralize",
+    "translation": "יאש",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "denote",
+    "translation": "לציין, לסמל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "denounce",
+    "translation": "הוקיע",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "depict",
+    "translation": "לתאר",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "deplete",
+    "translation": "לדלדל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "depressed",
+    "translation": "מדכא",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "deprive",
+    "translation": "לשלול",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "derivation",
+    "translation": "גזירה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "derive",
+    "translation": "להפיק, לנבוע",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "derogatory",
+    "translation": "משפיל",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "design",
+    "translation": "עיצוב, לתכנן",
+    "pos": "Multi",
+    "level": 1
+  },
+  {
+    "word": "despise",
+    "translation": "תעב",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "despite",
+    "translation": "למרות",
+    "pos": "Preposition",
+    "level": 1
+  },
+  {
+    "word": "detect",
+    "translation": "לגלות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "determine",
+    "translation": "לקבוע, להחליט",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "detrimental",
+    "translation": "מזיק",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "devastate",
+    "translation": "לזרוע חורבן",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "deviate",
+    "translation": "לסטות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "deviation",
+    "translation": "סטיה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "devious",
+    "translation": "ערמומי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "devote",
+    "translation": "להקדיש",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "devout",
+    "translation": "אדוק",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "diagnose",
+    "translation": "אבחן",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "diffuse",
+    "translation": "מפזר",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "diligent",
+    "translation": "שקדן",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "dimension",
+    "translation": "חתך בממדים מסוימים",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "diminish",
+    "translation": "להפחית, לדעוך",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "discern",
+    "translation": "הבחין",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "discreet",
+    "translation": "מצנע",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "discrepancy",
+    "translation": "פער, סתירה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "discrete",
+    "translation": "מבחן",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "discriminate",
+    "translation": "להפלות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "disdain",
+    "translation": "בז",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "disguise",
+    "translation": "מסווה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "dismiss",
+    "translation": "פטר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "disparity",
+    "translation": "שונות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "disperse",
+    "translation": "להתפזר",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "disregard",
+    "translation": "להתעלם",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "distinct",
+    "translation": "מובחן, שונה",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "distinction",
+    "translation": "הבחנה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "distinguish",
+    "translation": "הבחין",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "distort",
+    "translation": "לעוות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "distraught",
+    "translation": "מטרד",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "distribute",
+    "translation": "לחלק, להפיץ",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "distribution",
+    "translation": "חלקה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "diverge",
+    "translation": "התפצל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "diverse",
+    "translation": "מגוון",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "divorce",
+    "translation": "התגרש",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "document",
+    "translation": "תעד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "domain",
+    "translation": "תחום",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "domestic",
+    "translation": "משרת",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "dominance",
+    "translation": "שליטה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "dominant",
+    "translation": "דומיננטי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "dominate",
+    "translation": "לשלוט",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "donate",
+    "translation": "תרם",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "draft",
+    "translation": "טיוטה, לנסח",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "dread",
+    "translation": "אימה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "drug",
+    "translation": "סמם",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "dubious",
+    "translation": "מפקפק",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "duration",
+    "translation": "משך",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "earnest",
+    "translation": "רצינות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "eccentric",
+    "translation": "מוזר, אקסצנטרי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "economic",
+    "translation": "כלכלי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "economics",
+    "translation": "כלכלה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "economy",
+    "translation": "כלכלה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "elaborate",
+    "translation": "מורכב, לפרט",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "election",
+    "translation": "בחירות",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "element",
+    "translation": "אלמנט, יסוד",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "eliminate",
+    "translation": "לחסל",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "eloquent",
+    "translation": "רהוט",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "elusive",
+    "translation": "חמקמק",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "emanate",
+    "translation": "נבע",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "emerge",
+    "translation": "להופיע, לצוץ",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "emergence",
+    "translation": "הופעה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "emergency",
+    "translation": "חרום",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "eminent",
+    "translation": "בולט",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "empathy",
+    "translation": "אמפתיה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "emphasis",
+    "translation": "דגש",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "emphasize",
+    "translation": "להדגיש",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "empire",
+    "translation": "אימפריה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "empirical",
+    "translation": "אמפירי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "enable",
+    "translation": "לאפשר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "endeavor",
+    "translation": "מאמץ",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "energy",
+    "translation": "אנרגיה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "enforce",
+    "translation": "לאכוף",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "engage",
+    "translation": "להעסיק",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "enhance",
+    "translation": "לשפר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "enlighten",
+    "translation": "הדריך",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "enormous",
+    "translation": "עצום",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "ensure",
+    "translation": "הבטיח",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "enumerate",
+    "translation": "ספר",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "environment",
+    "translation": "סביבה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "environmental",
+    "translation": "סביבתי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "equality",
+    "translation": "שויון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "equate",
+    "translation": "השוה",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "equation",
+    "translation": "משוואה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "equip",
+    "translation": "לצייד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "equitable",
+    "translation": "הוגן",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "equivalent",
+    "translation": "שווה ערך",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "erode",
+    "translation": "שחק",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "erroneous",
+    "translation": "שגוי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "erupt",
+    "translation": "התפרץ",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "escape",
+    "translation": "בריחה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "establish",
+    "translation": "לבסס, לייסד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "establishment",
+    "translation": "יסוד",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "estimate",
+    "translation": "להעריך, אומדן",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "estimation",
+    "translation": "הערכה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "ethical",
+    "translation": "אתי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "ethics",
+    "translation": "אתיקה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "evaluate",
+    "translation": "להעריך, לאמוד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "evaluation",
+    "translation": "הערכה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "evasive",
+    "translation": "מתחמק",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "evidence",
+    "translation": "ראיות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "evident",
+    "translation": "ברור",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "evolution",
+    "translation": "התפתחות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "evolve",
+    "translation": "להתפתח",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "exceed",
+    "translation": "לחרוג",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "excessive",
+    "translation": "מוגזם",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "exclude",
+    "translation": "להוציא מן הכלל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "exclusion",
+    "translation": "הרחקה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "exclusive",
+    "translation": "סיפור בלעדי",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "execute",
+    "translation": "לבצע, להוציא להורג",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "exempt",
+    "translation": "אדם שיש לו פטור ממחויבות כלשהי",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "exhaustive",
+    "translation": "מקיף",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "exhibit",
+    "translation": "להציג",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "exile",
+    "translation": "הגלה",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "exonerate",
+    "translation": "זכה",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "expand",
+    "translation": "הרחיב",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "expansion",
+    "translation": "הרחבה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "expedite",
+    "translation": "זרז",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "explicit",
+    "translation": "מפורש",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "exploit",
+    "translation": "לנצל",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "export",
+    "translation": "לייצא",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "expose",
+    "translation": "לחשוף",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "exposure",
+    "translation": "חשיפה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "extent",
+    "translation": "מידה, היקף",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "external",
+    "translation": "חיצוני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "extremist",
+    "translation": "קיצוני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "fabricate",
+    "translation": "לפברק",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "facade",
+    "translation": "חזית",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "facilitate",
+    "translation": "להקל, לסייע",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "factor",
+    "translation": "גורם",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "fallacy",
+    "translation": "רעיון או דעה שהם מופרכים מעיקרם",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "fanatical",
+    "translation": "קנאי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "fatal",
+    "translation": "קטלני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "feasibility",
+    "translation": "ישימות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "feasible",
+    "translation": "אפשרי, ישים",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "feature",
+    "translation": "מאפיין, תכונה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "fertile",
+    "translation": "פורה",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "fervent",
+    "translation": "נלהב",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "fictitious",
+    "translation": "פיקטיבי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "fierce",
+    "translation": "עז, פראי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "final",
+    "translation": "סוף",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "finally",
+    "translation": "סוף סוף",
+    "pos": "Adverb",
+    "level": 1
+  },
+  {
+    "word": "finance",
+    "translation": "ממן",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "financial",
+    "translation": "כספי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "flagrant",
+    "translation": "בוטה",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "flaw",
+    "translation": "פגם",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "flexible",
+    "translation": "גמיש",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "fluctuate",
+    "translation": "להשתנות, לנוע",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "fluent",
+    "translation": "רהוט",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "focus",
+    "translation": "להתמקד, מיקוד",
+    "pos": "Multi",
+    "level": 1
+  },
+  {
+    "word": "forbid",
+    "translation": "לאסור",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "forecast",
+    "translation": "תחזית",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "foresee",
+    "translation": "לחזות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "forge",
+    "translation": "לזייף",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "format",
+    "translation": "ארגן",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "formidable",
+    "translation": "מטיל [מפיל] אימה",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "formula",
+    "translation": "נוסחה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "formulate",
+    "translation": "נסח",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "found",
+    "translation": "לייסד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "foundation",
+    "translation": "יסוד",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "fragile",
+    "translation": "שביר",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "framework",
+    "translation": "מסגרת, מתווה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "fraud",
+    "translation": "הונאה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "fraudulent",
+    "translation": "מרמה",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "freedom",
+    "translation": "חפש",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "frustrate",
+    "translation": "לתסכל",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "fulfill",
+    "translation": "להגשים",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "function",
+    "translation": "תפקיד, לתפקד",
+    "pos": "Multi",
+    "level": 1
+  },
+  {
+    "word": "functional",
+    "translation": "פונקציונלי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "fund",
+    "translation": "ממן",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "fundamental",
+    "translation": "בסיסי, יסודי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "funding",
+    "translation": "ממון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "futile",
+    "translation": "עקר",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "generate",
+    "translation": "לייצר, לגרום",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "genuine",
+    "translation": "אמיתי, מקורי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "global",
+    "translation": "עולמי, גלובלי",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "globalization",
+    "translation": "גלובליזציה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "grade",
+    "translation": "דרג",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "gradual",
+    "translation": "הדרגתי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "grant",
+    "translation": "להעניק, מענק",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "grasp",
+    "translation": "לתפוס, להבין",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "grateful",
+    "translation": "אסיר תודה",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "grievance",
+    "translation": "התמרמרות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "groundless",
+    "translation": "חסר בסיס, ללא הצדקה",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "guarantee",
+    "translation": "קבל [נטל] על עצמו אחריות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "guilt",
+    "translation": "אשמה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "guilty",
+    "translation": "אשם",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "gullible",
+    "translation": "פותה",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "hamper",
+    "translation": "מנע",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "haughty",
+    "translation": "יהיר",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "hazard",
+    "translation": "סכנה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "heresy",
+    "translation": "כפירה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "heritage",
+    "translation": "מורשת",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "hesitate",
+    "translation": "להסס",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "hierarchy",
+    "translation": "היררכיה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "hinder",
+    "translation": "לעכב",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "homogeneous",
+    "translation": "הומוגני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "honor",
+    "translation": "כבד",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "hostage",
+    "translation": "בן-ערבה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "hostile",
+    "translation": "עוין",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "humble",
+    "translation": "עניו, צנוע",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "humiliate",
+    "translation": "להשפיל",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "hypocrisy",
+    "translation": "צביעות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "hypocrite",
+    "translation": "צבוע",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "hypothesis",
+    "translation": "השערה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "hypothetical",
+    "translation": "היפותטי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "identification",
+    "translation": "זהוי",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "identify",
+    "translation": "לזהות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "ideology",
+    "translation": "אידיאולוגיה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "ignore",
+    "translation": "להתעלם",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "illegal",
+    "translation": "אילגלי",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "illuminate",
+    "translation": "להאיר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "illustrate",
+    "translation": "להדגים",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "illustration",
+    "translation": "אילוסטרציה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "immigrate",
+    "translation": "הגר (נכנס אל המדינה)",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "imminent",
+    "translation": "ממשמש ובא",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "immunity",
+    "translation": "חסינות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "impact",
+    "translation": "השפעה, לפגוע",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "impartial",
+    "translation": "בלתי משחד",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "impeach",
+    "translation": "האשים",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "impediment",
+    "translation": "מניעה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "implement",
+    "translation": "כלי",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "implementation",
+    "translation": "ישום",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "implicate",
+    "translation": "ערב",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "implication",
+    "translation": "השפעה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "implicit",
+    "translation": "מרומז, משתמע",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "imply",
+    "translation": "לרמוז",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "impose",
+    "translation": "להטיל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "impractical",
+    "translation": "לא-מעשי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "imprison",
+    "translation": "אסר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "impulse",
+    "translation": "דחף",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "impulsive",
+    "translation": "אימפולסיבי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "inadequate",
+    "translation": "לא מספיק",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "incentive",
+    "translation": "תמריץ",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "incisive",
+    "translation": "חד",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "incline",
+    "translation": "הטה",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "income",
+    "translation": "הכנסה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "incorporate",
+    "translation": "מאגד",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "indicate",
+    "translation": "לציין, להצביע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "indication",
+    "translation": "אות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "indicator",
+    "translation": "מחון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "indifferent",
+    "translation": "אדיש",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "indigenous",
+    "translation": "יליד המקום",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "indignant",
+    "translation": "ממרמר",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "individual",
+    "translation": "אינדיבידואום",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "individually",
+    "translation": "בנפרד",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "induce",
+    "translation": "לגרום",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "indulge",
+    "translation": "רצה",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "inevitable",
+    "translation": "בלתי נמנע",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "infallible",
+    "translation": "אדם מהימן",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "infect",
+    "translation": "להדביק",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "infer",
+    "translation": "להסיק",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "inference",
+    "translation": "הסקה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "inferior",
+    "translation": "נחות",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "inherent",
+    "translation": "טבוע, מולד",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "inherit",
+    "translation": "ירש",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "initial",
+    "translation": "חתם בראשי תיבות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "initially",
+    "translation": "בתחילה",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "initiate",
+    "translation": "ליזום",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "injure",
+    "translation": "פצע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "injury",
+    "translation": "פציעה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "innocent",
+    "translation": "אדם חף מפשע",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "innovate",
+    "translation": "לחדש",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "innovation",
+    "translation": "חדוש",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "innovative",
+    "translation": "חדשני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "insight",
+    "translation": "תובנה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "instance",
+    "translation": "הביא כדוגמה",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "instigate",
+    "translation": "הסית",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "instinct",
+    "translation": "אינסטינקט",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "institute",
+    "translation": "מוסד",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "institution",
+    "translation": "כינון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "integrate",
+    "translation": "לשלב",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "integration",
+    "translation": "אינטגרציה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "integrity",
+    "translation": "יושרה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "intense",
+    "translation": "עז",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "intensity",
+    "translation": "עצמה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "intensive",
+    "translation": "אינטנסיבי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "interact",
+    "translation": "לתקשר, לפעול הדדית",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "interaction",
+    "translation": "אינטראקציה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "interfere",
+    "translation": "התערב",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "internal",
+    "translation": "בדיקה פנימית",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "interpret",
+    "translation": "לפרש",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "interpretation",
+    "translation": "פרוש",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "intimidate",
+    "translation": "לאיים",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "intuition",
+    "translation": "אינטואיציה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "invasion",
+    "translation": "פלישה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "invest",
+    "translation": "השקיע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "investigate",
+    "translation": "לחקור",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "investigation",
+    "translation": "חקירה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "investment",
+    "translation": "השקעה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "invoke",
+    "translation": "קרא (לעזרתו של האל וכדומה)",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "involve",
+    "translation": "לערב",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "involvement",
+    "translation": "מערבות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "ironic",
+    "translation": "אירוני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "irony",
+    "translation": "אירוני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "irrational",
+    "translation": "לא רציונלי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "isolate",
+    "translation": "לבודד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "issue",
+    "translation": "סוגיה, בעיה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "item",
+    "translation": "כמו כן",
+    "pos": "Adverb",
+    "level": 1
+  },
+  {
+    "word": "jeopardize",
+    "translation": "לסכן",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "journal",
+    "translation": "עתון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "justice",
+    "translation": "צדק",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "justification",
+    "translation": "הצדקה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "justify",
+    "translation": "להצדיק",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "keen",
+    "translation": "נלהב, חד",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "kidnap",
+    "translation": "חטף",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "labor",
+    "translation": "עבודה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "lawsuit",
+    "translation": "תביעה משפטית",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "layer",
+    "translation": "יצר שכבות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "leak",
+    "translation": "דלף",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "legal",
+    "translation": "חוקי",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "legally",
+    "translation": "באופן חוקי",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "legislate",
+    "translation": "לחוקק",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "legislation",
+    "translation": "חקיקה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "legislative",
+    "translation": "מחוקק",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "legitimate",
+    "translation": "לגיטימי, חוקי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "lenient",
+    "translation": "רחמן",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "lethal",
+    "translation": "קטלני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "liberal",
+    "translation": "ליברל",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "liberty",
+    "translation": "חפש",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "linear",
+    "translation": "קוי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "link",
+    "translation": "קשר, לקשר",
+    "pos": "Multi",
+    "level": 1
+  },
+  {
+    "word": "locate",
+    "translation": "לאתר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "location",
+    "translation": "אתר",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "logic",
+    "translation": "היגיון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "logical",
+    "translation": "לוגי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "loyal",
+    "translation": "נאמן",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "lucid",
+    "translation": "צלול",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "lucrative",
+    "translation": "רווחי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "ludicrous",
+    "translation": "מגוחך",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "maintain",
+    "translation": "לשמר, לתחזק",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "maintenance",
+    "translation": "תחזוקה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "major",
+    "translation": "עיקרי, מרכזי",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "malice",
+    "translation": "זדוניות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "malicious",
+    "translation": "זדוני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "mandatory",
+    "translation": "חובה",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "manifest",
+    "translation": "ברור, מניפסט",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "manipulate",
+    "translation": "לתמרן",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "manipulation",
+    "translation": "הפעלה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "margin",
+    "translation": "שוליים, מרווח",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "marginal",
+    "translation": "שולי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "maximize",
+    "translation": "למקסם",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "maximum",
+    "translation": "מקסימלי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "mechanism",
+    "translation": "מנגנון",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "mediate",
+    "translation": "לתווך",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "mediocre",
+    "translation": "בינוני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "melancholy",
+    "translation": "מלנכולי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "merit",
+    "translation": "זכות, ערך",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "method",
+    "translation": "שיטה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "methodology",
+    "translation": "מתודולוגיה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "meticulous",
+    "translation": "מדקדק",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "migrate",
+    "translation": "להגר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "militant",
+    "translation": "מיליטנט",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "military",
+    "translation": "צבאי",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "minimize",
+    "translation": "למזער",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "minor",
+    "translation": "(מוזיקה) מינור",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "minority",
+    "translation": "מיעוט",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "mock",
+    "translation": "מדמה",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "moderate",
+    "translation": "מתון",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "modification",
+    "translation": "התאמה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "modify",
+    "translation": "לשנות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "monitor",
+    "translation": "לנטר, לעקוב",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "monotonous",
+    "translation": "מונוטוני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "mortal",
+    "translation": "בן תמותה",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "motivate",
+    "translation": "לעודד, לתמרץ",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "motive",
+    "translation": "הניע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "mourn",
+    "translation": "להתאבל",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "mutual",
+    "translation": "הדדי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "negate",
+    "translation": "שלל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "negation",
+    "translation": "שלילה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "negative",
+    "translation": "שלילי",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "neglect",
+    "translation": "להזניח",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "negotiate",
+    "translation": "לנהל משא ומתן",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "network",
+    "translation": "רשת",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "neutral",
+    "translation": "ניטרלי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "nevertheless",
+    "translation": "אף על פי כן",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "nonetheless",
+    "translation": "בכל זאת",
+    "pos": "Adverb",
+    "level": 3
+  },
+  {
+    "word": "norm",
+    "translation": "נורמה, תקן",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "normal",
+    "translation": "המצב הרגיל",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "normally",
+    "translation": "באופן נורמלי",
+    "pos": "Adverb",
+    "level": 1
+  },
+  {
+    "word": "notion",
+    "translation": "מושג, רעיון",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "notorious",
+    "translation": "ידוע לשמצה",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "nuclear",
+    "translation": "גרעיני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "nurture",
+    "translation": "לטפח",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "nutrition",
+    "translation": "תזונה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "objective",
+    "translation": "מטרה, אובייקטיבי",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "oblige",
+    "translation": "לחייב",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "obscure",
+    "translation": "לא ברור",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "obsess",
+    "translation": "רדף",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "obstruct",
+    "translation": "לחסום",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "obtain",
+    "translation": "להשיג",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "obvious",
+    "translation": "ברור",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "obviously",
+    "translation": "בלי [ללא] ספק",
+    "pos": "Adverb",
+    "level": 1
+  },
+  {
+    "word": "occupation",
+    "translation": "מקצוע",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "occupy",
+    "translation": "ישב",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "occur",
+    "translation": "לקרות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "occurrence",
+    "translation": "התרחשות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "ominous",
+    "translation": "מבשר רעות",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "oppress",
+    "translation": "לדכא",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "oppression",
+    "translation": "דכוי",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "optimistic",
+    "translation": "אופטימיסטי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "option",
+    "translation": "אופציה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "optional",
+    "translation": "אופציונלי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "orthodox",
+    "translation": "אורתודוקסי, שמרני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "outcome",
+    "translation": "תוצאה, פלט",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "outline",
+    "translation": "קווי מתאר, לתאר",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "output",
+    "translation": "(מחשבים) הוציא כפלט",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "outrage",
+    "translation": "הרגיז",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "outstanding",
+    "translation": "מצוין, בולט",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "overall",
+    "translation": "סרבל",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "overcome",
+    "translation": "להתגבר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "overlap",
+    "translation": "חפף",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "overwhelm",
+    "translation": "להכריע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "paradigm",
+    "translation": "פרדיגמה, מודל",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "parallel",
+    "translation": "מקביל",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "parameter",
+    "translation": "פרמטר",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "pardon",
+    "translation": "סלח",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "participate",
+    "translation": "להשתתף",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "participation",
+    "translation": "השתתפות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "patriot",
+    "translation": "פטריוט",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "patronize",
+    "translation": "התנשא",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "peculiar",
+    "translation": "מוזר",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "penalty",
+    "translation": "ענש",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "penetrate",
+    "translation": "לחדור",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "perceive",
+    "translation": "לתפוס, להבין",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "percent",
+    "translation": "אחוז",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "percentage",
+    "translation": "אחוז",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "perception",
+    "translation": "תפיסה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "period",
+    "translation": "תקופה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "persist",
+    "translation": "להתמיד",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "persistent",
+    "translation": "עקשן",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "perspective",
+    "translation": "פרספקטיבה, נקודת מבט",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "pessimistic",
+    "translation": "פסימי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "phase",
+    "translation": "תכנן בשלבים",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "phenomenon",
+    "translation": "תופעה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "pioneer",
+    "translation": "חלוץ",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "plausible",
+    "translation": "סביר",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "plentiful",
+    "translation": "בשפע",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "policy",
+    "translation": "מדיניות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "pompous",
+    "translation": "יהיר",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "positive",
+    "translation": "(צילום) פוזיטיב",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "positively",
+    "translation": "בחיוב",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "potential",
+    "translation": "פוטנציאל",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "potentially",
+    "translation": "בכח",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "poverty",
+    "translation": "עני",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "pragmatic",
+    "translation": "פרגמטי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "precarious",
+    "translation": "רעוע, מסוכן",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "precaution",
+    "translation": "אמצעי זהירות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "precede",
+    "translation": "להקדים",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "precise",
+    "translation": "מדויק",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "predict",
+    "translation": "נבא",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "prediction",
+    "translation": "נבוי",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "predominant",
+    "translation": "שולט",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "prejudice",
+    "translation": "דעה קדומה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "preliminary",
+    "translation": "מקדמי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "preposterous",
+    "translation": "אבסורדי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "prescribe",
+    "translation": "לרשום מרשם",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "prestigious",
+    "translation": "יוקרתי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "pretentious",
+    "translation": "ימרני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "prevail",
+    "translation": "לגבור",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "prevalent",
+    "translation": "נפוץ, שכיח",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "previous",
+    "translation": "קודם",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "previously",
+    "translation": "קדם לכן",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "primarily",
+    "translation": "בעקר",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "primary",
+    "translation": "עיקרי, ראשוני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "primitive",
+    "translation": "אדם קדמון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "principal",
+    "translation": "עקרי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "principally",
+    "translation": "בעקר",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "principle",
+    "translation": "עיקרון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "priority",
+    "translation": "עדיפות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "proactive",
+    "translation": "פרואקטיבי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "procedure",
+    "translation": "נהל",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "proceed",
+    "translation": "התקדם",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "process",
+    "translation": "תהליך",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "proclaim",
+    "translation": "להכריז",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "professional",
+    "translation": "מקצוען",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "professionalism",
+    "translation": "מקצוענות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "profound",
+    "translation": "עמוק",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "prohibit",
+    "translation": "לאסור",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "prohibition",
+    "translation": "אסור",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "prominent",
+    "translation": "בולט",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "promote",
+    "translation": "לקדם",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "promotion",
+    "translation": "קדום",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "prompt",
+    "translation": "לחשן (בתיאטרון)",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "propaganda",
+    "translation": "תעמולה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "proportion",
+    "translation": "יחס, פרופורציה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "proportional",
+    "translation": "פרופורציונלי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "prospect",
+    "translation": "סיכוי, תחזית",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "prosper",
+    "translation": "לשגשג",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "prosperous",
+    "translation": "משגשג",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "protest",
+    "translation": "מחה",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "protocol",
+    "translation": "פרוטוקול",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "provocative",
+    "translation": "פרובוקטיבי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "prudent",
+    "translation": "זהיר",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "psychology",
+    "translation": "פסיכולוגיה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "publication",
+    "translation": "הוצאה לאור",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "publish",
+    "translation": "פרסם",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "punish",
+    "translation": "להעניש",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "purchase",
+    "translation": "רכש",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "qualitative",
+    "translation": "איכותני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "quantitative",
+    "translation": "כמותי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "radical",
+    "translation": "רדיקלי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "random",
+    "translation": "אקראי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "range",
+    "translation": "התפרס",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "rational",
+    "translation": "רציונלי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "rationalize",
+    "translation": "עשה רציונליזציה",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "react",
+    "translation": "להגיב",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "reaction",
+    "translation": "תגובה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "rebel",
+    "translation": "מרד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "rebellion",
+    "translation": "מרד",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "recruit",
+    "translation": "מגיס",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "reduce",
+    "translation": "להפחית",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "refine",
+    "translation": "לזקק, לשפר",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "refute",
+    "translation": "להפריך",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "regime",
+    "translation": "משטר",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "region",
+    "translation": "אזור",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "regional",
+    "translation": "אזורי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "regulate",
+    "translation": "לווסת",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "regulation",
+    "translation": "וסות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "reinforce",
+    "translation": "לחזק",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "reject",
+    "translation": "לדחות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "relevance",
+    "translation": "רלונטיות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "relevant",
+    "translation": "רלוונטי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "reluctant",
+    "translation": "מסתייג",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "remedy",
+    "translation": "תרופה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "repel",
+    "translation": "להדוף",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "represent",
+    "translation": "לייצג",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "require",
+    "translation": "לדרוש",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "requirement",
+    "translation": "דרישה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "research",
+    "translation": "מחקר",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "researcher",
+    "translation": "חוקר",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "reside",
+    "translation": "התגורר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "residence",
+    "translation": "מגורים",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "resident",
+    "translation": "מקומי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "resign",
+    "translation": "התפטר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "resilient",
+    "translation": "עמיד, חסין",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "resolve",
+    "translation": "לפתור",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "resource",
+    "translation": "משאב",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "respond",
+    "translation": "להגיב",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "response",
+    "translation": "תגובה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "restrict",
+    "translation": "להגביל",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "restriction",
+    "translation": "הגבלה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "resume",
+    "translation": "לחדש",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "retain",
+    "translation": "לשמר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "retaliate",
+    "translation": "גמל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "reveal",
+    "translation": "לחשוף",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "revenge",
+    "translation": "נקם",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "revive",
+    "translation": "להחיות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "revolt",
+    "translation": "למרוד",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "revolution",
+    "translation": "מהפכה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "rhetoric",
+    "translation": "רטוריקה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "ridiculous",
+    "translation": "מגוחך",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "rigid",
+    "translation": "נוקשה",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "riot",
+    "translation": "התפרע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "robust",
+    "translation": "חסון",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "role",
+    "translation": "תפקיד",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "rumor",
+    "translation": "שמועה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "ruthless",
+    "translation": "חסר רחמים",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "sacred",
+    "translation": "קדוש",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "sanction",
+    "translation": "סנקציה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "sarcastic",
+    "translation": "סרקסטי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "satirical",
+    "translation": "סטירי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "scandal",
+    "translation": "שערוריה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "scarce",
+    "translation": "נדיר, חסר",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "scheme",
+    "translation": "תוכנית, מזימה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "scholar",
+    "translation": "מלומד",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "scorn",
+    "translation": "בוז",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "scrutinize",
+    "translation": "לבחון בקפידה",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "section",
+    "translation": "חלק",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "sector",
+    "translation": "מגזר",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "secure",
+    "translation": "בטוח",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "security",
+    "translation": "בטחון",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "seek",
+    "translation": "חפש",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "seize",
+    "translation": "לתפוס",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "select",
+    "translation": "בחר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "selection",
+    "translation": "בחירה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "sentence",
+    "translation": "שפט",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "sequence",
+    "translation": "רצף",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "series",
+    "translation": "סדרה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "significant",
+    "translation": "משמעותי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "significantly",
+    "translation": "משמעותית",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "similar",
+    "translation": "דומה",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "similarity",
+    "translation": "דמיון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "simulate",
+    "translation": "לדמות",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "simulation",
+    "translation": "הדמיה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "sincere",
+    "translation": "כן",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "site",
+    "translation": "מקם",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "skeptical",
+    "translation": "ספקני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "slander",
+    "translation": "השמיץ",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "slavery",
+    "translation": "עבדות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "smuggle",
+    "translation": "הבריח",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "solidarity",
+    "translation": "סולידריות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "source",
+    "translation": "מקור",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "sovereignty",
+    "translation": "רבונות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "specific",
+    "translation": "מגדר",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "specifically",
+    "translation": "ספציפית",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "specify",
+    "translation": "פרט",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "speculate",
+    "translation": "לשער",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "spontaneous",
+    "translation": "ספונטני",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "spy",
+    "translation": "מרגל",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "stable",
+    "translation": "יציב",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "stagnant",
+    "translation": "מעפש",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "statistics",
+    "translation": "סטטיסטיקה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "steadfast",
+    "translation": "יציב",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "stereotype",
+    "translation": "סטראוטיפ",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "stigma",
+    "translation": "סטיגמה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "strategic",
+    "translation": "אסטרטגי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "strategy",
+    "translation": "אסטרטגיה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "structural",
+    "translation": "מבני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "structure",
+    "translation": "מבנה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "stubborn",
+    "translation": "עקשן",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "subordinate",
+    "translation": "כפוף",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "subsequent",
+    "translation": "עוקב",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "subsidy",
+    "translation": "סובסידיה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "substitute",
+    "translation": "החליף",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "subtle",
+    "translation": "עדין, דק",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "subversive",
+    "translation": "אדם חתרני",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "sufficient",
+    "translation": "מספיק",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "summarize",
+    "translation": "לסכם",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "superficial",
+    "translation": "שטחי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "superstition",
+    "translation": "אמונה תפלה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "supplement",
+    "translation": "תוספת, להשלים",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "suppress",
+    "translation": "לדכא",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "surpass",
+    "translation": "לעלות על",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "surplus",
+    "translation": "עודף",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "surrender",
+    "translation": "להיכנע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "survey",
+    "translation": "סקר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "suspect",
+    "translation": "מפקפק",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "sustain",
+    "translation": "לשמר, לקיים",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "sustainable",
+    "translation": "בר-קימא",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "sympathy",
+    "translation": "אהדה, סימפתיה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "tangible",
+    "translation": "מוחשי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "target",
+    "translation": "מטרה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "temporary",
+    "translation": "זמני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "tenacious",
+    "translation": "חזק",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "terminate",
+    "translation": "לסיים, לסיים",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "territory",
+    "translation": "טריטוריה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "terrorism",
+    "translation": "טרוריזם",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "text",
+    "translation": "שלח הודעת טקסט",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "theoretical",
+    "translation": "תאורטי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "theory",
+    "translation": "תאוריה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "thesis",
+    "translation": "תזה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "thorough",
+    "translation": "יסודי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "thrive",
+    "translation": "לשגשג",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "tolerance",
+    "translation": "סובלנות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "tolerate",
+    "translation": "לסבול",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "torture",
+    "translation": "ענה",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "tradition",
+    "translation": "מסורת",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "traditional",
+    "translation": "מסרתי",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "trait",
+    "translation": "תכונה, מאפיין",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "transfer",
+    "translation": "להעביר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "transition",
+    "translation": "מעבר",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "transparent",
+    "translation": "שקוף",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "treaty",
+    "translation": "אמנה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "tremendous",
+    "translation": "עצום",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "trend",
+    "translation": "מגמה, טרנד",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "trial",
+    "translation": "בחן",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "tribute",
+    "translation": "מתנה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "trigger",
+    "translation": "לגרום, להפעיל",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "triumph",
+    "translation": "ניצחון",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "typical",
+    "translation": "אופייני",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "tyranny",
+    "translation": "רודנות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "ultimate",
+    "translation": "סופי, מוחלט",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "ultimately",
+    "translation": "בסופו של דבר",
+    "pos": "Adverb",
+    "level": 2
+  },
+  {
+    "word": "underlie",
+    "translation": "להיות מונח ביסוד",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "underlying",
+    "translation": "בסיסי, מונח ביסוד",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "undermine",
+    "translation": "לחתור תחת",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "undertake",
+    "translation": "לקחת על עצמו",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "unemployed",
+    "translation": "מובטל",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "uniform",
+    "translation": "אחיד, מדים",
+    "pos": "Multi",
+    "level": 2
+  },
+  {
+    "word": "unify",
+    "translation": "לאחד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "unique",
+    "translation": "ייחודי",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "universal",
+    "translation": "אוניברסלי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "unprecedented",
+    "translation": "חסר תקדים",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "uprising",
+    "translation": "מרד",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "urgent",
+    "translation": "דחוף",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "usurp",
+    "translation": "גזל",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "utilize",
+    "translation": "לנצל, להשתמש",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "vacancy",
+    "translation": "משרה פנויה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "vague",
+    "translation": "מעורפל",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "valid",
+    "translation": "תקף",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "validate",
+    "translation": "נתן תוקף",
+    "pos": "Verb",
+    "level": 3
+  },
+  {
+    "word": "vanity",
+    "translation": "יהרה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "variable",
+    "translation": "משתנה",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "variation",
+    "translation": "וריאציה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "various",
+    "translation": "מגון",
+    "pos": "Adjective",
+    "level": 1
+  },
+  {
+    "word": "vary",
+    "translation": "להשתנות",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "vengeance",
+    "translation": "נקמה",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "verdict",
+    "translation": "פסק דין",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "verify",
+    "translation": "לאמת",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "versatile",
+    "translation": "רב-תכליתי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "version",
+    "translation": "גרסה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "veteran",
+    "translation": "ותיק",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "viable",
+    "translation": "בר-קיימא, אפשרי",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "victim",
+    "translation": "קורבן",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "vigilant",
+    "translation": "שעומד על המשמר",
+    "pos": "Adjective",
+    "level": 3
+  },
+  {
+    "word": "violate",
+    "translation": "להפר",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "violence",
+    "translation": "אלימות",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "virtue",
+    "translation": "מעלה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "vision",
+    "translation": "חזון, ראייה",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "vital",
+    "translation": "חיוני",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "vivid",
+    "translation": "חד",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "volatile",
+    "translation": "חומר נדיף",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "volume",
+    "translation": "נפח",
+    "pos": "Noun",
+    "level": 2
+  },
+  {
+    "word": "voluntary",
+    "translation": "התנדבותי",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "vulnerable",
+    "translation": "פגיע",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "warrant",
+    "translation": "צו, ערובה",
+    "pos": "Multi",
+    "level": 3
+  },
+  {
+    "word": "weapon",
+    "translation": "כלי נשק",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "widespread",
+    "translation": "נפוץ",
+    "pos": "Adjective",
+    "level": 2
+  },
+  {
+    "word": "wisdom",
+    "translation": "חוכמה",
+    "pos": "Noun",
+    "level": 1
+  },
+  {
+    "word": "withdraw",
+    "translation": "לסגת, למשוך",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "witness",
+    "translation": "היה עד ראייה ל_",
+    "pos": "Verb",
+    "level": 1
+  },
+  {
+    "word": "worship",
+    "translation": "לסגוד",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "wrath",
+    "translation": "זעם",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "yield",
+    "translation": "להניב, להיכנע",
+    "pos": "Verb",
+    "level": 2
+  },
+  {
+    "word": "zeal",
+    "translation": "התלהבות",
+    "pos": "Noun",
+    "level": 3
+  },
+  {
+    "word": "zealous",
+    "translation": "נלהב",
+    "pos": "Adjective",
+    "level": 3
+  }
+]

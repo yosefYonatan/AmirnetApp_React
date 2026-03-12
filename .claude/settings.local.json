@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(./node_modules/.bin/tailwindcss init:*)",
+      "Bash(npm run:*)",
+      "Bash(python generate_db.py)",
+      "Read(//c/Users/yonat/Downloads/**)",
+      "Bash(python -c \":*)",
+      "Bash(python -c \"import sys; sys.stdout.reconfigure\\(encoding=''''utf-8''''\\); [print\\(l.rstrip\\(\\)\\) for l in sys.stdin]\")"
+    ]
+  }
+}
