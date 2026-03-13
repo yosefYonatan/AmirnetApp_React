@@ -9,6 +9,8 @@ import ExamPage from './pages/ExamPage';
 import ResultsPage from './pages/ResultsPage';
 import VocabularyPage from './pages/VocabularyPage';
 import FoldersPage from './pages/FoldersPage';
+import LeaderboardPage from './pages/LeaderboardPage';
+import BattlePage from './pages/BattlePage';
 import OnboardingGuide, { shouldShowOnboarding } from './components/OnboardingGuide';
 
 // ==========================================
@@ -51,17 +53,19 @@ const App = () => {
         {/* pb-28 gives space above the fixed NavBar (h-20 + safe area) */}
         <main className="pb-28">
           <Routes>
-            <Route path="/"            element={<Navigate to="/watch" replace />} />
+            <Route path="/"            element={<Navigate to="/vocabulary" replace />} />
             <Route path="/watch"       element={<WatchPage />}       />
             {/* Legacy review route — keep for internal navigation */}
             <Route path="/review"      element={<ReviewPage />}      />
             <Route path="/exam"        element={<ExamPage />}        />
             <Route path="/results"     element={<ResultsPage />}     />
             <Route path="/vocabulary"  element={<VocabularyPage />}  />
-            <Route path="/folders"     element={<FoldersPage />}     />
+            <Route path="/folders"      element={<FoldersPage />}      />
+            <Route path="/leaderboard"  element={<LeaderboardPage />}  />
+            <Route path="/battle"       element={<BattlePage />}       />
             {/* Legacy categories route — redirect to folders */}
             <Route path="/categories"  element={<Navigate to="/folders" replace />} />
-            <Route path="*"            element={<Navigate to="/watch" replace />} />
+            <Route path="*"            element={<Navigate to="/vocabulary" replace />} />
           </Routes>
         </main>
 

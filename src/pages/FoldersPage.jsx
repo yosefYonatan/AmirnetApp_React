@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import {
   FolderOpen, XCircle, HelpCircle, Trash2,
-  ChevronDown, ChevronUp, BookOpen, CheckCircle2
+  ChevronDown, ChevronUp, BookOpen, CheckCircle2,
+  Plus, Send, Loader2, Clock
 } from 'lucide-react';
 import { useVocab, WORD_STATUS } from '../context/VocabContext';
 import rawData from '../data/academicDB.json';
@@ -21,6 +22,95 @@ import { SHOWS_DB } from '../data/showsDB';
 // Build a lookup for academicDB words (word → full entry)
 const DB_MAP = Object.create(null);
 for (const e of rawData) DB_MAP[e.word.toLowerCase()] = e;
+
+// ── Manual Add Panel ────────────────────────────────────────────────
+const ManualAddPanel = () => {
+  const { manualAddWord } = useVocab();
+  const [input, setInput]       = useState('');
+  const [status, setStatus]     = useState(WORD_STATUS.UNKNOWN);
+  const [loading, setLoading]   = useState(false);
+  const [feedback, setFeedback] = useState(null); // { word, translation, found }
+
+  const handleAdd = async () => {
+    const word = input.trim();
+    if (!word) return;
+    setLoading(true);
+    setFeedback(null);
+    const result = await manualAddWord(word, status);
+    setLoading(false);
+    setFeedback(result);
+    setInput('');
+  };
+
+  const statusOptions = [
+    { value: WORD_STATUS.UNKNOWN,   label: 'לא ידוע ✗', active: 'bg-red-700/60 text-red-200 border-red-600/50',   idle: 'bg-slate-800 text-slate-400 border-slate-700' },
+    { value: WORD_STATUS.UNCERTAIN, label: 'לא בטוח ?',  active: 'bg-amber-700/60 text-amber-200 border-amber-600/50', idle: 'bg-slate-800 text-slate-400 border-slate-700' },
+  ];
+
+  return (
+    <div className="bg-slate-900 border border-slate-700/60 rounded-2xl p-4 space-y-3">
+      <h3 className="text-sm font-black text-white flex items-center gap-2">
+        <Plus size={16} className="text-blue-400" />
+        הוספה ידנית לתיקייה
+      </h3>
+
+      {/* Status toggle */}
+      <div className="flex gap-2">
+        {statusOptions.map(opt => (
+          <button
+            key={opt.value}
+            onClick={() => setStatus(opt.value)}
+            className={`flex-1 py-2 rounded-xl text-xs font-bold border transition active:scale-95
+              ${status === opt.value ? opt.active : opt.idle}`}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Input + Submit */}
+      <div className="flex gap-2">
+        <input
+          type="text"
+          dir="ltr"
+          placeholder="Type a word..."
+          value={input}
+          onChange={e => { setInput(e.target.value); setFeedback(null); }}
+          onKeyDown={e => e.key === 'Enter' && handleAdd()}
+          className="flex-1 bg-slate-800 border border-slate-700 focus:border-blue-500 rounded-xl py-3 px-4 text-white text-sm outline-none transition placeholder:text-slate-600"
+        />
+        <button
+          onClick={handleAdd}
+          disabled={!input.trim() || loading}
+          className="w-12 h-12 bg-blue-600 hover:bg-blue-500 disabled:opacity-30 rounded-xl flex items-center justify-center transition active:scale-90 self-center"
+        >
+          {loading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+        </button>
+      </div>
+
+      {/* Feedback */}
+      {feedback && (
+        <div className={`rounded-xl p-3 text-sm border flex items-start gap-2
+          ${feedback.found === 'none'
+            ? 'bg-slate-800/60 border-slate-700 text-slate-400'
+            : 'bg-green-900/20 border-green-800/30 text-green-300'}`}
+        >
+          <CheckCircle2 size={16} className="mt-0.5 flex-shrink-0" />
+          <div>
+            <span dir="ltr" className="font-black">{feedback.word}</span>
+            {feedback.translation
+              ? <span className="text-slate-300"> — {feedback.translation}</span>
+              : <span className="text-slate-500"> — תרגום לא נמצא</span>
+            }
+            <span className="text-slate-500 text-xs block mt-0.5">
+              {status === WORD_STATUS.UNKNOWN ? 'נוסף לתיקיית "לא ידוע"' : 'נוסף לתיקיית "לא בטוח"'}
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 // Mini word card for folder contents
 const FolderWordCard = ({ word, translation, pos, onRemove, onSetStatus, currentStatus }) => (
@@ -94,10 +184,10 @@ const Folder = ({ title, icon: Icon, iconColor, cardBg, borderColor, count, chil
 };
 
 const FoldersPage = () => {
-  const { wordStatuses, setWordStatus, unknownWords, uncertainWords } = useVocab();
+  const { wordStatuses, setWordStatus, unknownWords, uncertainWords, manualAddWord, dueWords } = useVocab();
   const [openShow, setOpenShow] = useState(null);
 
-  // Build full word objects for Unknown / Uncertain lists
+  // Build full word objects for each folder
   const unknownEntries = useMemo(() =>
     unknownWords.map(w => DB_MAP[w] ?? { word: w, translation: '—', pos: null }),
     [unknownWords]
@@ -105,6 +195,10 @@ const FoldersPage = () => {
   const uncertainEntries = useMemo(() =>
     uncertainWords.map(w => DB_MAP[w] ?? { word: w, translation: '—', pos: null }),
     [uncertainWords]
+  );
+  const dueEntries = useMemo(() =>
+    dueWords.map(w => DB_MAP[w] ?? { word: w, translation: '—', pos: null }),
+    [dueWords]
   );
 
   const handleRemove = (word) => setWordStatus(word, null);
@@ -118,6 +212,34 @@ const FoldersPage = () => {
         <FolderOpen size={22} className="text-blue-400" />
         <h2 className="font-black text-lg text-white">תיקיות לימוד</h2>
       </div>
+
+      {/* ── MANUAL ADD ── */}
+      <ManualAddPanel />
+
+      {/* ── DUE FOR REVIEW FOLDER ── */}
+      {dueEntries.length > 0 && (
+        <Folder
+          title="לחזרה היום"
+          icon={Clock}
+          iconColor="bg-blue-500/20 text-blue-400"
+          cardBg="bg-blue-900/10"
+          borderColor="border-blue-700/30"
+          count={dueEntries.length}
+          defaultOpen
+        >
+          {dueEntries.map(e => (
+            <FolderWordCard
+              key={e.word}
+              word={e.word}
+              translation={e.translation}
+              pos={e.pos}
+              currentStatus={wordStatuses[e.word.toLowerCase()]}
+              onSetStatus={handleSetKnown}
+              onRemove={handleRemove}
+            />
+          ))}
+        </Folder>
+      )}
 
       {/* ── UNKNOWN FOLDER ── */}
       <Folder

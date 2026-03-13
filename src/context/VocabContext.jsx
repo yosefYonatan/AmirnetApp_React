@@ -7,6 +7,13 @@ import {
 } from 'firebase/firestore';
 import { auth, db, appId, isFirebaseReady } from '../utils/firebase';
 import { analyzeWord, fetchOnlineTranslation } from '../utils/wordAnalyzer';
+import rawData from '../data/academicDB.json';
+import { supabase, isSupabaseReady } from '../services/supabaseClient';
+import { computeNextSRS, QUALITY, isDueForReview } from '../services/srsAlgorithm';
+
+// Build a fast academicDB lookup for manual word injection
+const _academicMap = Object.create(null);
+for (const e of rawData) _academicMap[e.word.toLowerCase()] = e;
 
 // Word status constants — used by VocabularyPage V/X/? buttons
 export const WORD_STATUS = {
@@ -18,9 +25,12 @@ export const WORD_STATUS = {
 // ==========================================
 // VOCAB CONTEXT — the global brain of the app
 //
-// When isFirebaseReady is false (local dev without Firebase config),
-// the app runs in local-only mode: words are stored in React state
-// only (not persisted across refreshes). All core features still work.
+// Dual backend:
+//   • Firebase  — episode word capture (existing)
+//   • Supabase  — word statuses, SRS, XP, leaderboard (new)
+//
+// Offline-first: wordStatuses + SRS metadata saved to
+// localStorage so the app works without any backend.
 // ==========================================
 
 const VocabContext = createContext(null);
@@ -28,38 +38,55 @@ const VocabContext = createContext(null);
 // Local-only word store — used when Firebase is not configured
 let localIdCounter = 1;
 
+// ── localStorage helpers ─────────────────────────────────────────────
+const LS_STATUSES = 'amirnet_word_statuses';
+const LS_SRS      = 'amirnet_word_srs';
+
+const loadLS = (key, fallback) => {
+  try {
+    const s = localStorage.getItem(key);
+    return s ? JSON.parse(s) : fallback;
+  } catch { return fallback; }
+};
+const saveLS = (key, value) => {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+};
+
 export const VocabContextProvider = ({ children }) => {
-  const [user, setUser]                     = useState(null);
-  const [isAuthReady, setIsAuthReady]       = useState(!isFirebaseReady); // offline = immediately ready
-  const [capturedWords, setCapturedWords]   = useState([]);
-  const [selectedShow, setSelectedShow]     = useState(null);
+  // ── Firebase state ────────────────────────────────────────────────
+  const [user, setUser]                       = useState(null);
+  const [isAuthReady, setIsAuthReady]         = useState(!isFirebaseReady);
+  const [capturedWords, setCapturedWords]     = useState([]);
+  const [selectedShow, setSelectedShow]       = useState(null);
   const [selectedEpisode, setSelectedEpisode] = useState('');
-  const [examWords, setExamWords]           = useState([]);
-  const [examResults, setExamResults]       = useState(null); // { score, total, results[] }
+  const [examWords, setExamWords]             = useState([]);
+  const [examResults, setExamResults]         = useState(null);
 
-  // ── Word Statuses (V/X/?) for the Academic Vocabulary Library ────────
-  // Stored as { [wordLowercase]: 'known' | 'unknown' | 'uncertain' }
-  // Persisted to localStorage so it survives page refreshes even without Firebase
-  const [wordStatuses, setWordStatusesState] = useState(() => {
-    try {
-      const saved = localStorage.getItem('amirnet_word_statuses');
-      return saved ? JSON.parse(saved) : {};
-    } catch { return {}; }
-  });
+  // ── Supabase state ────────────────────────────────────────────────
+  const [supabaseUser, setSupabaseUser]       = useState(null);
+  const [supabaseProfile, setSupabaseProfile] = useState(null);
 
-  // ── Auth (only when Firebase is configured) ───────────────────────
+  // ── Word statuses (V/X/?) ─────────────────────────────────────────
+  // { [wordLowercase]: 'known' | 'unknown' | 'uncertain' }
+  const [wordStatuses, setWordStatusesState] = useState(() => loadLS(LS_STATUSES, {}));
+
+  // ── SRS metadata ──────────────────────────────────────────────────
+  // { [wordLowercase]: { nextReviewDate, intervalDays, repetitions, easeFactor } }
+  const [wordSRSData, setWordSRSData] = useState(() => loadLS(LS_SRS, {}));
+
+  // ── Firebase Auth ─────────────────────────────────────────────────
   useEffect(() => {
     if (!isFirebaseReady) return;
 
     const init = async () => {
       try {
-        if (__initial_auth_token) {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
           await signInWithCustomToken(auth, __initial_auth_token);
         } else {
           await signInAnonymously(auth);
         }
       } catch (e) {
-        console.warn('Auth error (app will work offline):', e.message);
+        console.warn('Firebase auth error (app will work offline):', e.message);
         setIsAuthReady(true);
       }
     };
@@ -72,7 +99,74 @@ export const VocabContextProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  // ── Session Recovery ──────────────────────────────────────────────
+  // ── Supabase Auth ─────────────────────────────────────────────────
+  useEffect(() => {
+    if (!isSupabaseReady) return;
+
+    // Restore existing session
+    supabase.auth.getSession().then(({ data }) => {
+      setSupabaseUser(data.session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSupabaseUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // ── Load Supabase Profile ─────────────────────────────────────────
+  useEffect(() => {
+    if (!isSupabaseReady || !supabaseUser) {
+      setSupabaseProfile(null);
+      return;
+    }
+    supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', supabaseUser.id)
+      .single()
+      .then(({ data }) => { if (data) setSupabaseProfile(data); });
+  }, [supabaseUser]);
+
+  // ── Sync wordStatuses from Supabase on login ──────────────────────
+  useEffect(() => {
+    if (!isSupabaseReady || !supabaseUser) return;
+
+    supabase
+      .from('user_vocabulary')
+      .select('word, status, next_review_date, interval_days, repetitions, ease_factor')
+      .eq('user_id', supabaseUser.id)
+      .then(({ data }) => {
+        if (!data) return;
+
+        const statuses = {};
+        const srs      = {};
+        for (const row of data) {
+          const key    = row.word.toLowerCase();
+          statuses[key] = row.status;
+          srs[key]      = {
+            nextReviewDate: row.next_review_date ?? 0,
+            intervalDays:   row.interval_days   ?? 1,
+            repetitions:    row.repetitions      ?? 0,
+            easeFactor:     row.ease_factor      ?? 2.5,
+          };
+        }
+
+        setWordStatusesState(prev => {
+          const merged = { ...prev, ...statuses };
+          saveLS(LS_STATUSES, merged);
+          return merged;
+        });
+        setWordSRSData(prev => {
+          const merged = { ...prev, ...srs };
+          saveLS(LS_SRS, merged);
+          return merged;
+        });
+      });
+  }, [supabaseUser]);
+
+  // ── Firebase Session Recovery ────────────────────────────────────
   useEffect(() => {
     if (!isFirebaseReady || !user) return;
     const ref = doc(db, 'artifacts', appId, 'users', user.uid, 'settings', 'currentStatus');
@@ -85,7 +179,7 @@ export const VocabContextProvider = ({ children }) => {
     }).catch(() => {});
   }, [user]);
 
-  // ── Live Word List ─────────────────────────────────────────────────
+  // ── Live Word List (Firebase) ─────────────────────────────────────
   useEffect(() => {
     if (!isFirebaseReady || !user) return;
     const wordsRef = collection(db, 'artifacts', appId, 'users', user.uid, 'words');
@@ -96,26 +190,96 @@ export const VocabContextProvider = ({ children }) => {
     return () => unsub();
   }, [user]);
 
-  // ── Add Word ──────────────────────────────────────────────────────
-  // Flow:
-  //   1. analyzeWord()  — instant, sync, checks local DB
-  //   2. Save immediately so the word appears on screen right away
-  //   3. If not found locally AND device is online → fetchOnlineTranslation()
-  //      in the background and update the saved entry when it returns
+  // ── Supabase Auth helpers ─────────────────────────────────────────
+  const supabaseSignIn = async (email, password) => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    return { error };
+  };
+
+  const supabaseSignUp = async (email, password) => {
+    const { error } = await supabase.auth.signUp({ email, password });
+    return { error };
+  };
+
+  const supabaseSignOut = async () => {
+    await supabase.auth.signOut();
+  };
+
+  // ── Word Status: set V / X / ? ────────────────────────────────────
+  // Sets both status string and computes new SRS schedule.
+  const setWordStatus = (wordKey, status) => {
+    const key = wordKey.toLowerCase();
+
+    setWordStatusesState(prev => {
+      const next = { ...prev };
+      if (status === null) {
+        delete next[key];
+      } else {
+        next[key] = status;
+      }
+      saveLS(LS_STATUSES, next);
+      return next;
+    });
+
+    // ── SRS computation ───────────────────────────────────────────
+    setWordSRSData(prev => {
+      const next = { ...prev };
+      if (status === null) {
+        delete next[key];
+        saveLS(LS_SRS, next);
+        return next;
+      }
+      const quality   = QUALITY[status] ?? 0;
+      const srsUpdate = computeNextSRS(prev[key], quality);
+      next[key]       = srsUpdate;
+      saveLS(LS_SRS, next);
+
+      // ── Supabase sync ─────────────────────────────────────────
+      if (isSupabaseReady && supabaseUser) {
+        supabase.from('user_vocabulary').upsert({
+          user_id:          supabaseUser.id,
+          word:             key,
+          status,
+          next_review_date: srsUpdate.nextReviewDate,
+          interval_days:    srsUpdate.intervalDays,
+          repetitions:      srsUpdate.repetitions,
+          ease_factor:      srsUpdate.easeFactor,
+          updated_at:       new Date().toISOString(),
+        }, { onConflict: 'user_id,word' }).catch(() => {});
+      }
+
+      return next;
+    });
+  };
+
+  // ── Award XP (called from ExamPage on correct answers) ───────────
+  const awardXP = async (points) => {
+    if (!isSupabaseReady || !supabaseUser || points <= 0) return;
+    await supabase.rpc('increment_xp', {
+      user_uuid: supabaseUser.id,
+      points,
+    }).catch(() => {});
+    // Refresh local profile
+    supabase.from('profiles').select('xp_points').eq('id', supabaseUser.id).single()
+      .then(({ data }) => {
+        if (data) setSupabaseProfile(p => ({ ...p, xp_points: data.xp_points }));
+      });
+  };
+
+  // ── Add Word (Firebase) ───────────────────────────────────────────
   const addWord = async (text, episodeSeconds, options = {}) => {
     if (!text.trim()) return;
     const word = text.trim();
 
-    // ── Duplicate detection ────────────────────────────────────────────
-    const wordLower = word.toLowerCase();
-    const isDuplicate = capturedWords.some(
+    const wordLower    = word.toLowerCase();
+    const isDuplicate  = capturedWords.some(
       w => w.word.toLowerCase() === wordLower &&
            w.show === selectedShow &&
            w.episode === selectedEpisode
     );
     if (isDuplicate) return;
 
-    const result = analyzeWord(word);
+    const result  = analyzeWord(word);
     const newWord = {
       word,
       episodeTime: episodeSeconds,
@@ -126,9 +290,7 @@ export const VocabContextProvider = ({ children }) => {
       ...result,
     };
 
-    // ── Save immediately (shows spinner if loading: true) ─────────────
     let savedId = null;
-
     if (isFirebaseReady && user) {
       const wordsRef = collection(db, 'artifacts', appId, 'users', user.uid, 'words');
       const ref = await addDoc(wordsRef, newWord);
@@ -138,11 +300,9 @@ export const VocabContextProvider = ({ children }) => {
       setCapturedWords(prev => [{ id: savedId, ...newWord }, ...prev]);
     }
 
-    // ── Online fallback (only when local DB has no match) ─────────────
     if (result.loading && navigator.onLine) {
       try {
         const onlineResult = await fetchOnlineTranslation(word);
-
         if (isFirebaseReady && user) {
           const ref = doc(db, 'artifacts', appId, 'users', user.uid, 'words', savedId);
           await updateDoc(ref, onlineResult).catch(() => {});
@@ -152,7 +312,6 @@ export const VocabContextProvider = ({ children }) => {
           );
         }
       } catch {
-        // Network error — clear spinner, mark invalid (no translation found anywhere)
         const fallback = { translation: 'לא נמצא', loading: false, invalid: true };
         if (isFirebaseReady && user) {
           const ref = doc(db, 'artifacts', appId, 'users', user.uid, 'words', savedId);
@@ -189,32 +348,37 @@ export const VocabContextProvider = ({ children }) => {
     }
   };
 
-  // ── Word Status: set V / X / ? for a vocabulary word ────────────────
-  const setWordStatus = (wordKey, status) => {
-    const key = wordKey.toLowerCase();
-    setWordStatusesState(prev => {
-      const next = { ...prev };
-      if (status === null) {
-        delete next[key]; // clear status
-      } else {
-        next[key] = status;
-      }
-      try { localStorage.setItem('amirnet_word_statuses', JSON.stringify(next)); } catch {}
-      return next;
-    });
+  // ── Manual Word Injection ─────────────────────────────────────────
+  const manualAddWord = async (rawWord, status) => {
+    const word = rawWord.trim();
+    if (!word) return null;
+    const key = word.toLowerCase();
+
+    if (_academicMap[key]) {
+      const e = _academicMap[key];
+      setWordStatus(word, status);
+      return { word: e.word, translation: e.translation, found: 'local' };
+    }
+
+    const result = analyzeWord(word);
+    if (!result.loading) {
+      setWordStatus(word, status);
+      return { word, translation: result.translation, found: 'local' };
+    }
+
+    if (navigator.onLine) {
+      try {
+        const online = await fetchOnlineTranslation(word);
+        setWordStatus(word, status);
+        return { word, translation: online.translation, found: 'online' };
+      } catch {}
+    }
+
+    setWordStatus(word, status);
+    return { word, translation: null, found: 'none' };
   };
 
-  // Derived: words in Unknown folder (from academic library assessment)
-  const unknownWords = Object.entries(wordStatuses)
-    .filter(([, s]) => s === WORD_STATUS.UNKNOWN)
-    .map(([w]) => w);
-
-  // Derived: words in Uncertain folder
-  const uncertainWords = Object.entries(wordStatuses)
-    .filter(([, s]) => s === WORD_STATUS.UNCERTAIN)
-    .map(([w]) => w);
-
-  // ── Persist Session State ─────────────────────────────────────────
+  // ── Session State ─────────────────────────────────────────────────
   const saveSessionStatus = (show, episode) => {
     if (!isFirebaseReady || !user) return;
     const ref = doc(db, 'artifacts', appId, 'users', user.uid, 'settings', 'currentStatus');
@@ -244,7 +408,27 @@ export const VocabContextProvider = ({ children }) => {
     w => w.show === selectedShow && w.episode === selectedEpisode
   );
 
+  const unknownWords = Object.entries(wordStatuses)
+    .filter(([, s]) => s === WORD_STATUS.UNKNOWN)
+    .map(([w]) => w);
+
+  const uncertainWords = Object.entries(wordStatuses)
+    .filter(([, s]) => s === WORD_STATUS.UNCERTAIN)
+    .map(([w]) => w);
+
+  // Due for SRS review today (status unknown or uncertain with past nextReviewDate)
+  const dueWords = Object.entries(wordSRSData)
+    .filter(([w, srs]) => {
+      const status = wordStatuses[w];
+      return (
+        (status === WORD_STATUS.UNKNOWN || status === WORD_STATUS.UNCERTAIN) &&
+        isDueForReview(srs)
+      );
+    })
+    .map(([w]) => w);
+
   const value = {
+    // Firebase
     user,
     isAuthReady,
     isFirebaseReady,
@@ -263,11 +447,23 @@ export const VocabContextProvider = ({ children }) => {
     startEpisode,
     setSelectedShow,
     setSelectedEpisode,
-    // Vocabulary library word statuses
+    // Word statuses
     wordStatuses,
     setWordStatus,
+    manualAddWord,
     unknownWords,
     uncertainWords,
+    // SRS
+    wordSRSData,
+    dueWords,
+    // Supabase
+    supabaseUser,
+    supabaseProfile,
+    supabaseSignIn,
+    supabaseSignUp,
+    supabaseSignOut,
+    isSupabaseReady,
+    awardXP,
   };
 
   return (

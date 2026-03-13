@@ -1,44 +1,57 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Tv, BookOpen, GraduationCap, FolderOpen } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Tv, BookOpen, GraduationCap, FolderOpen, Trophy, Swords } from 'lucide-react';
+
+// ==========================================
+// NavBar — Bottom navigation bar
+//
+// Clicking an already-active tab navigates to it again with a
+// fresh location.key, which causes pages to detect the re-visit
+// and reset their local state (e.g. exam goes back to setup screen).
+// ==========================================
 
 const NAV_ITEMS = [
-  { to: '/watch',      icon: Tv,           label: 'צפייה'        },
-  { to: '/vocabulary', icon: BookOpen,      label: 'אוצר מילים'  },
-  { to: '/exam',       icon: GraduationCap, label: 'מבחן'        },
-  { to: '/folders',    icon: FolderOpen,    label: 'תיקיות'      },
+  { to: '/vocabulary',  icon: BookOpen,      label: 'אוצר מילים' },
+  { to: '/watch',       icon: Tv,            label: 'צפייה'       },
+  { to: '/exam',        icon: GraduationCap, label: 'מבחן'        },
+  { to: '/folders',     icon: FolderOpen,    label: 'תיקיות'      },
+  { to: '/battle',      icon: Swords,        label: 'קרב'         },
+  { to: '/leaderboard', icon: Trophy,        label: 'טבלה'        },
 ];
 
-const NavBar = () => (
-  <nav className="fixed bottom-0 inset-x-0 z-40 bg-slate-950/98 backdrop-blur-md border-t border-slate-800/60"
-       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-    <ul className="flex justify-around items-center h-20 max-w-2xl mx-auto px-1">
-      {NAV_ITEMS.map(({ to, icon: Icon, label }) => (
-        <li key={to} className="flex-1">
-          <NavLink
-            to={to}
-            className={({ isActive }) =>
-              `flex flex-col items-center justify-center gap-1 py-2 rounded-2xl transition-all min-h-[56px]
-               ${isActive ? 'text-blue-400' : 'text-slate-500'}`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <span className={`p-2 rounded-2xl transition-all
-                  ${isActive ? 'bg-blue-500/20' : ''}`}>
-                  <Icon size={26} strokeWidth={isActive ? 2.5 : 1.75} />
+const NavBar = () => {
+  const navigate  = useNavigate();
+  const location  = useLocation();
+
+  return (
+    <nav
+      className="fixed bottom-0 inset-x-0 z-40 bg-slate-950/98 backdrop-blur-md border-t border-slate-800/60"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+    >
+      <ul className="flex justify-around items-center h-20 max-w-2xl mx-auto px-1">
+        {NAV_ITEMS.map(({ to, icon: Icon, label }) => {
+          const isActive = location.pathname === to;
+
+          return (
+            <li key={to} className="flex-1">
+              <button
+                onClick={() => navigate(to, { state: { resetAt: Date.now() } })}
+                className={`w-full flex flex-col items-center justify-center gap-1 py-2 rounded-2xl transition-all min-h-[56px]
+                  ${isActive ? 'text-blue-400' : 'text-slate-500'}`}
+              >
+                <span className={`p-2 rounded-2xl transition-all ${isActive ? 'bg-blue-500/20' : ''}`}>
+                  <Icon size={24} strokeWidth={isActive ? 2.5 : 1.75} />
                 </span>
-                <span className={`text-[10px] font-bold leading-none
-                  ${isActive ? 'text-blue-400' : 'text-slate-500'}`}>
+                <span className={`text-[10px] font-bold leading-none ${isActive ? 'text-blue-400' : 'text-slate-500'}`}>
                   {label}
                 </span>
-              </>
-            )}
-          </NavLink>
-        </li>
-      ))}
-    </ul>
-  </nav>
-);
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+};
 
 export default NavBar;

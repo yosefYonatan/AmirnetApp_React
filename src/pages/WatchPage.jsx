@@ -63,8 +63,13 @@ const ShowCard = ({ showName, onClick }) => {
 // Show vocabulary panel (collapsible, shown during active session)
 const ShowVocabPanel = ({ showName }) => {
   const [open, setOpen] = useState(false);
+  const [selectedVocab, setSelectedVocab] = useState(null);
   const show = SHOWS_DB[showName];
   if (!show?.vocab?.length) return null;
+
+  const handleChipClick = (v) => {
+    setSelectedVocab(prev => prev?.word === v.word ? null : v);
+  };
 
   return (
     <div className="rounded-2xl border border-slate-700/60 overflow-hidden">
@@ -83,17 +88,27 @@ const ShowVocabPanel = ({ showName }) => {
         <div className="bg-slate-900/60 p-3 border-t border-slate-800">
           <div className="flex gap-1.5 flex-wrap">
             {show.vocab.map(v => (
-              <span
+              <button
                 key={v.word}
                 dir="ltr"
-                className={`text-xs px-2.5 py-1 rounded-xl bg-gradient-to-br ${show.gradient} text-white font-bold opacity-80`}
-                title={v.translation}
+                onClick={() => handleChipClick(v)}
+                className={`text-xs px-2.5 py-1 rounded-xl bg-gradient-to-br ${show.gradient} text-white font-bold transition-all active:scale-95
+                  ${selectedVocab?.word === v.word ? 'ring-2 ring-white/60 opacity-100 scale-105' : 'opacity-75 hover:opacity-100'}`}
               >
                 {v.word}
-              </span>
+              </button>
             ))}
           </div>
-          <p className="text-slate-600 text-[10px] mt-2 text-right">לחץ על מילה לקבלת תרגום — רחף עליה</p>
+          {/* Translation display area */}
+          {selectedVocab ? (
+            <div className="mt-2.5 bg-slate-800 rounded-xl p-3 flex items-center gap-2 text-right border border-slate-700/60">
+              <span dir="ltr" className="font-black text-white text-base">{selectedVocab.word}</span>
+              <span className="text-slate-500 mx-1">—</span>
+              <span className="text-slate-200 text-sm flex-1">{selectedVocab.translation}</span>
+            </div>
+          ) : (
+            <p className="text-slate-600 text-[10px] mt-2 text-right">לחץ על מילה לקבלת תרגום</p>
+          )}
         </div>
       )}
     </div>
