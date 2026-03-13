@@ -8,6 +8,13 @@ import {
 import { auth, db, appId, isFirebaseReady } from '../utils/firebase';
 import { analyzeWord, fetchOnlineTranslation } from '../utils/wordAnalyzer';
 
+// Word status constants — used by VocabularyPage V/X/? buttons
+export const WORD_STATUS = {
+  KNOWN:     'known',
+  UNKNOWN:   'unknown',
+  UNCERTAIN: 'uncertain',
+};
+
 // ==========================================
 // VOCAB CONTEXT — the global brain of the app
 //
@@ -29,6 +36,16 @@ export const VocabContextProvider = ({ children }) => {
   const [selectedEpisode, setSelectedEpisode] = useState('');
   const [examWords, setExamWords]           = useState([]);
   const [examResults, setExamResults]       = useState(null); // { score, total, results[] }
+
+  // ── Word Statuses (V/X/?) for the Academic Vocabulary Library ────────
+  // Stored as { [wordLowercase]: 'known' | 'unknown' | 'uncertain' }
+  // Persisted to localStorage so it survives page refreshes even without Firebase
+  const [wordStatuses, setWordStatusesState] = useState(() => {
+    try {
+      const saved = localStorage.getItem('amirnet_word_statuses');
+      return saved ? JSON.parse(saved) : {};
+    } catch { return {}; }
+  });
 
   // ── Auth (only when Firebase is configured) ───────────────────────
   useEffect(() => {
@@ -172,6 +189,31 @@ export const VocabContextProvider = ({ children }) => {
     }
   };
 
+  // ── Word Status: set V / X / ? for a vocabulary word ────────────────
+  const setWordStatus = (wordKey, status) => {
+    const key = wordKey.toLowerCase();
+    setWordStatusesState(prev => {
+      const next = { ...prev };
+      if (status === null) {
+        delete next[key]; // clear status
+      } else {
+        next[key] = status;
+      }
+      try { localStorage.setItem('amirnet_word_statuses', JSON.stringify(next)); } catch {}
+      return next;
+    });
+  };
+
+  // Derived: words in Unknown folder (from academic library assessment)
+  const unknownWords = Object.entries(wordStatuses)
+    .filter(([, s]) => s === WORD_STATUS.UNKNOWN)
+    .map(([w]) => w);
+
+  // Derived: words in Uncertain folder
+  const uncertainWords = Object.entries(wordStatuses)
+    .filter(([, s]) => s === WORD_STATUS.UNCERTAIN)
+    .map(([w]) => w);
+
   // ── Persist Session State ─────────────────────────────────────────
   const saveSessionStatus = (show, episode) => {
     if (!isFirebaseReady || !user) return;
@@ -221,6 +263,11 @@ export const VocabContextProvider = ({ children }) => {
     startEpisode,
     setSelectedShow,
     setSelectedEpisode,
+    // Vocabulary library word statuses
+    wordStatuses,
+    setWordStatus,
+    unknownWords,
+    uncertainWords,
   };
 
   return (

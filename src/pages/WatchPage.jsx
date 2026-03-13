@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Pause, Mic, MicOff, Send, Tv, Folder, ChevronLeft, X, Award } from 'lucide-react';
+import { Play, Pause, Mic, MicOff, Send, Tv, Folder, ChevronLeft, X, Award, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import { useVocab } from '../context/VocabContext';
 import { useTimer } from '../hooks/useTimer';
 import { formatTime } from '../utils/formatTime';
 import { extractKeyword, analyzeWord, spellCheck } from '../utils/wordAnalyzer';
 import WordCard from '../components/WordCard';
 import EpisodeModal from '../components/EpisodeModal';
+import { SHOWS_DB, SHOW_NAMES } from '../data/showsDB';
 
 // ==========================================
 // WatchPage — live TV-watching screen
@@ -17,20 +18,87 @@ import EpisodeModal from '../components/EpisodeModal';
 // Requirement 4: useEffect watches `episodeStatus` to trigger auto-start
 // ==========================================
 
-const SHOWS = [
-  'How I Met Your Mother',
-  'Friends',
-  'The Office',
-  'Suits',
-  'Breaking Bad',
-  'The Bear',
-];
-
 // Tracks whether this session was *just* started vs. resumed
-// 'idle'    — no active episode
-// 'active'  — episode was just confirmed this visit → auto-start timer
-// 'resumed' — returning to a session that was already in progress → don't auto-start
 const STATUS = { IDLE: 'idle', ACTIVE: 'active', RESUMED: 'resumed' };
+
+// Show card — visual grid item with gradient background + emoji
+const ShowCard = ({ showName, onClick }) => {
+  const show = SHOWS_DB[showName];
+  if (!show) {
+    return (
+      <button
+        onClick={() => onClick(showName)}
+        className="p-4 bg-slate-800/60 hover:bg-slate-700/80 border border-slate-700/60 hover:border-blue-500/40 rounded-2xl text-sm font-bold transition-all text-right active:scale-95"
+      >
+        {showName}
+      </button>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => onClick(showName)}
+      className={`relative overflow-hidden rounded-2xl border ${show.borderColor} hover:scale-[1.02] active:scale-95 transition-all shadow-lg group`}
+    >
+      {/* Gradient background */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${show.gradient} opacity-40 group-hover:opacity-60 transition-opacity`} />
+
+      {/* Content */}
+      <div className="relative p-4 text-right">
+        <div className="text-3xl mb-2">{show.emoji}</div>
+        <div className="font-black text-white text-sm leading-tight">{showName}</div>
+        <div className="text-[10px] text-white/60 mt-0.5 leading-tight">{show.description}</div>
+        <div className="flex gap-1 flex-wrap mt-2">
+          {show.themes.slice(0, 2).map(t => (
+            <span key={t} className="text-[9px] bg-white/10 text-white/70 px-1.5 py-0.5 rounded-md font-medium">
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+    </button>
+  );
+};
+
+// Show vocabulary panel (collapsible, shown during active session)
+const ShowVocabPanel = ({ showName }) => {
+  const [open, setOpen] = useState(false);
+  const show = SHOWS_DB[showName];
+  if (!show?.vocab?.length) return null;
+
+  return (
+    <div className="rounded-2xl border border-slate-700/60 overflow-hidden">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full p-3.5 bg-slate-800/60 flex items-center gap-3 text-right"
+      >
+        <span className="text-xl">{show.emoji}</span>
+        <div className="flex-1">
+          <span className="font-bold text-white text-sm">מילים אופייניות — {showName}</span>
+        </div>
+        <span className="text-xs text-slate-500 ml-1">{show.vocab.length} מילים</span>
+        {open ? <ChevronUp size={16} className="text-slate-500" /> : <ChevronDown size={16} className="text-slate-500" />}
+      </button>
+      {open && (
+        <div className="bg-slate-900/60 p-3 border-t border-slate-800">
+          <div className="flex gap-1.5 flex-wrap">
+            {show.vocab.map(v => (
+              <span
+                key={v.word}
+                dir="ltr"
+                className={`text-xs px-2.5 py-1 rounded-xl bg-gradient-to-br ${show.gradient} text-white font-bold opacity-80`}
+                title={v.translation}
+              >
+                {v.word}
+              </span>
+            ))}
+          </div>
+          <p className="text-slate-600 text-[10px] mt-2 text-right">לחץ על מילה לקבלת תרגום — רחף עליה</p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const WatchPage = () => {
   const navigate = useNavigate();
@@ -45,46 +113,36 @@ const WatchPage = () => {
   const [currentInput, setCurrentInput]     = useState('');
   const [isListening, setIsListening]       = useState(false);
   const [pendingShow, setPendingShow]       = useState(null);
-  const [spellSuggestion, setSpellSuggestion] = useState(null); // { original, suggestion }
+  const [spellSuggestion, setSpellSuggestion] = useState(null);
   const [episodeStatus, setEpisodeStatus]   = useState(
     selectedShow && selectedEpisode ? STATUS.RESUMED : STATUS.IDLE
   );
   const inputRef = useRef(null);
 
-  // ── Requirement 4: auto-start via useEffect ───────────────────────
-  // When the user confirms a new episode the status flips to 'active'.
-  // This effect fires and starts the timer — zero extra clicks required.
-  //
-  // Why useEffect instead of calling start() directly in the handler?
-  //   The handler updates React state (startEpisode sets selectedShow/Episode).
-  //   State updates are batched and not reflected until the next render.
-  //   useEffect runs *after* the render, so the component has the correct
-  //   new state before any side effects happen. This is the React-correct
-  //   pattern for "do something after a state change."
+  // Auto-start timer when episode is first confirmed
   useEffect(() => {
     if (episodeStatus === STATUS.ACTIVE) {
-      reset(0);   // reset timer to 0:00
-      start();    // start immediately — Requirement 2
+      reset(0);
+      start();
       inputRef.current?.focus();
     }
   }, [episodeStatus]);
 
   const isSessionActive = !!selectedShow && !!selectedEpisode;
 
-  // ── Word Submission ───────────────────────────────────────────────
+  // ── Word Submission ────────────────────────────────────────────────
   const handleSubmit = (text) => {
     const word = (text || currentInput).trim();
     if (!word || !isSessionActive) return;
     setCurrentInput('');
 
-    // Spell check: if word isn't in local DB, suggest correction
     const localResult = analyzeWord(word);
     if (localResult.loading) {
       const suggestion = spellCheck(word);
       if (suggestion) {
         setSpellSuggestion({ original: word, suggestion });
         inputRef.current?.focus();
-        return; // hold — wait for user to confirm
+        return;
       }
     }
     addWord(word, seconds);
@@ -103,9 +161,7 @@ const WatchPage = () => {
     inputRef.current?.focus();
   };
 
-  // ── Requirement 3: Voice → single keyword ─────────────────────────
-  // The Speech API returns a full sentence transcript. extractKeyword()
-  // scans it against the Amirnet DB to isolate the one intended word.
+  // ── Voice input ────────────────────────────────────────────────────
   const startListening = () => {
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!Recognition) return;
@@ -117,18 +173,18 @@ const WatchPage = () => {
     rec.onend   = () => setIsListening(false);
     rec.onresult = (e) => {
       const rawTranscript = e.results[0][0].transcript;
-      const keyword = extractKeyword(rawTranscript); // Requirement 3 fix
+      const keyword = extractKeyword(rawTranscript);
       handleSubmit(keyword);
     };
     rec.onerror = () => setIsListening(false);
     rec.start();
   };
 
-  // ── Requirement 1: Episode confirmed → flip status to 'active' ────
+  // ── Episode confirmed ──────────────────────────────────────────────
   const handleEpisodeConfirm = (episodeLabel) => {
     startEpisode(pendingShow, episodeLabel);
     setPendingShow(null);
-    setEpisodeStatus(STATUS.ACTIVE); // triggers the useEffect above
+    setEpisodeStatus(STATUS.ACTIVE);
   };
 
   const handleEndEpisode = () => {
@@ -143,7 +199,7 @@ const WatchPage = () => {
     navigate('/review');
   };
 
-  // ── HOME: no active session ───────────────────────────────────────
+  // ── HOME: no active session ────────────────────────────────────────
   if (!isSessionActive) {
     const scorePct = examResults
       ? Math.round((examResults.score / examResults.total) * 100) : null;
@@ -168,46 +224,48 @@ const WatchPage = () => {
           </div>
         )}
 
+        {/* Show grid */}
         <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800">
           <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4 flex items-center gap-2">
             <Tv className="w-4 h-4" /> בחר תוכנית
           </h2>
-          <div className="grid grid-cols-2 gap-2.5">
-            {SHOWS.map(show => (
-              <button
-                key={show}
-                onClick={() => setPendingShow(show)}
-                className="p-4 bg-slate-800/60 hover:bg-slate-700/80 border border-slate-700/60 hover:border-blue-500/40 rounded-2xl text-sm font-bold transition-all text-right active:scale-95"
-              >
-                {show}
-              </button>
+          <div className="grid grid-cols-2 gap-3">
+            {SHOW_NAMES.map(show => (
+              <ShowCard key={show} showName={show} onClick={setPendingShow} />
             ))}
           </div>
         </div>
 
+        {/* Saved episodes */}
         {savedEpisodes.length > 0 && (
           <div className="space-y-2">
             <h2 className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 px-1 text-slate-500">
               <Folder className="w-4 h-4" /> פרקים שמורים
             </h2>
-            {savedEpisodes.map((ep, i) => (
-              <button
-                key={i}
-                onClick={() => openSavedEpisode(ep)}
-                className="w-full bg-slate-900 hover:bg-slate-800 p-4 rounded-2xl border border-slate-800 hover:border-slate-700 flex justify-between items-center transition-all text-right group"
-              >
-                <div>
-                  <div className="font-black text-base">{ep.show}</div>
-                  <div className="text-slate-500 text-sm">{ep.episode}</div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="bg-blue-900/30 text-blue-400 px-2.5 py-1 rounded-lg text-xs font-bold">
-                    {ep.count} מילים
-                  </span>
-                  <ChevronLeft className="w-4 h-4 text-slate-600 group-hover:text-slate-300 transition" />
-                </div>
-              </button>
-            ))}
+            {savedEpisodes.map((ep, i) => {
+              const show = SHOWS_DB[ep.show];
+              return (
+                <button
+                  key={i}
+                  onClick={() => openSavedEpisode(ep)}
+                  className={`w-full bg-slate-900 hover:bg-slate-800 p-4 rounded-2xl border ${show?.borderColor ?? 'border-slate-800'} hover:border-slate-700 flex justify-between items-center transition-all text-right group`}
+                >
+                  <div className="flex items-center gap-3">
+                    {show && <span className="text-xl">{show.emoji}</span>}
+                    <div>
+                      <div className="font-black text-base">{ep.show}</div>
+                      <div className="text-slate-500 text-sm">{ep.episode}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-blue-900/30 text-blue-400 px-2.5 py-1 rounded-lg text-xs font-bold">
+                      {ep.count} מילים
+                    </span>
+                    <ChevronLeft className="w-4 h-4 text-slate-600 group-hover:text-slate-300 transition" />
+                  </div>
+                </button>
+              );
+            })}
           </div>
         )}
 
@@ -222,16 +280,19 @@ const WatchPage = () => {
     );
   }
 
-  // ── SESSION: active episode ───────────────────────────────────────
+  // ── SESSION: active episode ────────────────────────────────────────
+  const show = SHOWS_DB[selectedShow];
+
   return (
     <div className="w-full max-w-2xl mx-auto px-4 pt-5 space-y-4">
       <div className="bg-gradient-to-br from-slate-900 to-slate-800/80 p-6 rounded-3xl border border-slate-700/60 flex flex-col items-center shadow-2xl">
-        <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-5">
+        <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+          {show && <span>{show.emoji}</span>}
           {selectedShow} · {selectedEpisode}
         </div>
 
-        {/* Timer — huge on phone */}
-        <div className={`relative mb-7 ${isWatching ? 'drop-shadow-[0_0_32px_rgba(59,130,246,0.5)]' : ''}`}>
+        {/* Timer */}
+        <div className={`relative mb-7 mt-4 ${isWatching ? 'drop-shadow-[0_0_32px_rgba(59,130,246,0.5)]' : ''}`}>
           <div className={`text-8xl font-mono font-black tracking-tighter transition-colors
             ${isWatching ? 'text-blue-400' : 'text-slate-500'}`}
           >
@@ -242,7 +303,7 @@ const WatchPage = () => {
           )}
         </div>
 
-        {/* Play/Pause + End — big touch targets */}
+        {/* Play/Pause + End */}
         <div className="flex gap-4 mb-7 w-full justify-center">
           <button
             onClick={toggle}
@@ -264,7 +325,7 @@ const WatchPage = () => {
           </button>
         </div>
 
-        {/* Word Input — tall, easy to tap */}
+        {/* Word Input */}
         <div className="w-full flex gap-2.5">
           <input
             ref={inputRef}
@@ -320,6 +381,9 @@ const WatchPage = () => {
           </div>
         </div>
       )}
+
+      {/* Show-specific vocabulary panel */}
+      {selectedShow && <ShowVocabPanel showName={selectedShow} />}
 
       {currentEpisodeWords.length > 0 && (
         <div className="space-y-2.5">

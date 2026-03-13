@@ -3,10 +3,10 @@ import { NavLink } from 'react-router-dom';
 import { Tv, BookOpen, GraduationCap, FolderOpen } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { to: '/watch',      icon: Tv,             label: 'צפייה'    },
-  { to: '/review',     icon: BookOpen,        label: 'סקירה'    },
-  { to: '/exam',       icon: GraduationCap,   label: 'מבחן'     },
-  { to: '/categories', icon: FolderOpen,      label: 'קטגוריות' },
+  { to: '/watch',      icon: Tv,           label: 'צפייה'        },
+  { to: '/vocabulary', icon: BookOpen,      label: 'אוצר מילים'  },
+  { to: '/exam',       icon: GraduationCap, label: 'מבחן'        },
+  { to: '/folders',    icon: FolderOpen,    label: 'תיקיות'      },
 ];
 
 const NavBar = () => (
@@ -28,7 +28,7 @@ const NavBar = () => (
                   ${isActive ? 'bg-blue-500/20' : ''}`}>
                   <Icon size={26} strokeWidth={isActive ? 2.5 : 1.75} />
                 </span>
-                <span className={`text-[11px] font-bold leading-none
+                <span className={`text-[10px] font-bold leading-none
                   ${isActive ? 'text-blue-400' : 'text-slate-500'}`}>
                   {label}
                 </span>

@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useState } from 'react';
 import { BrainCircuit } from 'lucide-react';
 import { VocabContextProvider } from './context/VocabContext';
 import NavBar from './components/NavBar';
@@ -6,17 +7,20 @@ import WatchPage from './pages/WatchPage';
 import ReviewPage from './pages/ReviewPage';
 import ExamPage from './pages/ExamPage';
 import ResultsPage from './pages/ResultsPage';
-import CategoriesPage from './pages/CategoriesPage';
+import VocabularyPage from './pages/VocabularyPage';
+import FoldersPage from './pages/FoldersPage';
+import OnboardingGuide, { shouldShowOnboarding } from './components/OnboardingGuide';
 
 // ==========================================
 // App.jsx — Route definitions + Context provider
 //
-// Architecture note:
-//   VocabContextProvider wraps ALL routes so any page can call
-//   useVocab() to access shared state without prop drilling.
+// Navigation:
+//   /watch      — Live TV watching & word capture
+//   /vocabulary — Academic DB library (50-word units, V/X/?)
+//   /exam       — Exam from current episode words
+//   /folders    — Unknown/Uncertain folders + show vocab
 //
-//   BrowserRouter lives in main.jsx (not here) so App is testable —
-//   in tests you can wrap App with MemoryRouter instead.
+// Legacy /review and /categories kept for backwards compat.
 // ==========================================
 
 const Header = () => (
@@ -36,27 +40,40 @@ const Header = () => (
   </header>
 );
 
-const App = () => (
-  <VocabContextProvider>
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans" dir="rtl">
-      <Header />
+const App = () => {
+  const [showOnboarding, setShowOnboarding] = useState(shouldShowOnboarding);
 
-      {/* pb-28 gives space above the fixed NavBar (h-20 + safe area) */}
-      <main className="pb-28">
-        <Routes>
-          <Route path="/" element={<Navigate to="/watch" replace />} />
-          <Route path="/watch"   element={<WatchPage />}   />
-          <Route path="/review"  element={<ReviewPage />}  />
-          <Route path="/exam"    element={<ExamPage />}    />
-          <Route path="/results"    element={<ResultsPage />}    />
-          <Route path="/categories" element={<CategoriesPage />} />
-          <Route path="*"           element={<Navigate to="/watch" replace />} />
-        </Routes>
-      </main>
+  return (
+    <VocabContextProvider>
+      <div className="min-h-screen bg-slate-950 text-slate-100 font-sans" dir="rtl">
+        <Header />
 
-      <NavBar />
-    </div>
-  </VocabContextProvider>
-);
+        {/* pb-28 gives space above the fixed NavBar (h-20 + safe area) */}
+        <main className="pb-28">
+          <Routes>
+            <Route path="/"            element={<Navigate to="/watch" replace />} />
+            <Route path="/watch"       element={<WatchPage />}       />
+            {/* Legacy review route — keep for internal navigation */}
+            <Route path="/review"      element={<ReviewPage />}      />
+            <Route path="/exam"        element={<ExamPage />}        />
+            <Route path="/results"     element={<ResultsPage />}     />
+            <Route path="/vocabulary"  element={<VocabularyPage />}  />
+            <Route path="/folders"     element={<FoldersPage />}     />
+            {/* Legacy categories route — redirect to folders */}
+            <Route path="/categories"  element={<Navigate to="/folders" replace />} />
+            <Route path="*"            element={<Navigate to="/watch" replace />} />
+          </Routes>
+        </main>
+
+        <NavBar />
+
+        {/* First-time onboarding overlay */}
+        {showOnboarding && (
+          <OnboardingGuide onComplete={() => setShowOnboarding(false)} />
+        )}
+      </div>
+    </VocabContextProvider>
+  );
+};
 
 export default App;

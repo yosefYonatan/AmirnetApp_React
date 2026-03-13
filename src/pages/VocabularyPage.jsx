@@ -1,0 +1,265 @@
+import React, { useState, useMemo } from 'react';
+import { BookOpen, CheckCircle2, XCircle, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useVocab, WORD_STATUS } from '../context/VocabContext';
+import rawData from '../data/academicDB.json';
+
+// ==========================================
+// VocabularyPage — Academic Database Library
+//
+// Shows all 538+ academic words divided into units of 50.
+// Each word has 3 status buttons:
+//   ✓ (Known)     — mark as known, no folder created
+//   ✗ (Unknown)   — add to "Unknown" folder in Folders tab
+//   ? (Uncertain) — add to "Uncertain" folder in Folders tab
+// ==========================================
+
+const UNIT_SIZE = 50;
+
+// Sort alphabetically (DB is already sorted, but ensure it)
+const ALL_WORDS = [...rawData].sort((a, b) => a.word.localeCompare(b.word));
+const TOTAL_UNITS = Math.ceil(ALL_WORDS.length / UNIT_SIZE);
+
+const POS_COLORS = {
+  Verb:      'text-blue-400 bg-blue-900/30',
+  Noun:      'text-green-400 bg-green-900/30',
+  Adjective: 'text-purple-400 bg-purple-900/30',
+  Adverb:    'text-amber-400 bg-amber-900/30',
+};
+
+const LevelDots = ({ level }) => (
+  <span className="flex gap-0.5 items-center">
+    {[1, 2, 3].map(i => (
+      <span key={i} className={`w-1.5 h-1.5 rounded-full ${i <= level ? 'bg-blue-400' : 'bg-slate-700'}`} />
+    ))}
+  </span>
+);
+
+const StatusButton = ({ icon: Icon, label, active, color, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-black transition-all active:scale-95
+      ${active
+        ? `${color} shadow-sm`
+        : 'bg-slate-800 text-slate-500 hover:bg-slate-700 hover:text-slate-300'
+      }`}
+    title={label}
+  >
+    <Icon size={14} strokeWidth={2.5} />
+    <span className="hidden sm:inline">{label}</span>
+  </button>
+);
+
+const VocabularyPage = () => {
+  const { wordStatuses, setWordStatus } = useVocab();
+  const [unit, setUnit] = useState(0); // 0-based unit index
+
+  const unitWords = useMemo(
+    () => ALL_WORDS.slice(unit * UNIT_SIZE, (unit + 1) * UNIT_SIZE),
+    [unit]
+  );
+
+  // Stats for current unit
+  const unitStats = useMemo(() => {
+    let known = 0, unknown = 0, uncertain = 0;
+    unitWords.forEach(w => {
+      const s = wordStatuses[w.word.toLowerCase()];
+      if (s === WORD_STATUS.KNOWN)     known++;
+      if (s === WORD_STATUS.UNKNOWN)   unknown++;
+      if (s === WORD_STATUS.UNCERTAIN) uncertain++;
+    });
+    return { known, unknown, uncertain, total: unitWords.length };
+  }, [unitWords, wordStatuses]);
+
+  const handleStatus = (word, status) => {
+    const key = word.toLowerCase();
+    const current = wordStatuses[key];
+    // Toggle off if same status clicked again
+    setWordStatus(word, current === status ? null : status);
+  };
+
+  return (
+    <div className="w-full max-w-2xl mx-auto px-4 pt-4 pb-4 space-y-4">
+
+      {/* Header */}
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800/60 p-5 rounded-3xl border border-slate-700/60">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-11 h-11 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center flex-shrink-0">
+            <BookOpen size={22} className="text-indigo-400" />
+          </div>
+          <div>
+            <h2 className="font-black text-lg text-white leading-tight">אוצר מילים אקדמי</h2>
+            <p className="text-slate-500 text-sm">{ALL_WORDS.length} מילים · {TOTAL_UNITS} יחידות</p>
+          </div>
+        </div>
+
+        {/* Legend */}
+        <div className="flex gap-2 flex-wrap">
+          <span className="flex items-center gap-1 text-xs text-green-400 bg-green-900/20 border border-green-800/30 px-2.5 py-1 rounded-lg">
+            <CheckCircle2 size={12} /> ידוע
+          </span>
+          <span className="flex items-center gap-1 text-xs text-red-400 bg-red-900/20 border border-red-800/30 px-2.5 py-1 rounded-lg">
+            <XCircle size={12} /> לא ידוע → תיקייה
+          </span>
+          <span className="flex items-center gap-1 text-xs text-amber-400 bg-amber-900/20 border border-amber-800/30 px-2.5 py-1 rounded-lg">
+            <HelpCircle size={12} /> לא בטוח → תיקייה
+          </span>
+        </div>
+      </div>
+
+      {/* Unit Selector */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3">
+        <div className="flex items-center justify-between gap-2 mb-2.5">
+          <button
+            onClick={() => setUnit(u => Math.max(0, u - 1))}
+            disabled={unit === 0}
+            className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex items-center justify-center transition"
+          >
+            <ChevronRight size={18} />
+          </button>
+
+          <div className="flex-1 text-center">
+            <span className="font-black text-white">יחידה {unit + 1}</span>
+            <span className="text-slate-500 text-sm"> / {TOTAL_UNITS}</span>
+          </div>
+
+          <button
+            onClick={() => setUnit(u => Math.min(TOTAL_UNITS - 1, u + 1))}
+            disabled={unit === TOTAL_UNITS - 1}
+            className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex items-center justify-center transition"
+          >
+            <ChevronLeft size={18} />
+          </button>
+        </div>
+
+        {/* Unit progress dots (show up to 12, rest as "...") */}
+        <div className="flex gap-1 flex-wrap justify-center">
+          {Array.from({ length: Math.min(TOTAL_UNITS, 12) }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setUnit(i)}
+              className={`text-xs px-2.5 py-1 rounded-lg font-bold transition active:scale-95
+                ${i === unit
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-slate-800 text-slate-500 hover:bg-slate-700'
+                }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          {TOTAL_UNITS > 12 && (
+            <span className="text-slate-600 text-xs self-center">...</span>
+          )}
+        </div>
+      </div>
+
+      {/* Unit stats bar */}
+      <div className="flex gap-2">
+        <div className="flex-1 bg-green-900/20 border border-green-800/30 rounded-xl p-2 text-center">
+          <div className="font-black text-green-400 text-lg">{unitStats.known}</div>
+          <div className="text-[10px] text-slate-500">ידוע</div>
+        </div>
+        <div className="flex-1 bg-red-900/20 border border-red-800/30 rounded-xl p-2 text-center">
+          <div className="font-black text-red-400 text-lg">{unitStats.unknown}</div>
+          <div className="text-[10px] text-slate-500">לא ידוע</div>
+        </div>
+        <div className="flex-1 bg-amber-900/20 border border-amber-800/30 rounded-xl p-2 text-center">
+          <div className="font-black text-amber-400 text-lg">{unitStats.uncertain}</div>
+          <div className="text-[10px] text-slate-500">לא בטוח</div>
+        </div>
+        <div className="flex-1 bg-slate-800/60 border border-slate-700/40 rounded-xl p-2 text-center">
+          <div className="font-black text-slate-300 text-lg">
+            {unitStats.total - unitStats.known - unitStats.unknown - unitStats.uncertain}
+          </div>
+          <div className="text-[10px] text-slate-500">לא דורג</div>
+        </div>
+      </div>
+
+      {/* Word list */}
+      <div className="space-y-2">
+        {unitWords.map((entry, idx) => {
+          const key = entry.word.toLowerCase();
+          const status = wordStatuses[key];
+          const isKnown     = status === WORD_STATUS.KNOWN;
+          const isUnknown   = status === WORD_STATUS.UNKNOWN;
+          const isUncertain = status === WORD_STATUS.UNCERTAIN;
+
+          return (
+            <div
+              key={entry.word}
+              className={`rounded-2xl p-4 border flex items-center gap-3 transition-all
+                ${isKnown     ? 'bg-green-950/30 border-green-800/40'  : ''}
+                ${isUnknown   ? 'bg-red-950/30 border-red-800/40'      : ''}
+                ${isUncertain ? 'bg-amber-950/30 border-amber-800/40'  : ''}
+                ${!status     ? 'bg-slate-900 border-slate-800'        : ''}
+              `}
+            >
+              {/* Number */}
+              <span className="text-xs text-slate-600 font-mono w-7 flex-shrink-0 text-right">
+                {unit * UNIT_SIZE + idx + 1}
+              </span>
+
+              {/* Word info */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span dir="ltr" className="font-black text-white text-base leading-tight">{entry.word}</span>
+                  {entry.level && <LevelDots level={entry.level} />}
+                  {entry.pos && (
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${POS_COLORS[entry.pos] ?? 'text-slate-400 bg-slate-800'}`}>
+                      {entry.pos}
+                    </span>
+                  )}
+                </div>
+                <p className="text-slate-300 text-sm mt-0.5 leading-snug">{entry.translation}</p>
+              </div>
+
+              {/* V / X / ? buttons */}
+              <div className="flex gap-1.5 flex-shrink-0">
+                <StatusButton
+                  icon={CheckCircle2}
+                  label="ידוע"
+                  active={isKnown}
+                  color="bg-green-700/60 text-green-300 border border-green-600/40"
+                  onClick={() => handleStatus(entry.word, WORD_STATUS.KNOWN)}
+                />
+                <StatusButton
+                  icon={XCircle}
+                  label="לא ידוע"
+                  active={isUnknown}
+                  color="bg-red-700/60 text-red-300 border border-red-600/40"
+                  onClick={() => handleStatus(entry.word, WORD_STATUS.UNKNOWN)}
+                />
+                <StatusButton
+                  icon={HelpCircle}
+                  label="לא בטוח"
+                  active={isUncertain}
+                  color="bg-amber-700/60 text-amber-300 border border-amber-600/40"
+                  onClick={() => handleStatus(entry.word, WORD_STATUS.UNCERTAIN)}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Bottom navigation */}
+      <div className="flex gap-3 pt-2">
+        <button
+          onClick={() => { setUnit(u => Math.max(0, u - 1)); window.scrollTo(0,0); }}
+          disabled={unit === 0}
+          className="flex-1 py-4 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 rounded-2xl font-bold transition flex items-center justify-center gap-2"
+        >
+          <ChevronRight size={18} /> יחידה קודמת
+        </button>
+        <button
+          onClick={() => { setUnit(u => Math.min(TOTAL_UNITS - 1, u + 1)); window.scrollTo(0,0); }}
+          disabled={unit === TOTAL_UNITS - 1}
+          className="flex-1 py-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-30 rounded-2xl font-bold transition flex items-center justify-center gap-2"
+        >
+          יחידה הבאה <ChevronLeft size={18} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default VocabularyPage;
