@@ -61,34 +61,36 @@ CREATE TABLE IF NOT EXISTS public.user_vocabulary (
 
 
 -- ── 3. BATTLE ROOMS ──────────────────────────────────────────────────
--- Ephemeral multiplayer rooms. 6-char code is the primary key.
+-- Ephemeral multiplayer rooms.
+-- Column names must match BattlePage.jsx exactly.
 
 CREATE TABLE IF NOT EXISTS public.battle_rooms (
-  code         TEXT        PRIMARY KEY,               -- 6-char room code shown to players
-  host_id      TEXT        NOT NULL,                  -- display name of room creator
-  unit_index   INTEGER     NOT NULL DEFAULT 0,        -- which vocab unit (0-based)
-  status       TEXT        NOT NULL DEFAULT 'waiting'
-                           CHECK (status IN ('waiting','playing','done')),
-  question_idx INTEGER     NOT NULL DEFAULT 0,        -- current question being shown
-  started_at   TIMESTAMPTZ,
-  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  id         TEXT        PRIMARY KEY,                 -- 6-char code used as room ID
+  status     TEXT        NOT NULL DEFAULT 'waiting'
+                         CHECK (status IN ('waiting','playing','finished')),
+  word_unit  INTEGER     NOT NULL DEFAULT 0,          -- vocab unit index (0-based)
+  questions  JSONB       NOT NULL DEFAULT '[]',       -- serialized question array
+  admin_name TEXT        NOT NULL DEFAULT '',         -- display name of room creator
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 
 -- ── 4. BATTLE PLAYERS ─────────────────────────────────────────────────
 -- One row per player in a room (including bots).
+-- Column names must match BattlePage.jsx exactly.
 
 CREATE TABLE IF NOT EXISTS public.battle_players (
-  id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-  room_code   TEXT        NOT NULL REFERENCES public.battle_rooms(code) ON DELETE CASCADE,
-  player_name TEXT        NOT NULL,
-  score       INTEGER     NOT NULL DEFAULT 0,
-  is_bot      BOOLEAN     NOT NULL DEFAULT FALSE,
-  joined_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  id        UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  room_id   TEXT        NOT NULL REFERENCES public.battle_rooms(id) ON DELETE CASCADE,
+  name      TEXT        NOT NULL,
+  score     INTEGER     NOT NULL DEFAULT 0,
+  is_admin  BOOLEAN     NOT NULL DEFAULT FALSE,
+  is_bot    BOOLEAN     NOT NULL DEFAULT FALSE,
+  joined_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS battle_players_room_idx
-  ON public.battle_players(room_code);
+  ON public.battle_players(room_id);
 
 
 -- ── 5. ROW LEVEL SECURITY ────────────────────────────────────────────

@@ -5,6 +5,7 @@ import {
   Zap, CheckCircle2, XCircle, Clock, LogIn, RefreshCw
 } from 'lucide-react';
 import { supabase, isSupabaseReady } from '../services/supabaseClient';
+import { useVocab } from '../context/VocabContext';
 import rawData from '../data/academicDB.json';
 
 // ==========================================
@@ -343,6 +344,7 @@ const ResultsScreen = ({ players, myPlayerId, onRematch, onLeave }) => {
 // ── Main component ────────────────────────────────────────────────────
 const BattlePage = () => {
   const location = useLocation();
+  const { awardXP } = useVocab();
 
   const [screen, setScreen]         = useState('landing'); // landing | unit | lobby | game | results
   const [room, setRoom]             = useState(null);
@@ -501,6 +503,12 @@ const BattlePage = () => {
     if (isSupabaseReady && (roomData?.id ?? room?.id)) {
       await supabase.from('battle_rooms').update({ status: 'finished' }).eq('id', roomData?.id ?? room.id);
     }
+    // Award XP to the leaderboard profile: use the player's final battle score
+    setPlayers(prev => {
+      const myScore = prev.find(p => p.id === myPlayerId)?.score ?? 0;
+      if (myScore > 0) awardXP(myScore);
+      return prev;
+    });
     setScreen('results');
   };
 
