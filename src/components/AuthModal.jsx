@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
-import { X, Mail, Lock, LogIn, UserPlus, Loader2 } from 'lucide-react';
+import { X, User, Lock, LogIn, UserPlus, Loader2 } from 'lucide-react';
 
 // ==========================================
-// AuthModal — Supabase email/password auth
+// AuthModal — username / password auth
+//
+// Internally converts username → username@amirnet.app
+// so Supabase Auth is satisfied without exposing real emails.
 //
 // Props:
 //   onClose()
-//   onSignIn(email, password) → Promise<{ error }>
-//   onSignUp(email, password) → Promise<{ error }>
+//   onSignIn(username, password) → Promise<{ error }>
+//   onSignUp(username, password) → Promise<{ error }>
 // ==========================================
+
+const USERNAME_RE = /^[a-zA-Z0-9_\u0590-\u05FF]{2,24}$/;
 
 const AuthModal = ({ onClose, onSignIn, onSignUp }) => {
   const [mode, setMode]         = useState('signin'); // 'signin' | 'signup'
-  const [email, setEmail]       = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading]   = useState(false);
   const [error, setError]       = useState(null);
@@ -21,16 +26,31 @@ const AuthModal = ({ onClose, onSignIn, onSignUp }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email.trim() || !password) return;
+    const trimmed = username.trim();
+    if (!trimmed || !password) return;
+
+    if (isSignUp && !USERNAME_RE.test(trimmed)) {
+      setError('שם משתמש: 2–24 תווים, אותיות / ספרות / _ בלבד');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     const fn = isSignUp ? onSignUp : onSignIn;
-    const { error: authError } = await fn(email.trim(), password);
+    const { error: authError } = await fn(trimmed, password);
 
     setLoading(false);
     if (authError) {
-      setError(authError.message ?? 'שגיאה. נסה שוב.');
+      // Translate common Supabase error messages to Hebrew
+      const msg = authError.message ?? '';
+      if (msg.includes('Invalid login')) {
+        setError('שם משתמש או סיסמה שגויים');
+      } else if (msg.includes('already registered')) {
+        setError('שם המשתמש כבר תפוס. נסה שם אחר');
+      } else {
+        setError(msg || 'שגיאה. נסה שוב.');
+      }
     } else {
       onClose();
     }
@@ -50,7 +70,7 @@ const AuthModal = ({ onClose, onSignIn, onSignUp }) => {
               {isSignUp ? 'הרשמה' : 'כניסה'}
             </h2>
             <p className="text-slate-500 text-sm mt-0.5">
-              {isSignUp ? 'ליצור חשבון ולשמור את ההתקדמות' : 'להמשיך עם חשבון קיים'}
+              {isSignUp ? 'ללא אימייל — רק שם משתמש וסיסמה' : 'המשך עם חשבון קיים'}
             </p>
           </div>
           <button
@@ -64,20 +84,24 @@ const AuthModal = ({ onClose, onSignIn, onSignUp }) => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
 
-          {/* Email */}
+          {/* Username */}
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
-              <Mail size={13} /> אימייל
+              <User size={13} /> שם משתמש
             </label>
             <input
-              type="email"
+              type="text"
               dir="ltr"
-              value={email}
-              onChange={e => { setEmail(e.target.value); setError(null); }}
-              placeholder="student@bgu.ac.il"
+              value={username}
+              onChange={e => { setUsername(e.target.value); setError(null); }}
+              placeholder="myname123"
+              autoComplete="username"
               required
               className="w-full bg-slate-800 border border-slate-700 focus:border-blue-500 rounded-xl py-3 px-4 text-white text-sm outline-none transition placeholder:text-slate-600"
             />
+            {isSignUp && (
+              <p className="text-slate-600 text-xs">אותיות, ספרות, קו תחתון — 2 עד 24 תווים</p>
+            )}
           </div>
 
           {/* Password */}
@@ -92,6 +116,7 @@ const AuthModal = ({ onClose, onSignIn, onSignUp }) => {
               onChange={e => { setPassword(e.target.value); setError(null); }}
               placeholder="לפחות 6 תווים"
               minLength={6}
+              autoComplete={isSignUp ? 'new-password' : 'current-password'}
               required
               className="w-full bg-slate-800 border border-slate-700 focus:border-blue-500 rounded-xl py-3 px-4 text-white text-sm outline-none transition placeholder:text-slate-600"
             />
@@ -107,7 +132,7 @@ const AuthModal = ({ onClose, onSignIn, onSignUp }) => {
           {/* Submit */}
           <button
             type="submit"
-            disabled={loading || !email.trim() || password.length < 6}
+            disabled={loading || !username.trim() || password.length < 6}
             className="w-full py-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 rounded-2xl font-black text-base flex items-center justify-center gap-2 transition active:scale-95"
           >
             {loading
@@ -129,6 +154,10 @@ const AuthModal = ({ onClose, onSignIn, onSignUp }) => {
             >
               {isSignUp ? 'כניסה' : 'הרשמה'}
             </button>
+          </p>
+
+          <p className="text-center text-slate-700 text-xs">
+            🔒 לא נדרש אימייל — הנתונים שלך בטוחים
           </p>
         </form>
       </div>

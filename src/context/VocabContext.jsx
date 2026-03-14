@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   signInAnonymously, onAuthStateChanged, signInWithCustomToken
 } from 'firebase/auth';
@@ -29,6 +29,9 @@ export const WORD_STATUS = {
 //   • Firebase  — episode word capture (existing)
 //   • Supabase  — word statuses, SRS, XP, leaderboard (new)
 //
+// Auth:  username-only login. Internally uses username@amirnet.app
+//        as the Supabase email so users never need a real email.
+//
 // Offline-first: wordStatuses + SRS metadata saved to
 // localStorage so the app works without any backend.
 // ==========================================
@@ -51,6 +54,11 @@ const loadLS = (key, fallback) => {
 const saveLS = (key, value) => {
   try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
 };
+
+// Convert a username into the internal fake email used with Supabase Auth.
+// Users never see this — it's only used so Supabase's email-required auth works.
+const toFakeEmail = (username) =>
+  `${username.trim().toLowerCase()}@amirnet.app`;
 
 export const VocabContextProvider = ({ children }) => {
   // ── Firebase state ────────────────────────────────────────────────
@@ -163,7 +171,8 @@ export const VocabContextProvider = ({ children }) => {
           saveLS(LS_SRS, merged);
           return merged;
         });
-      });
+      })
+      .catch(() => {}); // table may not exist yet — fail silently
   }, [supabaseUser]);
 
   // ── Firebase Session Recovery ────────────────────────────────────
@@ -190,14 +199,23 @@ export const VocabContextProvider = ({ children }) => {
     return () => unsub();
   }, [user]);
 
-  // ── Supabase Auth helpers ─────────────────────────────────────────
-  const supabaseSignIn = async (email, password) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+  // ── Supabase Auth helpers (username-based) ─────────────────────────
+  // Supabase requires email format — we construct a private fake email
+  // so users only ever see/enter a username.
+  const supabaseSignIn = async (username, password) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: toFakeEmail(username),
+      password,
+    });
     return { error };
   };
 
-  const supabaseSignUp = async (email, password) => {
-    const { error } = await supabase.auth.signUp({ email, password });
+  const supabaseSignUp = async (username, password) => {
+    const { error } = await supabase.auth.signUp({
+      email:    toFakeEmail(username),
+      password,
+      options:  { data: { full_name: username.trim() } },
+    });
     return { error };
   };
 
@@ -206,10 +224,13 @@ export const VocabContextProvider = ({ children }) => {
   };
 
   // ── Word Status: set V / X / ? ────────────────────────────────────
-  // Sets both status string and computes new SRS schedule.
-  const setWordStatus = (wordKey, status) => {
+  // Computes SRS schedule and syncs to Supabase (fire-and-forget).
+  // The Supabase write is intentionally outside the React state setter
+  // so it does not run in StrictMode's double-invoke of state updaters.
+  const setWordStatus = useCallback((wordKey, status) => {
     const key = wordKey.toLowerCase();
 
+    // 1. Update status string in state + localStorage
     setWordStatusesState(prev => {
       const next = { ...prev };
       if (status === null) {
@@ -221,36 +242,55 @@ export const VocabContextProvider = ({ children }) => {
       return next;
     });
 
-    // ── SRS computation ───────────────────────────────────────────
+    // 2. Compute SRS + update state + sync to Supabase
     setWordSRSData(prev => {
       const next = { ...prev };
+
       if (status === null) {
         delete next[key];
         saveLS(LS_SRS, next);
         return next;
       }
-      const quality   = QUALITY[status] ?? 0;
-      const srsUpdate = computeNextSRS(prev[key], quality);
-      next[key]       = srsUpdate;
-      saveLS(LS_SRS, next);
 
-      // ── Supabase sync ─────────────────────────────────────────
-      if (isSupabaseReady && supabaseUser) {
-        supabase.from('user_vocabulary').upsert({
-          user_id:          supabaseUser.id,
-          word:             key,
-          status,
-          next_review_date: srsUpdate.nextReviewDate,
-          interval_days:    srsUpdate.intervalDays,
-          repetitions:      srsUpdate.repetitions,
-          ease_factor:      srsUpdate.easeFactor,
-          updated_at:       new Date().toISOString(),
-        }, { onConflict: 'user_id,word' }).catch(() => {});
+      let srsUpdate;
+      try {
+        const quality = QUALITY[status] ?? 0;
+        srsUpdate     = computeNextSRS(prev[key], quality);
+      } catch (e) {
+        console.warn('[SRS] computeNextSRS failed:', e.message);
+        return next; // leave SRS unchanged on error
       }
 
+      next[key] = srsUpdate;
+      saveLS(LS_SRS, next);
       return next;
     });
-  };
+
+    // 3. Supabase sync — runs AFTER state update, outside the setter
+    //    so it's not affected by React StrictMode's double-invocation.
+    if (status !== null && isSupabaseReady && supabaseUser) {
+      const quality = QUALITY[status] ?? 0;
+      // Re-read current SRS from localStorage to avoid closure staleness
+      const currentSRS = loadLS(LS_SRS, {})[key];
+      let srsUpdate;
+      try {
+        srsUpdate = computeNextSRS(currentSRS, quality);
+      } catch {
+        return; // skip sync if SRS fails
+      }
+
+      supabase.from('user_vocabulary').upsert({
+        user_id:          supabaseUser.id,
+        word:             key,
+        status,
+        next_review_date: srsUpdate.nextReviewDate,
+        interval_days:    srsUpdate.intervalDays,
+        repetitions:      srsUpdate.repetitions,
+        ease_factor:      srsUpdate.easeFactor,
+        updated_at:       new Date().toISOString(),
+      }, { onConflict: 'user_id,word' }).catch(() => {}); // table may not exist yet
+    }
+  }, [supabaseUser]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Award XP (called from ExamPage on correct answers) ───────────
   const awardXP = async (points) => {

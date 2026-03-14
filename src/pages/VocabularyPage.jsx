@@ -249,7 +249,7 @@ const VocabularyPage = () => {
           return (
             <div key={entry.word}>
               <div
-                className={`rounded-2xl p-4 border flex items-center gap-3 transition-all
+                className={`rounded-2xl p-3 sm:p-4 border flex items-center gap-2 sm:gap-3 transition-all overflow-hidden
                   ${isKnown     ? 'bg-green-950/30 border-green-800/40'  : ''}
                   ${isUnknown   ? 'bg-red-950/30 border-red-800/40'      : ''}
                   ${isUncertain ? 'bg-amber-950/30 border-amber-800/40'  : ''}
@@ -260,9 +260,9 @@ const VocabularyPage = () => {
                   {unit * UNIT_SIZE + idx + 1}
                 </span>
 
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 overflow-hidden">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span dir="ltr" className="font-black text-white text-base leading-tight">{entry.word}</span>
+                    <span dir="ltr" className="font-black text-white text-base leading-tight break-all">{entry.word}</span>
                     {entry.level && <LevelDots level={entry.level} />}
                     {entry.pos && (
                       <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${POS_COLORS[entry.pos] ?? 'text-slate-400 bg-slate-800'}`}>

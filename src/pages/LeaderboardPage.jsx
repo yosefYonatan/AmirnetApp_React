@@ -32,25 +32,44 @@ const LeaderboardPage = () => {
   const [loading, setLoading]     = useState(false);
   const [showAuth, setShowAuth]   = useState(false);
 
-  // Fetch leaderboard
+  // ── Fetch + Realtime subscription ────────────────────────────────
   useEffect(() => {
     if (!isSupabaseReady) return;
-    setLoading(true);
 
-    let query = supabase
-      .from('profiles')
-      .select('id, full_name, email, department, xp_points')
-      .order('xp_points', { ascending: false })
-      .limit(20);
+    // Initial fetch
+    const fetchRows = () => {
+      setLoading(true);
+      let query = supabase
+        .from('profiles')
+        .select('id, full_name, email, department, xp_points')
+        .order('xp_points', { ascending: false })
+        .limit(20);
 
-    if (dept !== 'all') {
-      query = query.eq('department', dept);
-    }
+      if (dept !== 'all') {
+        query = query.eq('department', dept);
+      }
 
-    query.then(({ data, error }) => {
-      setLoading(false);
-      if (!error && data) setRows(data);
-    });
+      query.then(({ data, error }) => {
+        setLoading(false);
+        if (!error && data) setRows(data);
+      });
+    };
+
+    fetchRows();
+
+    // Realtime: re-fetch whenever any profile's XP changes
+    // Requires: ALTER PUBLICATION supabase_realtime ADD TABLE public.profiles;
+    // (already included in supabase-schema.sql)
+    const channel = supabase
+      .channel('leaderboard-xp')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'profiles' },
+        () => fetchRows()
+      )
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, [dept]);
 
   // ── Not configured fallback ──────────────────────────────────────
