@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Tv, BookOpen, GraduationCap, FolderOpen, Trophy, Swords } from 'lucide-react';
+import { Tv, BookOpen, GraduationCap, FolderOpen, Trophy, Swords, Layers } from 'lucide-react';
 
 // ==========================================
 // NavBar — Bottom navigation bar
@@ -11,12 +11,13 @@ import { Tv, BookOpen, GraduationCap, FolderOpen, Trophy, Swords } from 'lucide-
 // ==========================================
 
 const NAV_ITEMS = [
-  { to: '/vocabulary',  icon: BookOpen,      label: 'אוצר מילים' },
-  { to: '/watch',       icon: Tv,            label: 'צפייה'       },
-  { to: '/exam',        icon: GraduationCap, label: 'מבחן'        },
-  { to: '/folders',     icon: FolderOpen,    label: 'תיקיות'      },
-  { to: '/battle',      icon: Swords,        label: 'קרב'         },
-  { to: '/leaderboard', icon: Trophy,        label: 'טבלה'        },
+  { to: '/vocabulary',  icon: BookOpen,      label: 'מילים'   },
+  { to: '/flashcards',  icon: Layers,        label: 'כרטיסים' },
+  { to: '/exam',        icon: GraduationCap, label: 'מבחן'    },
+  { to: '/folders',     icon: FolderOpen,    label: 'תיקיות'  },
+  { to: '/battle',      icon: Swords,        label: 'קרב'     },
+  { to: '/leaderboard', icon: Trophy,        label: 'טבלה'    },
+  { to: '/watch',       icon: Tv,            label: 'צפייה'   },
 ];
 
 const NavBar = () => {
@@ -40,7 +41,7 @@ const NavBar = () => {
                   ${isActive ? 'text-blue-400' : 'text-slate-500'}`}
               >
                 <span className={`p-2 rounded-2xl transition-all ${isActive ? 'bg-blue-500/20' : ''}`}>
-                  <Icon size={24} strokeWidth={isActive ? 2.5 : 1.75} />
+                  <Icon size={20} strokeWidth={isActive ? 2.5 : 1.75} />
                 </span>
                 <span className={`text-[10px] font-bold leading-none ${isActive ? 'text-blue-400' : 'text-slate-500'}`}>
                   {label}

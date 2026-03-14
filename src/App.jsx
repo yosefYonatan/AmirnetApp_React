@@ -11,6 +11,7 @@ import VocabularyPage from './pages/VocabularyPage';
 import FoldersPage from './pages/FoldersPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import BattlePage from './pages/BattlePage';
+import FlashcardsPage from './pages/FlashcardsPage';
 import OnboardingGuide, { shouldShowOnboarding } from './components/OnboardingGuide';
 
 // ==========================================
@@ -63,6 +64,7 @@ const App = () => {
             <Route path="/folders"      element={<FoldersPage />}      />
             <Route path="/leaderboard"  element={<LeaderboardPage />}  />
             <Route path="/battle"       element={<BattlePage />}       />
+            <Route path="/flashcards"   element={<FlashcardsPage />}   />
             {/* Legacy categories route — redirect to folders */}
             <Route path="/categories"  element={<Navigate to="/folders" replace />} />
             <Route path="*"            element={<Navigate to="/vocabulary" replace />} />
