@@ -26,7 +26,7 @@ const NavBar = () => {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-40 backdrop-blur-md border-t bg-white/98 border-slate-200/60 dark:bg-slate-950/98 dark:border-slate-800/60"
+      className="fixed bottom-0 inset-x-0 z-40 border-t bg-white border-slate-200 dark:bg-slate-950 dark:border-slate-800/50"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <ul className="flex justify-around items-center h-20 max-w-2xl mx-auto px-1">

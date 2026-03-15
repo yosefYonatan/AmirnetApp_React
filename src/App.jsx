@@ -95,9 +95,9 @@ const ProfileButton = () => {
 // ── Header ────────────────────────────────────────────────────────────
 const Header = () => (
   <header
-    className="sticky top-0 z-30 backdrop-blur border-b w-full
-      bg-white/95 border-slate-200/60
-      dark:bg-slate-950/95 dark:border-slate-800/60"
+    className="sticky top-0 z-30 border-b w-full
+      bg-white border-slate-200
+      dark:bg-slate-950 dark:border-slate-800/50"
     style={{ paddingTop: 'env(safe-area-inset-top)' }}
   >
     <div className="max-w-2xl mx-auto px-5 py-4 flex items-center gap-3">
