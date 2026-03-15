@@ -26,7 +26,7 @@ const NavBar = () => {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-40 bg-slate-950/98 backdrop-blur-md border-t border-slate-800/60"
+      className="fixed bottom-0 inset-x-0 z-40 backdrop-blur-md border-t bg-white/98 border-slate-200/60 dark:bg-slate-950/98 dark:border-slate-800/60"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <ul className="flex justify-around items-center h-20 max-w-2xl mx-auto px-1">
@@ -38,12 +38,12 @@ const NavBar = () => {
               <button
                 onClick={() => navigate(to, { state: { resetAt: Date.now() } })}
                 className={`w-full flex flex-col items-center justify-center gap-1 py-2 rounded-2xl transition-all min-h-[56px]
-                  ${isActive ? 'text-blue-400' : 'text-slate-500'}`}
+                  ${isActive ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
               >
                 <span className={`p-2 rounded-2xl transition-all ${isActive ? 'bg-blue-500/20' : ''}`}>
                   <Icon size={20} strokeWidth={isActive ? 2.5 : 1.75} />
                 </span>
-                <span className={`text-[10px] font-bold leading-none ${isActive ? 'text-blue-400' : 'text-slate-500'}`}>
+                <span className={`text-[10px] font-bold leading-none ${isActive ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>
                   {label}
                 </span>
               </button>

@@ -457,7 +457,7 @@ const ResultsScreen = ({ players, myPlayerId, onRematch, onLeave }) => {
 // ── Main component ────────────────────────────────────────────────────
 const BattlePage = () => {
   const location = useLocation();
-  const { awardXP } = useVocab();
+  const { awardXP, supabaseUser } = useVocab();
 
   const [screen, setScreen]         = useState('landing');
   const [room, setRoom]             = useState(null);
@@ -531,11 +531,15 @@ const BattlePage = () => {
     const { error: rErr } = await supabase.from('battle_rooms').insert({
       id: code, status: 'waiting', word_unit: unitIndex, questions: qs,
       admin_name: myName, question_time_ms: timeMs,
+      creator_id: supabaseUser?.id ?? null,   // RLS: only creator can update/start
     });
     if (rErr) { setError(rErr.message); return; }
 
     const { data: player, error: pErr } = await supabase
-      .from('battle_players').insert({ room_id: code, name: myName, score: 0, is_admin: true })
+      .from('battle_players').insert({
+        room_id: code, name: myName, score: 0, is_admin: true,
+        user_id: supabaseUser?.id ?? null,     // RLS: player can only update own score
+      })
       .select().single();
     if (pErr) { setError(pErr.message); return; }
 
@@ -556,7 +560,10 @@ const BattlePage = () => {
 
     const myName = getPlayerName();
     const { data: player, error: pErr } = await supabase
-      .from('battle_players').insert({ room_id: code, name: myName, score: 0, is_admin: false })
+      .from('battle_players').insert({
+        room_id: code, name: myName, score: 0, is_admin: false,
+        user_id: supabaseUser?.id ?? null,     // RLS: player can only update own score
+      })
       .select().single();
     if (pErr) { setError(pErr.message); return; }
 

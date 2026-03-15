@@ -73,6 +73,8 @@ export const VocabContextProvider = ({ children }) => {
   // ── Supabase state ────────────────────────────────────────────────
   const [supabaseUser, setSupabaseUser]       = useState(null);
   const [supabaseProfile, setSupabaseProfile] = useState(null);
+  // true while fetching user_vocabulary from Supabase on login
+  const [vocabSyncing, setVocabSyncing]       = useState(false);
 
   // ── Word statuses (V/X/?) ─────────────────────────────────────────
   // { [wordLowercase]: 'known' | 'unknown' | 'uncertain' }
@@ -138,41 +140,48 @@ export const VocabContextProvider = ({ children }) => {
   }, [supabaseUser]);
 
   // ── Sync wordStatuses from Supabase on login ──────────────────────
+  // vocabSyncing = true while the fetch is in flight so FlashcardsPage
+  // can wait for fresh data before building its card session.
   useEffect(() => {
-    if (!isSupabaseReady || !supabaseUser) return;
+    if (!isSupabaseReady || !supabaseUser) {
+      setVocabSyncing(false);
+      return;
+    }
+
+    setVocabSyncing(true);
 
     supabase
       .from('user_vocabulary')
       .select('word, status, next_review_date, interval_days, repetitions, ease_factor')
       .eq('user_id', supabaseUser.id)
       .then(({ data }) => {
-        if (!data) return;
-
-        const statuses = {};
-        const srs      = {};
-        for (const row of data) {
-          const key    = row.word.toLowerCase();
-          statuses[key] = row.status;
-          srs[key]      = {
-            nextReviewDate: row.next_review_date ?? 0,
-            intervalDays:   row.interval_days   ?? 1,
-            repetitions:    row.repetitions      ?? 0,
-            easeFactor:     row.ease_factor      ?? 2.5,
-          };
+        if (data) {
+          const statuses = {};
+          const srs      = {};
+          for (const row of data) {
+            const key    = row.word.toLowerCase();
+            statuses[key] = row.status;
+            srs[key]      = {
+              nextReviewDate: row.next_review_date ?? 0,
+              intervalDays:   row.interval_days   ?? 1,
+              repetitions:    row.repetitions      ?? 0,
+              easeFactor:     row.ease_factor      ?? 2.5,
+            };
+          }
+          setWordStatusesState(prev => {
+            const merged = { ...prev, ...statuses };
+            saveLS(LS_STATUSES, merged);
+            return merged;
+          });
+          setWordSRSData(prev => {
+            const merged = { ...prev, ...srs };
+            saveLS(LS_SRS, merged);
+            return merged;
+          });
         }
-
-        setWordStatusesState(prev => {
-          const merged = { ...prev, ...statuses };
-          saveLS(LS_STATUSES, merged);
-          return merged;
-        });
-        setWordSRSData(prev => {
-          const merged = { ...prev, ...srs };
-          saveLS(LS_SRS, merged);
-          return merged;
-        });
       })
-      .catch(() => {}); // table may not exist yet — fail silently
+      .catch(() => {}) // table may not exist yet — fail silently
+      .finally(() => setVocabSyncing(false));
   }, [supabaseUser]);
 
   // ── Firebase Session Recovery ────────────────────────────────────
@@ -504,6 +513,7 @@ export const VocabContextProvider = ({ children }) => {
     supabaseSignOut,
     isSupabaseReady,
     awardXP,
+    vocabSyncing,
   };
 
   return (

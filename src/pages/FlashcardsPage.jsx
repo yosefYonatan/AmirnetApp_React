@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CheckCircle2, XCircle, RotateCcw, Zap, Layers } from 'lucide-react';
+import { CheckCircle2, XCircle, RotateCcw, Zap, Layers, Loader2 } from 'lucide-react';
 import { useVocab, WORD_STATUS } from '../context/VocabContext';
 import rawData from '../data/academicDB.json';
 
@@ -67,7 +67,7 @@ const Summary = ({ known, unknown, total, onRestart }) => (
 // ── Main component ────────────────────────────────────────────────────
 const FlashcardsPage = () => {
   const location = useLocation();
-  const { wordStatuses, setWordStatus, awardXP, supabaseUser } = useVocab();
+  const { wordStatuses, setWordStatus, awardXP, supabaseUser, vocabSyncing } = useVocab();
 
   const [sessionWords, setSessionWords] = useState([]);
   const [currentIdx, setCurrentIdx]     = useState(0);
@@ -84,6 +84,7 @@ const FlashcardsPage = () => {
   const dragStartY    = useRef(0);
   const totalDragged  = useRef(0);
   const cardRef       = useRef(null);
+  const prevSyncing   = useRef(false);
 
   // ── Build session ─────────────────────────────────────────────────
   const buildSession = useCallback(() => {
@@ -118,6 +119,14 @@ const FlashcardsPage = () => {
 
   // Init on mount + re-tap
   useEffect(() => { startSession(); }, [location.key]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Rebuild session when Supabase vocab sync completes (true → false)
+  useEffect(() => {
+    if (prevSyncing.current && !vocabSyncing && swiped === 0) {
+      startSession();
+    }
+    prevSyncing.current = vocabSyncing;
+  }, [vocabSyncing]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Decision (swipe outcome) ──────────────────────────────────────
   const decide = useCallback((direction) => {
@@ -190,6 +199,15 @@ const FlashcardsPage = () => {
   }, [isDragging, dragX, decide]);
 
   // ── Render guards ─────────────────────────────────────────────────
+  if (vocabSyncing && swiped === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[60vh] px-6 text-center gap-4">
+        <Loader2 size={40} className="text-blue-400 animate-spin" />
+        <p className="text-slate-400 font-bold">מסנכרן מילים...</p>
+      </div>
+    );
+  }
+
   if (done) {
     return (
       <Summary
