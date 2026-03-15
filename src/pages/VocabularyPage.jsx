@@ -29,17 +29,6 @@ const LevelDots = ({ level }) => (
   </span>
 );
 
-const StatusButton = ({ icon: Icon, label, active, color, onClick }) => (
-  <button
-    onClick={onClick}
-    className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-black transition-all active:scale-95
-      ${active ? `${color} shadow-sm` : 'bg-slate-800 text-slate-500 hover:bg-slate-700 hover:text-slate-300'}`}
-    title={label}
-  >
-    <Icon size={14} strokeWidth={2.5} />
-    <span className="hidden sm:inline">{label}</span>
-  </button>
-);
 
 // AI sentence panel shown inline below a word card
 const SentencePanel = ({ word, show, translation, onClose }) => {
@@ -237,7 +226,7 @@ const VocabularyPage = () => {
       </div>
 
       {/* Word list */}
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         {unitWords.map((entry, idx) => {
           const key         = entry.word.toLowerCase();
           const status      = wordStatuses[key];
@@ -246,52 +235,78 @@ const VocabularyPage = () => {
           const isUncertain = status === WORD_STATUS.UNCERTAIN;
           const aiOpen      = aiWordKey === key;
 
+          const borderColor = isKnown     ? 'border-green-800/50'
+                            : isUnknown   ? 'border-red-800/50'
+                            : isUncertain ? 'border-amber-800/50'
+                            :               'border-slate-800';
+          const bgColor     = isKnown     ? 'bg-green-950/25'
+                            : isUnknown   ? 'bg-red-950/25'
+                            : isUncertain ? 'bg-amber-950/25'
+                            :               'bg-slate-900';
+
           return (
             <div key={entry.word}>
-              <div
-                className={`rounded-2xl p-3 sm:p-4 border flex items-center gap-2 sm:gap-3 transition-all overflow-hidden
-                  ${isKnown     ? 'bg-green-950/30 border-green-800/40'  : ''}
-                  ${isUnknown   ? 'bg-red-950/30 border-red-800/40'      : ''}
-                  ${isUncertain ? 'bg-amber-950/30 border-amber-800/40'  : ''}
-                  ${!status     ? 'bg-slate-900 border-slate-800'        : ''}
-                `}
-              >
-                <span className="text-xs text-slate-600 font-mono w-7 flex-shrink-0 text-right">
-                  {unit * UNIT_SIZE + idx + 1}
-                </span>
-
-                <div className="flex-1 min-w-0 overflow-hidden">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span dir="ltr" className="font-black text-white text-base leading-tight break-all">{entry.word}</span>
-                    {entry.level && <LevelDots level={entry.level} />}
-                    {entry.pos && (
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${POS_COLORS[entry.pos] ?? 'text-slate-400 bg-slate-800'}`}>
-                        {entry.pos}
-                      </span>
-                    )}
+              <div className={`rounded-2xl border overflow-hidden transition-all ${bgColor} ${borderColor}`}>
+                {/* Word info row */}
+                <div className="p-4 flex items-start gap-3">
+                  <span className="text-xs text-slate-600 font-mono w-6 flex-shrink-0 mt-1">
+                    {unit * UNIT_SIZE + idx + 1}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span dir="ltr" className="font-black text-white text-lg leading-tight break-all">{entry.word}</span>
+                      {entry.level && <LevelDots level={entry.level} />}
+                      {entry.pos && (
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${POS_COLORS[entry.pos] ?? 'text-slate-400 bg-slate-800'}`}>
+                          {entry.pos}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-slate-300 text-sm mt-1 leading-snug">{entry.translation}</p>
                   </div>
-                  <p className="text-slate-300 text-sm mt-0.5 leading-snug">{entry.translation}</p>
-                </div>
-
-                <div className="flex gap-1.5 flex-shrink-0">
-                  {/* AI context button */}
+                  {/* AI button */}
                   <button
                     onClick={() => setAiWordKey(aiOpen ? null : key)}
                     title="הקשר בסדרה (AI)"
-                    className={`p-2 rounded-xl transition-all active:scale-90
-                      ${aiOpen ? 'bg-indigo-600/40 text-indigo-300 border border-indigo-500/40' : 'bg-slate-800 text-slate-500 hover:text-indigo-400'}`}
+                    className={`p-2 rounded-xl transition-all active:scale-90 flex-shrink-0
+                      ${aiOpen ? 'bg-indigo-600/40 text-indigo-300 border border-indigo-500/40' : 'bg-slate-800/80 text-slate-500 hover:text-indigo-400'}`}
                   >
-                    <Clapperboard size={14} />
+                    <Clapperboard size={15} />
                   </button>
-                  <StatusButton icon={CheckCircle2} label="ידוע" active={isKnown}
-                    color="bg-green-700/60 text-green-300 border border-green-600/40"
-                    onClick={() => handleStatus(entry.word, WORD_STATUS.KNOWN)} />
-                  <StatusButton icon={XCircle} label="לא ידוע" active={isUnknown}
-                    color="bg-red-700/60 text-red-300 border border-red-600/40"
-                    onClick={() => handleStatus(entry.word, WORD_STATUS.UNKNOWN)} />
-                  <StatusButton icon={HelpCircle} label="לא בטוח" active={isUncertain}
-                    color="bg-amber-700/60 text-amber-300 border border-amber-600/40"
-                    onClick={() => handleStatus(entry.word, WORD_STATUS.UNCERTAIN)} />
+                </div>
+
+                {/* Status button row — 3 big tappable buttons */}
+                <div className="grid grid-cols-3 border-t border-slate-800/60">
+                  <button
+                    onClick={() => handleStatus(entry.word, WORD_STATUS.KNOWN)}
+                    className={`py-3 flex items-center justify-center gap-2 text-sm font-black transition-all active:scale-95
+                      ${isKnown
+                        ? 'bg-green-700/40 text-green-300'
+                        : 'text-slate-500 hover:bg-green-900/20 hover:text-green-400'}`}
+                  >
+                    <CheckCircle2 size={17} strokeWidth={isKnown ? 2.5 : 1.75} />
+                    <span>ידוע</span>
+                  </button>
+                  <button
+                    onClick={() => handleStatus(entry.word, WORD_STATUS.UNKNOWN)}
+                    className={`py-3 flex items-center justify-center gap-2 text-sm font-black transition-all active:scale-95 border-x border-slate-800/60
+                      ${isUnknown
+                        ? 'bg-red-700/40 text-red-300'
+                        : 'text-slate-500 hover:bg-red-900/20 hover:text-red-400'}`}
+                  >
+                    <XCircle size={17} strokeWidth={isUnknown ? 2.5 : 1.75} />
+                    <span>לא ידוע</span>
+                  </button>
+                  <button
+                    onClick={() => handleStatus(entry.word, WORD_STATUS.UNCERTAIN)}
+                    className={`py-3 flex items-center justify-center gap-2 text-sm font-black transition-all active:scale-95
+                      ${isUncertain
+                        ? 'bg-amber-700/40 text-amber-300'
+                        : 'text-slate-500 hover:bg-amber-900/20 hover:text-amber-400'}`}
+                  >
+                    <HelpCircle size={17} strokeWidth={isUncertain ? 2.5 : 1.75} />
+                    <span>לא בטוח</span>
+                  </button>
                 </div>
               </div>
 

@@ -1,8 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import { BrainCircuit } from 'lucide-react';
-import { VocabContextProvider } from './context/VocabContext';
+import { VocabContextProvider, useVocab } from './context/VocabContext';
 import NavBar from './components/NavBar';
+import AuthModal from './components/AuthModal';
 import WatchPage from './pages/WatchPage';
 import ReviewPage from './pages/ReviewPage';
 import ExamPage from './pages/ExamPage';
@@ -43,6 +44,25 @@ const Header = () => (
   </header>
 );
 
+// ── Forced auth gate ──────────────────────────────────────────────────
+// Must live inside VocabContextProvider so it can call useVocab().
+const AuthGate = ({ children }) => {
+  const { supabaseUser, supabaseSignIn, supabaseSignUp, isSupabaseReady } = useVocab();
+
+  // If Supabase isn't configured (dev/offline mode), skip the gate
+  if (!isSupabaseReady) return children;
+  if (supabaseUser)     return children;
+
+  return (
+    <AuthModal
+      forced
+      onClose={() => {}}
+      onSignIn={supabaseSignIn}
+      onSignUp={supabaseSignUp}
+    />
+  );
+};
+
 const App = () => {
   const [showOnboarding, setShowOnboarding] = useState(shouldShowOnboarding);
 
@@ -53,6 +73,7 @@ const App = () => {
 
         {/* pb-28 gives space above the fixed NavBar (h-20 + safe area) */}
         <main className="pb-28">
+          <AuthGate>
           <Routes>
             <Route path="/"            element={<Navigate to="/vocabulary" replace />} />
             <Route path="/watch"       element={<WatchPage />}       />
@@ -69,6 +90,7 @@ const App = () => {
             <Route path="/categories"  element={<Navigate to="/folders" replace />} />
             <Route path="*"            element={<Navigate to="/vocabulary" replace />} />
           </Routes>
+          </AuthGate>
         </main>
 
         <NavBar />

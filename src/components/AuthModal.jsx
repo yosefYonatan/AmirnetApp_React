@@ -15,7 +15,7 @@ import { X, User, Lock, LogIn, UserPlus, Loader2 } from 'lucide-react';
 
 const USERNAME_RE = /^[a-zA-Z0-9_\u0590-\u05FF]{2,24}$/;
 
-const AuthModal = ({ onClose, onSignIn, onSignUp }) => {
+const AuthModal = ({ onClose, onSignIn, onSignUp, forced = false }) => {
   const [mode, setMode]         = useState('signin'); // 'signin' | 'signup'
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -70,15 +70,19 @@ const AuthModal = ({ onClose, onSignIn, onSignUp }) => {
               {isSignUp ? 'הרשמה' : 'כניסה'}
             </h2>
             <p className="text-slate-500 text-sm mt-0.5">
-              {isSignUp ? 'ללא אימייל — רק שם משתמש וסיסמה' : 'המשך עם חשבון קיים'}
+              {forced
+                ? 'כדי להשתמש באפליקציה יש ליצור חשבון'
+                : isSignUp ? 'ללא אימייל — רק שם משתמש וסיסמה' : 'המשך עם חשבון קיים'}
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition"
-          >
-            <X size={18} />
-          </button>
+          {!forced && (
+            <button
+              onClick={onClose}
+              className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition"
+            >
+              <X size={18} />
+            </button>
+          )}
         </div>
 
         {/* Form */}

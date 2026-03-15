@@ -341,7 +341,7 @@ const WatchPage = () => {
         </div>
 
         {/* Word Input */}
-        <div className="w-full flex gap-2.5">
+        <div className="w-full flex gap-2">
           <input
             ref={inputRef}
             type="text"
@@ -352,21 +352,39 @@ const WatchPage = () => {
             onChange={e => setCurrentInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSubmit()}
           />
+          {/* Send — larger button with label */}
           <button
             onClick={() => handleSubmit()}
             disabled={!currentInput.trim()}
-            className="w-14 h-14 bg-blue-600 hover:bg-blue-500 disabled:opacity-30 rounded-2xl flex items-center justify-center transition active:scale-90 self-center"
+            className="h-14 px-5 bg-blue-600 hover:bg-blue-500 disabled:opacity-30 rounded-2xl flex items-center gap-2 transition active:scale-95 self-center font-black text-base"
           >
-            <Send size={22} />
+            <Send size={19} />
+            <span>שלח</span>
           </button>
-          <button
-            onClick={startListening}
-            disabled={isListening}
-            className={`w-14 h-14 rounded-2xl flex items-center justify-center transition active:scale-90 self-center
-              ${isListening ? 'bg-red-600 animate-pulse' : 'bg-slate-700 hover:bg-slate-600'}`}
-          >
-            {isListening ? <MicOff size={22} /> : <Mic size={22} />}
-          </button>
+          {/* Mic — YouTube-style: quiet when idle, animated red bar when listening */}
+          {isListening ? (
+            <div className="h-14 px-4 bg-red-600 rounded-2xl flex items-center gap-2.5 self-center">
+              {/* Sound-wave bars */}
+              <div className="flex items-end gap-[3px] h-6">
+                {[3, 5, 7, 5, 3].map((h, i) => (
+                  <div
+                    key={i}
+                    className="w-[3px] bg-white rounded-full animate-bounce"
+                    style={{ height: `${h * 2.5}px`, animationDelay: `${i * 80}ms` }}
+                  />
+                ))}
+              </div>
+              <span className="font-bold text-sm text-white">מאזין</span>
+            </div>
+          ) : (
+            <button
+              onClick={startListening}
+              className="h-14 px-4 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-2xl flex items-center gap-2 transition active:scale-95 self-center"
+            >
+              <Mic size={20} className="text-slate-300" />
+              <span className="font-bold text-sm text-slate-300">מיק</span>
+            </button>
+          )}
         </div>
       </div>
 
