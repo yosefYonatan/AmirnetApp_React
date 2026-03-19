@@ -83,6 +83,7 @@ const FlashcardsPage = () => {
   const dragStartX    = useRef(0);
   const dragStartY    = useRef(0);
   const totalDragged  = useRef(0);
+  const dragXRef      = useRef(0);   // ref mirror of dragX — avoids stale closure in onPointerUp
   const cardRef       = useRef(null);
   const prevSyncing   = useRef(false);
 
@@ -178,6 +179,7 @@ const FlashcardsPage = () => {
     if (!isDragging) return;
     const dx = e.clientX - dragStartX.current;
     totalDragged.current = Math.abs(dx);
+    dragXRef.current = dx;   // keep ref in sync so onPointerUp always reads fresh value
     setDragX(dx);
   }, [isDragging]);
 
@@ -185,18 +187,26 @@ const FlashcardsPage = () => {
     if (!isDragging) return;
     setIsDragging(false);
 
+    const finalDx = dragXRef.current;   // read from ref, not stale state
     if (totalDragged.current < 6) {
       // It was a tap — toggle translation
       setDragX(0);
       setFlipped(f => !f);
-    } else if (dragX > SWIPE_THRESHOLD) {
+    } else if (finalDx > SWIPE_THRESHOLD) {
       decide('right');
-    } else if (dragX < -SWIPE_THRESHOLD) {
+    } else if (finalDx < -SWIPE_THRESHOLD) {
       decide('left');
     } else {
       setDragX(0); // snap back
     }
-  }, [isDragging, dragX, decide]);
+  }, [isDragging, decide]);
+
+  const onPointerCancel = useCallback(() => {
+    setIsDragging(false);
+    setDragX(0);
+    dragXRef.current = 0;
+    totalDragged.current = 0;
+  }, []);
 
   // ── Render guards ─────────────────────────────────────────────────
   if (vocabSyncing && swiped === 0) {
@@ -285,7 +295,7 @@ const FlashcardsPage = () => {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
-          onPointerLeave={onPointerUp}
+          onPointerCancel={onPointerCancel}
           className="absolute inset-x-0 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-3xl h-72 flex flex-col items-center justify-center gap-4 px-6 cursor-grab active:cursor-grabbing overflow-hidden"
           style={{
             zIndex:     4,

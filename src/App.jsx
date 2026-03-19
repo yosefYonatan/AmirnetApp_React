@@ -146,7 +146,7 @@ const ThemedApp = () => {
     >
       <Header />
 
-      <main className="pb-28">
+      <main className="pb-24">
         <AuthGate>
           <Routes>
             <Route path="/"            element={<Navigate to="/vocabulary" replace />} />

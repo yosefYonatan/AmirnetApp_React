@@ -341,50 +341,49 @@ const WatchPage = () => {
         </div>
 
         {/* Word Input */}
-        <div className="w-full flex gap-2">
+        <div className="w-full bg-slate-800 border border-slate-700 rounded-2xl flex items-center gap-1 px-2 py-2">
           <input
             ref={inputRef}
             type="text"
             dir="ltr"
             placeholder="Type a word..."
-            className="flex-1 bg-slate-800/80 border-2 border-slate-700 focus:border-blue-500 rounded-2xl py-4 px-5 text-left outline-none transition text-xl placeholder:text-slate-600"
+            className="flex-1 bg-transparent py-2 px-3 text-left outline-none text-lg text-white placeholder:text-slate-500 min-w-0"
             value={currentInput}
             onChange={e => setCurrentInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSubmit()}
           />
-          {/* Send — larger button with label */}
-          <button
-            onClick={() => handleSubmit()}
-            disabled={!currentInput.trim()}
-            className="h-14 px-5 bg-blue-600 hover:bg-blue-500 disabled:opacity-30 rounded-2xl flex items-center gap-2 transition active:scale-95 self-center font-black text-base"
-          >
-            <Send size={19} />
-            <span>שלח</span>
-          </button>
-          {/* Mic — YouTube-style: quiet when idle, animated red bar when listening */}
+          {/* Mic — YouTube-style */}
           {isListening ? (
-            <div className="h-14 px-4 bg-red-600 rounded-2xl flex items-center gap-2.5 self-center">
-              {/* Sound-wave bars */}
-              <div className="flex items-end gap-[3px] h-6">
+            <div className="h-11 px-3 bg-red-600 rounded-xl flex items-center gap-2 flex-shrink-0">
+              <div className="flex items-end gap-[3px] h-5">
                 {[3, 5, 7, 5, 3].map((h, i) => (
                   <div
                     key={i}
                     className="w-[3px] bg-white rounded-full animate-bounce"
-                    style={{ height: `${h * 2.5}px`, animationDelay: `${i * 80}ms` }}
+                    style={{ height: `${h * 2.2}px`, animationDelay: `${i * 80}ms` }}
                   />
                 ))}
               </div>
-              <span className="font-bold text-sm text-white">מאזין</span>
+              <span className="font-bold text-xs text-white">מאזין</span>
             </div>
           ) : (
             <button
               onClick={startListening}
-              className="h-14 px-4 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-2xl flex items-center gap-2 transition active:scale-95 self-center"
+              className="h-11 w-11 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-xl flex items-center justify-center transition active:scale-95 flex-shrink-0"
+              title="מיקרופון"
             >
-              <Mic size={20} className="text-slate-300" />
-              <span className="font-bold text-sm text-slate-300">מיק</span>
+              <Mic size={18} className="text-slate-300" />
             </button>
           )}
+          {/* Send */}
+          <button
+            onClick={() => handleSubmit()}
+            disabled={!currentInput.trim()}
+            className="h-11 px-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-30 rounded-xl flex items-center gap-1.5 transition active:scale-95 flex-shrink-0 font-black text-sm"
+          >
+            <Send size={16} />
+            <span>שלח</span>
+          </button>
         </div>
       </div>
 
@@ -419,7 +418,7 @@ const WatchPage = () => {
       {selectedShow && <ShowVocabPanel showName={selectedShow} />}
 
       {currentEpisodeWords.length > 0 && (
-        <div className="space-y-2.5">
+        <div className="space-y-3.5">
           <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 px-1">
             {currentEpisodeWords.length} מילים בפרק זה
           </h3>

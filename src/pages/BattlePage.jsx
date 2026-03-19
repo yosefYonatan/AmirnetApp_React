@@ -122,8 +122,8 @@ const Landing = ({ onCreateRoom, onJoinRoom, onVsBot }) => {
         <div className="w-16 h-16 rounded-3xl bg-red-600/20 border border-red-500/30 flex items-center justify-center mx-auto mb-4">
           <Swords size={30} className="text-red-400" />
         </div>
-        <h2 className="font-black text-2xl text-white">קרב מילים</h2>
-        <p className="text-slate-400 text-sm mt-1">תחרו בזמן אמת — מי מתרגם יותר מהר?</p>
+        <h2 className="font-black text-2xl text-slate-900 dark:text-white">תחרות אונליין</h2>
+        <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">תחרו בזמן אמת — מי מתרגם יותר מהר?</p>
       </div>
 
       <button onClick={onCreateRoom}
@@ -132,19 +132,19 @@ const Landing = ({ onCreateRoom, onJoinRoom, onVsBot }) => {
           <Users size={24} className="text-blue-400" />
         </div>
         <div className="flex-1">
-          <p className="font-black text-lg text-white">צור חדר</p>
-          <p className="text-slate-400 text-sm">שתף קוד עם חברים (עד 10 שחקנים)</p>
+          <p className="font-black text-lg text-slate-900 dark:text-white">צור חדר</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm">שתף קוד עם חברים (עד 10 שחקנים)</p>
         </div>
       </button>
 
-      <div className="bg-slate-900 border border-slate-700 rounded-2xl p-4 space-y-3">
-        <p className="text-sm font-bold text-slate-400">הצטרף לחדר</p>
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 space-y-3">
+        <p className="text-sm font-bold text-slate-500 dark:text-slate-400">הצטרף לחדר</p>
         <div className="flex gap-2">
           <input
             type="text" dir="ltr" placeholder="קוד 6 ספרות"
             value={code} onChange={e => setCode(e.target.value.toUpperCase().slice(0, 6))}
             onKeyDown={e => e.key === 'Enter' && code.length === 6 && onJoinRoom(code)}
-            className="flex-1 bg-slate-800 border border-slate-700 focus:border-blue-500 rounded-xl py-3 px-4 text-white text-center font-mono text-lg outline-none tracking-widest uppercase placeholder:text-slate-600 placeholder:text-sm placeholder:tracking-normal placeholder:font-sans"
+            className="flex-1 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:border-blue-500 rounded-xl py-3 px-4 text-slate-900 dark:text-white text-center font-mono text-lg outline-none tracking-widest uppercase placeholder:text-slate-400 dark:placeholder:text-slate-600 placeholder:text-sm placeholder:tracking-normal placeholder:font-sans"
           />
           <button onClick={() => onJoinRoom(code)} disabled={code.length !== 6}
             className="px-5 py-3 bg-blue-600 hover:bg-blue-500 disabled:opacity-30 rounded-xl font-black transition active:scale-95">
@@ -159,7 +159,7 @@ const Landing = ({ onCreateRoom, onJoinRoom, onVsBot }) => {
           <Bot size={24} className="text-slate-400" />
         </div>
         <div className="flex-1">
-          <p className="font-black text-lg text-white">שחק נגד בוט</p>
+          <p className="font-black text-lg text-slate-900 dark:text-white">שחק נגד בוט</p>
           <p className="text-slate-400 text-sm">תרגול אישי — AmirBot מתחרה איתך</p>
         </div>
       </button>
@@ -300,9 +300,9 @@ const PreBattleFlash = ({ questions, onDone }) => {
 const Lobby = ({ room, players, myPlayerId, isAdmin, onStart, onCopy, copied }) => (
   <div className="w-full max-w-2xl mx-auto px-4 pt-6 space-y-5">
     <div className="text-center">
-      <p className="text-slate-400 text-sm mb-2">קוד החדר</p>
+      <p className="text-slate-500 dark:text-slate-400 text-sm mb-2">קוד החדר</p>
       <div className="flex items-center justify-center gap-3">
-        <span dir="ltr" className="font-mono font-black text-4xl text-white tracking-widest">{room.id}</span>
+        <span dir="ltr" className="font-mono font-black text-4xl text-slate-900 dark:text-white tracking-widest">{room.id}</span>
         <button onClick={onCopy}
           className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 transition active:scale-90">
           {copied ? <Check size={20} className="text-green-400" /> : <Copy size={20} />}
@@ -311,7 +311,7 @@ const Lobby = ({ room, players, myPlayerId, isAdmin, onStart, onCopy, copied }) 
       <p className="text-slate-500 text-xs mt-2">שתף את הקוד עם חברים</p>
     </div>
 
-    <div className="bg-slate-900 border border-slate-700 rounded-2xl p-4 space-y-2">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 space-y-2">
       <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">
         שחקנים ({players.length})
       </p>
@@ -320,15 +320,15 @@ const Lobby = ({ room, players, myPlayerId, isAdmin, onStart, onCopy, copied }) 
           <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-sm">
             {p.is_bot ? '🤖' : '👤'}
           </div>
-          <span className={`flex-1 font-bold ${p.id === myPlayerId ? 'text-blue-300' : 'text-white'}`}>
+          <span className={`flex-1 font-bold ${p.id === myPlayerId ? 'text-blue-600 dark:text-blue-300' : 'text-slate-900 dark:text-white'}`}>
             {p.name} {p.id === myPlayerId ? '(אתה)' : ''}
           </span>
-          {p.is_admin && <Crown size={14} className="text-yellow-400" />}
+          {p.is_admin && <Crown size={14} className="text-yellow-500 dark:text-yellow-400" />}
         </div>
       ))}
     </div>
 
-    <div className="flex gap-3 text-xs text-slate-500 bg-slate-900 border border-slate-800 rounded-xl p-3">
+    <div className="flex gap-3 text-xs text-slate-500 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3">
       <span>יחידה {(room.word_unit ?? 0) + 1}</span>
       <span>·</span>
       <span>{room.questions?.length ?? 10} שאלות</span>
@@ -348,16 +348,29 @@ const Lobby = ({ room, players, myPlayerId, isAdmin, onStart, onCopy, copied }) 
 );
 
 // ── Game screen ───────────────────────────────────────────────────────
-const GameScreen = ({ question, qIndex, total, players, myPlayerId, timeLeft, questionTimeSec, onAnswer, answered }) => (
+const GameScreen = ({ question, qIndex, total, players, myPlayerId, timeLeft, questionTimeSec, onAnswer, answered }) => {
+  const me       = players.find(p => p.id === myPlayerId);
+  const opponent = players.find(p => p.id !== myPlayerId);
+
+  return (
   <div className="w-full max-w-2xl mx-auto px-4 pt-4 space-y-4">
+    {/* 1v1 "you vs opponent" banner */}
+    {players.length === 2 && opponent && (
+      <div className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-2xl px-4 py-2.5 text-sm font-bold">
+        <span className="text-blue-300">{me?.name ?? 'אתה'}</span>
+        <span className="text-slate-500 text-xs font-black tracking-widest">VS</span>
+        <span className="text-slate-200">{opponent.is_bot ? '🤖 ' : ''}{opponent.name}</span>
+      </div>
+    )}
+
     {/* Scoreboard */}
     <div className="flex gap-2 overflow-x-auto pb-1">
       {[...players].sort((a, b) => b.score - a.score).map((p, rank) => (
         <div key={p.id}
           className={`flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-xl border text-sm
-            ${p.id === myPlayerId ? 'bg-blue-900/30 border-blue-700/50' : 'bg-slate-900 border-slate-800'}`}>
+            ${p.id === myPlayerId ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-400 dark:border-blue-700/50' : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-800'}`}>
           <span>{rank === 0 ? '👑' : `${rank + 1}.`}</span>
-          <span className={`font-bold truncate max-w-[80px] ${p.id === myPlayerId ? 'text-blue-300' : 'text-white'}`}>
+          <span className={`font-bold truncate max-w-[80px] ${p.id === myPlayerId ? 'text-blue-600 dark:text-blue-300' : 'text-slate-900 dark:text-white'}`}>
             {p.is_bot ? '🤖' : ''}{p.name}
           </span>
           <span className="font-black text-blue-400">{p.score}</span>
@@ -381,9 +394,9 @@ const GameScreen = ({ question, qIndex, total, players, myPlayerId, timeLeft, qu
     </div>
 
     {/* Question */}
-    <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-3xl p-8 text-center">
-      <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-4">מה התרגום?</p>
-      <p dir="ltr" className="text-5xl font-black text-white tracking-tight break-all">{question.word}</p>
+    <div className="bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-8 text-center">
+      <p className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-widest mb-4">מה התרגום?</p>
+      <p dir="ltr" className="text-5xl font-black text-slate-900 dark:text-white tracking-tight break-all">{question.word}</p>
     </div>
 
     {/* Options */}
@@ -409,7 +422,8 @@ const GameScreen = ({ question, qIndex, total, players, myPlayerId, timeLeft, qu
       })}
     </div>
   </div>
-);
+  );
+};
 
 // ── Results ───────────────────────────────────────────────────────────
 const ResultsScreen = ({ players, myPlayerId, onRematch, onLeave }) => {
@@ -420,7 +434,7 @@ const ResultsScreen = ({ players, myPlayerId, onRematch, onLeave }) => {
     <div className="w-full max-w-2xl mx-auto px-4 pt-6 space-y-5">
       <div className="text-center">
         <Crown size={40} className="text-yellow-400 mx-auto mb-2" />
-        <h2 className="font-black text-2xl text-white">{winner?.name} ניצח!</h2>
+        <h2 className="font-black text-2xl text-slate-900 dark:text-white">{winner?.name} ניצח!</h2>
         {iWon && <p className="text-yellow-400 font-bold mt-1">🎉 כל הכבוד — ניצחת!</p>}
       </div>
 
@@ -428,9 +442,9 @@ const ResultsScreen = ({ players, myPlayerId, onRematch, onLeave }) => {
         {sorted.map((p, rank) => (
           <div key={p.id}
             className={`rounded-2xl p-4 border flex items-center gap-4
-              ${p.id === myPlayerId ? 'bg-blue-900/20 border-blue-700/40' : 'bg-slate-900 border-slate-800'}`}>
+              ${p.id === myPlayerId ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-700/40' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'}`}>
             <span className="text-2xl">{['🥇','🥈','🥉'][rank] ?? `${rank + 1}.`}</span>
-            <span className={`flex-1 font-black text-lg ${p.id === myPlayerId ? 'text-blue-300' : 'text-white'}`}>
+            <span className={`flex-1 font-black text-lg ${p.id === myPlayerId ? 'text-blue-600 dark:text-blue-300' : 'text-slate-900 dark:text-white'}`}>
               {p.is_bot ? '🤖 ' : ''}{p.name}
             </span>
             <div className="flex items-center gap-1">
@@ -480,8 +494,23 @@ const BattlePage = () => {
   const currentQ        = questions[qIndex] ?? null;
   const questionTimeSec = (room?.question_time_ms ?? 12000) / 1000;
 
-  const timerRef    = useRef(null);
-  const channelRef  = useRef(null);
+  const timerRef      = useRef(null);
+  const channelRef    = useRef(null);
+  const playersRef    = useRef([]);     // always-fresh players for XP calc
+  const xpAwardedRef  = useRef(false);  // prevent double XP per battle
+
+  // Keep playersRef in sync
+  useEffect(() => { playersRef.current = players; }, [players]);
+
+  // Award XP once when the results screen appears (handles both paths:
+  // local endGame AND the Realtime "finished" event for the other player)
+  useEffect(() => {
+    if (screen !== 'results') return;
+    if (xpAwardedRef.current) return;
+    xpAwardedRef.current = true;
+    const myScore = playersRef.current.find(p => p.id === myPlayerId)?.score ?? 0;
+    if (myScore > 0) awardXP(myScore);
+  }, [screen]); // eslint-disable-line
 
   // Reset on nav-tab re-tap
   useEffect(() => { handleLeave(); }, [location.key]); // eslint-disable-line
@@ -629,12 +658,7 @@ const BattlePage = () => {
     if (isSupabaseReady && (roomData?.id ?? room?.id)) {
       await supabase.from('battle_rooms').update({ status: 'finished' }).eq('id', roomData?.id ?? room.id);
     }
-    setPlayers(prev => {
-      const myScore = prev.find(p => p.id === myPlayerId)?.score ?? 0;
-      if (myScore > 0) awardXP(myScore);
-      return prev;
-    });
-    setScreen('results');
+    setScreen('results'); // XP is awarded by the useEffect above
   };
 
   // ── Answer ───────────────────────────────────────────────────────
@@ -716,6 +740,7 @@ const BattlePage = () => {
     setError(null);
     setShowStars(false);
     setShowAlarm(false);
+    xpAwardedRef.current = false;
   };
 
   // ── Render ────────────────────────────────────────────────────────
