@@ -35,7 +35,8 @@ const pickQuestions = (unitIndex, count = 10) => {
   });
 };
 
-const getPlayerName = () => {
+const getPlayerName = (profile) => {
+  if (profile?.full_name) return profile.full_name;
   let name = localStorage.getItem('amirnet_battle_name');
   if (!name) {
     name = 'שחקן ' + Math.floor(Math.random() * 900 + 100);
@@ -457,7 +458,7 @@ const ResultsScreen = ({ players, myPlayerId, onRematch, onLeave }) => {
 // ── Main component ────────────────────────────────────────────────────
 const BattlePage = () => {
   const location = useLocation();
-  const { awardXP, supabaseUser } = useVocab();
+  const { awardXP, supabaseUser, supabaseProfile } = useVocab();
 
   const [screen, setScreen]         = useState('landing');
   const [room, setRoom]             = useState(null);
@@ -525,7 +526,7 @@ const BattlePage = () => {
 
     const code   = genCode();
     const qs     = pickQuestions(unitIndex, qCount);
-    const myName = getPlayerName();
+    const myName = getPlayerName(supabaseProfile);
     const timeMs = timeSec * 1000;
 
     const { error: rErr } = await supabase.from('battle_rooms').insert({
@@ -558,7 +559,7 @@ const BattlePage = () => {
       .from('battle_rooms').select('*').eq('id', code).single();
     if (rErr || !roomData) { setError('חדר לא נמצא — בדוק את הקוד'); return; }
 
-    const myName = getPlayerName();
+    const myName = getPlayerName(supabaseProfile);
     const { data: player, error: pErr } = await supabase
       .from('battle_players').insert({
         room_id: code, name: myName, score: 0, is_admin: false,
@@ -668,7 +669,7 @@ const BattlePage = () => {
   // ── Bot mode ─────────────────────────────────────────────────────
   const handleVsBot = (unitIndex = 0, timeSec = 12, qCount = 10) => {
     const qs     = pickQuestions(unitIndex, qCount);
-    const myName = getPlayerName();
+    const myName = getPlayerName(supabaseProfile);
     const timeMs = timeSec * 1000;
     const fakeRoom = { id: 'BOT', status: 'playing', word_unit: unitIndex, questions: qs, question_time_ms: timeMs };
     const me       = { id: 'me',  name: myName,  score: 0, is_bot: false, is_admin: true  };
