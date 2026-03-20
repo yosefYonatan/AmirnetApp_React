@@ -302,7 +302,7 @@ const Lobby = ({ room, players, myPlayerId, isAdmin, onStart, onCopy, copied }) 
     <div className="text-center">
       <p className="text-slate-500 dark:text-slate-400 text-sm mb-2">קוד החדר</p>
       <div className="flex items-center justify-center gap-3">
-        <span dir="ltr" className="font-mono font-black text-4xl text-slate-900 dark:text-white tracking-widest">{room.id}</span>
+        <span dir="ltr" className="font-mono font-black text-4xl text-white bg-slate-900 border border-slate-700 px-4 py-1.5 rounded-2xl inline-block tracking-widest">{room.id}</span>
         <button onClick={onCopy}
           className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 transition active:scale-90">
           {copied ? <Check size={20} className="text-green-400" /> : <Copy size={20} />}
@@ -544,7 +544,13 @@ const BattlePage = () => {
 
   const refreshPlayers = async (roomId) => {
     const { data } = await supabase.from('battle_players').select('*').eq('room_id', roomId);
-    if (data) setPlayers(data);
+    if (data) setPlayers(prev =>
+      // Prefer local optimistic score if it's higher (prevents race overwriting our own update)
+      data.map(p => {
+        const local = prev.find(lp => lp.id === p.id);
+        return (local && local.score > p.score) ? local : p;
+      })
+    );
   };
 
   // ── Create room ──────────────────────────────────────────────────

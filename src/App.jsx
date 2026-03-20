@@ -5,6 +5,8 @@ import { VocabContextProvider, useVocab } from './context/VocabContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import NavBar from './components/NavBar';
 import AuthModal from './components/AuthModal';
+import LevelUpOverlay from './components/LevelUpOverlay';
+import { getLevelInfo } from './utils/levelSystem';
 import WatchPage from './pages/WatchPage';
 import ReviewPage from './pages/ReviewPage';
 import ExamPage from './pages/ExamPage';
@@ -37,20 +39,26 @@ const ProfileButton = () => {
   const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
   const xp       = supabaseProfile?.xp_points ?? 0;
   const dept     = supabaseProfile?.department || '';
+  const lvl      = getLevelInfo(xp);
 
   return (
     <div ref={ref} className="relative">
+      {/* Avatar button — shows level badge overlay */}
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-indigo-900/40 flex-shrink-0 active:scale-95 transition"
+        className="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-indigo-900/40 flex-shrink-0 active:scale-95 transition"
         aria-label="פרופיל"
       >
         {initials || <User size={18} />}
+        {/* Level mini-badge */}
+        <span className={`absolute -bottom-1 -left-1 text-[9px] font-black px-1 rounded-full border ${lvl.styles.bg} ${lvl.styles.border} ${lvl.styles.text}`}>
+          {lvl.level}
+        </span>
       </button>
 
       {open && (
         <div
-          className="absolute left-0 top-12 z-50 w-60 rounded-2xl border shadow-2xl p-4 flex flex-col gap-3
+          className="absolute left-0 top-12 z-50 w-64 rounded-2xl border shadow-2xl p-4 flex flex-col gap-3
             bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-700"
           dir="rtl"
         >
@@ -59,11 +67,34 @@ const ProfileButton = () => {
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black text-sm flex-shrink-0">
               {initials || <User size={18} />}
             </div>
-            <div className="overflow-hidden">
+            <div className="overflow-hidden flex-1">
               <p className="font-black text-sm truncate text-slate-900 dark:text-white">{name}</p>
               {dept && <p className="text-xs text-slate-500 truncate">{dept}</p>}
               <p className="text-xs text-yellow-500 font-bold">⚡ {xp} XP</p>
             </div>
+          </div>
+
+          {/* Level + progress bar */}
+          <div className={`rounded-xl border p-3 ${lvl.styles.bg} ${lvl.styles.border}`}>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className={`text-xs font-black ${lvl.styles.text}`}>
+                רמה {lvl.level} · {lvl.name}
+              </span>
+              {!lvl.isMax && (
+                <span className="text-[10px] text-slate-400">
+                  {lvl.progressXP} / {lvl.rangeXP}
+                </span>
+              )}
+            </div>
+            <div className="h-1.5 bg-black/20 rounded-full overflow-hidden" dir="ltr">
+              <div
+                className={`h-full rounded-full transition-all duration-700 ${lvl.styles.bar}`}
+                style={{ width: `${lvl.progress * 100}%` }}
+              />
+            </div>
+            {lvl.isMax && (
+              <p className="text-[10px] text-center mt-1 text-slate-400">רמה מקסימלית</p>
+            )}
           </div>
 
           <div className="border-t border-slate-200 dark:border-slate-700" />
@@ -137,6 +168,7 @@ const AuthGate = ({ children }) => {
 // ── Root with theme class ─────────────────────────────────────────────
 const ThemedApp = () => {
   const { isDark } = useTheme();
+  const { levelUpEvent, clearLevelUpEvent } = useVocab();
   const [showOnboarding, setShowOnboarding] = useState(shouldShowOnboarding);
 
   return (
@@ -169,6 +201,11 @@ const ThemedApp = () => {
 
       {showOnboarding && (
         <OnboardingGuide onComplete={() => setShowOnboarding(false)} />
+      )}
+
+      {/* Level-up celebration — rendered above everything */}
+      {levelUpEvent && (
+        <LevelUpOverlay level={levelUpEvent.level} onDismiss={clearLevelUpEvent} />
       )}
     </div>
   );

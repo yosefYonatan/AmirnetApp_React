@@ -3,6 +3,7 @@ import { Trophy, Star, Zap, Users, LogIn } from 'lucide-react';
 import { supabase, isSupabaseReady } from '../services/supabaseClient';
 import { useVocab } from '../context/VocabContext';
 import AuthModal from '../components/AuthModal';
+import { getLevelInfo } from '../utils/levelSystem';
 
 // ==========================================
 // LeaderboardPage — BGU Student XP Rankings
@@ -150,10 +151,11 @@ const LeaderboardPage = () => {
       ) : (
         <div className="space-y-2">
           {rows.map((row, idx) => {
-            const rank     = idx + 1;
-            const isMe     = row.id === myId;
-            const rankStyle = RANK_STYLES[idx] ?? 'text-slate-400 bg-slate-800 border-slate-700';
+            const rank        = idx + 1;
+            const isMe        = row.id === myId;
+            const rankStyle   = RANK_STYLES[idx] ?? 'text-slate-400 bg-slate-800 border-slate-700';
             const displayName = row.full_name || row.email?.split('@')[0] || 'אנונימי';
+            const lvl         = getLevelInfo(row.xp_points ?? 0);
 
             return (
               <div
@@ -169,13 +171,17 @@ const LeaderboardPage = () => {
                   {rank <= 3 ? ['🥇','🥈','🥉'][rank - 1] : rank}
                 </div>
 
-                {/* Name + dept */}
+                {/* Name + dept + level badge */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className={`font-black text-base ${isMe ? 'text-blue-300' : 'text-white'}`}>
                       {displayName}
                     </span>
                     {isMe && <span className="text-xs bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full font-bold">אתה</span>}
+                    {/* Level badge */}
+                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${lvl.styles.bg} ${lvl.styles.border} ${lvl.styles.text}`}>
+                      Lv.{lvl.level} {lvl.name}
+                    </span>
                   </div>
                   {row.department && row.department !== 'other' && (
                     <p className="text-slate-500 text-xs mt-0.5">
@@ -201,7 +207,18 @@ const LeaderboardPage = () => {
         <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">איך מרוויחים XP?</p>
         <div className="flex items-center gap-3">
           <Star size={16} className="text-yellow-400 flex-shrink-0" />
+          <p className="text-slate-400 text-sm">+10–15 XP על כל תשובה נכונה בקרב</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Star size={16} className="text-yellow-400 flex-shrink-0" />
+          <p className="text-slate-400 text-sm">+5 XP על כל 10 כרטיסיות בהחלקה</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Star size={16} className="text-yellow-400 flex-shrink-0" />
           <p className="text-slate-400 text-sm">+10 XP על כל תשובה נכונה במבחן</p>
+        </div>
+        <div className="border-t border-slate-800 pt-2 text-slate-500 text-xs">
+          10 רמות · מתחיל → לומד → סקרן → מתקדם → מיומן → מומחה → אלוף → אגדה → גאון → מאסטר
         </div>
         {!supabaseUser && (
           <p className="text-slate-600 text-xs">

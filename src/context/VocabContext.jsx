@@ -10,6 +10,7 @@ import { analyzeWord, fetchOnlineTranslation } from '../utils/wordAnalyzer';
 import rawData from '../data/academicDB.json';
 import { supabase, isSupabaseReady } from '../services/supabaseClient';
 import { computeNextSRS, QUALITY, isDueForReview } from '../services/srsAlgorithm';
+import { getLevelInfo } from '../utils/levelSystem';
 
 // Build a fast academicDB lookup for manual word injection
 const _academicMap = Object.create(null);
@@ -75,6 +76,8 @@ export const VocabContextProvider = ({ children }) => {
   const [supabaseProfile, setSupabaseProfile] = useState(null);
   // true while fetching user_vocabulary from Supabase on login
   const [vocabSyncing, setVocabSyncing]       = useState(false);
+  // Set to { level, name } when user crosses a level boundary; cleared by the UI
+  const [levelUpEvent, setLevelUpEvent]       = useState(null);
 
   // ── Word statuses (V/X/?) ─────────────────────────────────────────
   // { [wordLowercase]: 'known' | 'unknown' | 'uncertain' }
@@ -301,19 +304,32 @@ export const VocabContextProvider = ({ children }) => {
     }
   }, [supabaseUser]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Award XP (called from ExamPage on correct answers) ───────────
+  // ── Award XP ──────────────────────────────────────────────────────
+  // Called by BattlePage, FlashcardsPage, ExamPage after correct answers.
+  // Detects level-up by comparing old vs new level and fires levelUpEvent.
   const awardXP = async (points) => {
     if (!isSupabaseReady || !supabaseUser || points <= 0) return;
+    const oldXP    = supabaseProfile?.xp_points ?? 0;
+    const oldLevel = getLevelInfo(oldXP).level;
+
     await supabase.rpc('increment_xp', {
       user_uuid: supabaseUser.id,
       points,
     }).catch(() => {});
-    // Refresh local profile
+
+    // Refresh local profile then check for level-up
     supabase.from('profiles').select('xp_points').eq('id', supabaseUser.id).single()
       .then(({ data }) => {
-        if (data) setSupabaseProfile(p => ({ ...p, xp_points: data.xp_points }));
+        if (!data) return;
+        setSupabaseProfile(p => ({ ...p, xp_points: data.xp_points }));
+        const newLevel = getLevelInfo(data.xp_points).level;
+        if (newLevel > oldLevel) {
+          setLevelUpEvent({ level: newLevel });
+        }
       });
   };
+
+  const clearLevelUpEvent = useCallback(() => setLevelUpEvent(null), []);
 
   // ── Add Word (Firebase) ───────────────────────────────────────────
   const addWord = async (text, episodeSeconds, options = {}) => {
@@ -514,6 +530,8 @@ export const VocabContextProvider = ({ children }) => {
     isSupabaseReady,
     awardXP,
     vocabSyncing,
+    levelUpEvent,
+    clearLevelUpEvent,
   };
 
   return (

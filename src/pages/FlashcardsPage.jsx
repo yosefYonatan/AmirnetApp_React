@@ -78,14 +78,14 @@ const FlashcardsPage = () => {
   const [results, setResults]           = useState({ known: 0, unknown: 0 });
   const [swiped, setSwiped]             = useState(0);
   const [done, setDone]                 = useState(false);
-  const [xpMilestone, setXpMilestone]   = useState(0);
 
-  const dragStartX    = useRef(0);
-  const dragStartY    = useRef(0);
-  const totalDragged  = useRef(0);
-  const dragXRef      = useRef(0);   // ref mirror of dragX — avoids stale closure in onPointerUp
-  const cardRef       = useRef(null);
-  const prevSyncing   = useRef(false);
+  const dragStartX     = useRef(0);
+  const dragStartY     = useRef(0);
+  const totalDragged   = useRef(0);
+  const dragXRef       = useRef(0);      // ref mirror of dragX — avoids stale closure in onPointerUp
+  const xpMilestoneRef = useRef(0);      // avoids stale closure in decide's setSwiped
+  const cardRef        = useRef(null);
+  const prevSyncing    = useRef(false);
 
   // ── Build session ─────────────────────────────────────────────────
   const buildSession = useCallback(() => {
@@ -114,7 +114,7 @@ const FlashcardsPage = () => {
     setIsFlyingOff(null);
     setResults({ known: 0, unknown: 0 });
     setSwiped(0);
-    setXpMilestone(0);
+    xpMilestoneRef.current = 0;
     setDone(false);
   }, [buildSession]);
 
@@ -132,38 +132,44 @@ const FlashcardsPage = () => {
   // ── Decision (swipe outcome) ──────────────────────────────────────
   const decide = useCallback((direction) => {
     if (isFlyingOff) return;
-    const word   = sessionWords[currentIdx];
-    const status = direction === 'right' ? WORD_STATUS.KNOWN : WORD_STATUS.UNKNOWN;
+    const word = sessionWords[currentIdx];
+    if (!word) return;
+
+    // Capture index + length NOW so the setTimeout closure is never stale
+    const capturedIdx   = currentIdx;
+    const capturedTotal = sessionWords.length;
+    const status        = direction === 'right' ? WORD_STATUS.KNOWN : WORD_STATUS.UNKNOWN;
 
     setIsFlyingOff(direction);
     setWordStatus(word.word, status);
 
-    const newResults = direction === 'right'
-      ? { ...results, known: results.known + 1 }
-      : { ...results, unknown: results.unknown + 1 };
-    setResults(newResults);
+    // Functional setState — no stale closure on results
+    setResults(prev => direction === 'right'
+      ? { ...prev, known: prev.known + 1 }
+      : { ...prev, unknown: prev.unknown + 1 });
 
-    const newSwiped = swiped + 1;
-    setSwiped(newSwiped);
-
-    // XP every 10 swipes
-    const newMilestone = Math.floor(newSwiped / 10);
-    if (newMilestone > xpMilestone) {
-      setXpMilestone(newMilestone);
-      awardXP(5);
-    }
+    // Functional setState — no stale closure on swiped; xpMilestoneRef is always fresh
+    setSwiped(prev => {
+      const next      = prev + 1;
+      const milestone = Math.floor(next / 10);
+      if (milestone > xpMilestoneRef.current) {
+        xpMilestoneRef.current = milestone;
+        awardXP(5);
+      }
+      return next;
+    });
 
     setTimeout(() => {
       setIsFlyingOff(null);
       setDragX(0);
       setFlipped(false);
-      if (currentIdx + 1 >= sessionWords.length) {
+      if (capturedIdx + 1 >= capturedTotal) {
         setDone(true);
       } else {
-        setCurrentIdx(i => i + 1);
+        setCurrentIdx(capturedIdx + 1);
       }
     }, FLY_DURATION_MS);
-  }, [isFlyingOff, sessionWords, currentIdx, status, results, swiped, xpMilestone, setWordStatus, awardXP]);
+  }, [isFlyingOff, sessionWords, currentIdx, setWordStatus, awardXP]);
 
   // ── Pointer events ────────────────────────────────────────────────
   const onPointerDown = useCallback((e) => {
@@ -238,8 +244,9 @@ const FlashcardsPage = () => {
     );
   }
 
-  const progress   = swiped / sessionWords.length;
+  const progress    = swiped / sessionWords.length;
   const currentWord = sessionWords[currentIdx];
+  if (!currentWord) return null; // safety: index somehow out of bounds
 
   // Decision hint color based on drag
   const hintRight = dragX > 30;
