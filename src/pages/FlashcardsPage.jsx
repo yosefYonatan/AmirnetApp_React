@@ -83,7 +83,9 @@ const FlashcardsPage = () => {
   const dragStartY     = useRef(0);
   const totalDragged   = useRef(0);
   const dragXRef       = useRef(0);      // ref mirror of dragX — avoids stale closure in onPointerUp
+  const isDraggingRef  = useRef(false);  // ref mirror of isDragging — used in global fallback listener
   const xpMilestoneRef = useRef(0);      // avoids stale closure in decide's setSwiped
+  const flyTimeoutRef  = useRef(null);   // track fly-off timeout so we can cancel on session reset
   const cardRef        = useRef(null);
   const prevSyncing    = useRef(false);
 
@@ -107,6 +109,7 @@ const FlashcardsPage = () => {
   }, [wordStatuses]);
 
   const startSession = useCallback(() => {
+    clearTimeout(flyTimeoutRef.current);
     setSessionWords(buildSession());
     setCurrentIdx(0);
     setFlipped(false);
@@ -120,6 +123,29 @@ const FlashcardsPage = () => {
 
   // Init on mount + re-tap
   useEffect(() => { startSession(); }, [location.key]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Cancel pending fly-off timeout on unmount
+  useEffect(() => () => clearTimeout(flyTimeoutRef.current), []);
+
+  // Global fallback: if pointerup fires outside the card (e.g. mouse released
+  // outside the browser window) the card would stay stuck mid-drag.
+  // This effect snaps it back to centre whenever the pointer is released anywhere.
+  useEffect(() => {
+    const snapBack = () => {
+      if (!isDraggingRef.current) return;
+      isDraggingRef.current = false;
+      setIsDragging(false);
+      setDragX(0);
+      dragXRef.current = 0;
+      totalDragged.current = 0;
+    };
+    window.addEventListener('pointerup',     snapBack);
+    window.addEventListener('pointercancel', snapBack);
+    return () => {
+      window.removeEventListener('pointerup',     snapBack);
+      window.removeEventListener('pointercancel', snapBack);
+    };
+  }, []);
 
   // Rebuild session when Supabase vocab sync completes (true → false)
   useEffect(() => {
@@ -159,7 +185,7 @@ const FlashcardsPage = () => {
       return next;
     });
 
-    setTimeout(() => {
+    flyTimeoutRef.current = setTimeout(() => {
       setIsFlyingOff(null);
       setDragX(0);
       setFlipped(false);
@@ -177,6 +203,9 @@ const FlashcardsPage = () => {
     dragStartX.current   = e.clientX;
     dragStartY.current   = e.clientY;
     totalDragged.current = 0;
+    dragXRef.current     = 0;
+    setDragX(0);
+    isDraggingRef.current = true;
     setIsDragging(true);
     cardRef.current?.setPointerCapture(e.pointerId);
   }, [isFlyingOff]);
@@ -191,6 +220,7 @@ const FlashcardsPage = () => {
 
   const onPointerUp = useCallback(() => {
     if (!isDragging) return;
+    isDraggingRef.current = false;
     setIsDragging(false);
 
     const finalDx = dragXRef.current;   // read from ref, not stale state
@@ -208,6 +238,7 @@ const FlashcardsPage = () => {
   }, [isDragging, decide]);
 
   const onPointerCancel = useCallback(() => {
+    isDraggingRef.current = false;
     setIsDragging(false);
     setDragX(0);
     dragXRef.current = 0;
