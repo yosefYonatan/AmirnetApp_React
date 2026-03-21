@@ -82,8 +82,9 @@ const FlashcardsPage = () => {
   const dragStartX     = useRef(0);
   const dragStartY     = useRef(0);
   const totalDragged   = useRef(0);
-  const dragXRef       = useRef(0);      // ref mirror of dragX — avoids stale closure in onPointerUp
-  const isDraggingRef  = useRef(false);  // ref mirror of isDragging — used in global fallback listener
+  const dragXRef       = useRef(0);      // ref mirror of dragX — read in window handlers (no stale closure)
+  const isDraggingRef  = useRef(false);  // ref mirror of isDragging — read in window handlers
+  const decideRef      = useRef(null);   // always points to latest decide — read in window onPointerUp
   const xpMilestoneRef = useRef(0);      // avoids stale closure in decide's setSwiped
   const flyTimeoutRef  = useRef(null);   // track fly-off timeout so we can cancel on session reset
   const cardRef        = useRef(null);
@@ -126,26 +127,6 @@ const FlashcardsPage = () => {
 
   // Cancel pending fly-off timeout on unmount
   useEffect(() => () => clearTimeout(flyTimeoutRef.current), []);
-
-  // Global fallback: if pointerup fires outside the card (e.g. mouse released
-  // outside the browser window) the card would stay stuck mid-drag.
-  // This effect snaps it back to centre whenever the pointer is released anywhere.
-  useEffect(() => {
-    const snapBack = () => {
-      if (!isDraggingRef.current) return;
-      isDraggingRef.current = false;
-      setIsDragging(false);
-      setDragX(0);
-      dragXRef.current = 0;
-      totalDragged.current = 0;
-    };
-    window.addEventListener('pointerup',     snapBack);
-    window.addEventListener('pointercancel', snapBack);
-    return () => {
-      window.removeEventListener('pointerup',     snapBack);
-      window.removeEventListener('pointercancel', snapBack);
-    };
-  }, []);
 
   // Rebuild session when Supabase vocab sync completes (true → false)
   useEffect(() => {
@@ -197,52 +178,68 @@ const FlashcardsPage = () => {
     }, FLY_DURATION_MS);
   }, [isFlyingOff, sessionWords, currentIdx, setWordStatus, awardXP]);
 
+  // Keep decideRef pointing to the latest decide so window handlers never go stale
+  useEffect(() => { decideRef.current = decide; }, [decide]);
+
   // ── Pointer events ────────────────────────────────────────────────
+  // Only pointerdown is on the card; move/up/cancel are on the window so they
+  // always fire regardless of where the pointer goes (browser window, outside
+  // the card, etc.). This is the industry-standard drag pattern and eliminates
+  // every stuck-card scenario.
   const onPointerDown = useCallback((e) => {
     if (isFlyingOff) return;
-    dragStartX.current   = e.clientX;
-    dragStartY.current   = e.clientY;
-    totalDragged.current = 0;
-    dragXRef.current     = 0;
-    setDragX(0);
+    dragStartX.current    = e.clientX;
+    dragStartY.current    = e.clientY;
+    totalDragged.current  = 0;
+    dragXRef.current      = 0;
     isDraggingRef.current = true;
+    setDragX(0);
     setIsDragging(true);
-    cardRef.current?.setPointerCapture(e.pointerId);
   }, [isFlyingOff]);
 
-  const onPointerMove = useCallback((e) => {
-    if (!isDragging) return;
-    const dx = e.clientX - dragStartX.current;
-    totalDragged.current = Math.abs(dx);
-    dragXRef.current = dx;   // keep ref in sync so onPointerUp always reads fresh value
-    setDragX(dx);
-  }, [isDragging]);
+  // Window-level move / up / cancel — registered once, use refs only
+  useEffect(() => {
+    const onMove = (e) => {
+      if (!isDraggingRef.current) return;
+      const dx = e.clientX - dragStartX.current;
+      totalDragged.current = Math.abs(dx);
+      dragXRef.current = dx;
+      setDragX(dx);
+    };
 
-  const onPointerUp = useCallback(() => {
-    if (!isDragging) return;
-    isDraggingRef.current = false;
-    setIsDragging(false);
+    const onUp = () => {
+      if (!isDraggingRef.current) return;
+      isDraggingRef.current = false;
+      setIsDragging(false);
+      const finalDx = dragXRef.current;
+      if (totalDragged.current < 6) {
+        setDragX(0);
+        setFlipped(f => !f);
+      } else if (finalDx > SWIPE_THRESHOLD) {
+        decideRef.current?.('right');
+      } else if (finalDx < -SWIPE_THRESHOLD) {
+        decideRef.current?.('left');
+      } else {
+        setDragX(0);
+      }
+    };
 
-    const finalDx = dragXRef.current;   // read from ref, not stale state
-    if (totalDragged.current < 6) {
-      // It was a tap — toggle translation
+    const onCancel = () => {
+      isDraggingRef.current = false;
+      setIsDragging(false);
       setDragX(0);
-      setFlipped(f => !f);
-    } else if (finalDx > SWIPE_THRESHOLD) {
-      decide('right');
-    } else if (finalDx < -SWIPE_THRESHOLD) {
-      decide('left');
-    } else {
-      setDragX(0); // snap back
-    }
-  }, [isDragging, decide]);
+      dragXRef.current = 0;
+      totalDragged.current = 0;
+    };
 
-  const onPointerCancel = useCallback(() => {
-    isDraggingRef.current = false;
-    setIsDragging(false);
-    setDragX(0);
-    dragXRef.current = 0;
-    totalDragged.current = 0;
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup',   onUp);
+    window.addEventListener('pointercancel', onCancel);
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup',   onUp);
+      window.removeEventListener('pointercancel', onCancel);
+    };
   }, []);
 
   // ── Render guards ─────────────────────────────────────────────────
@@ -331,9 +328,6 @@ const FlashcardsPage = () => {
         <div
           ref={cardRef}
           onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerCancel}
           className="absolute inset-x-0 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-3xl h-72 flex flex-col items-center justify-center gap-4 px-6 cursor-grab active:cursor-grabbing overflow-hidden"
           style={{
             zIndex:     4,
