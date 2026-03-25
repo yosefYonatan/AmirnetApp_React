@@ -16,6 +16,7 @@ import FoldersPage from './pages/FoldersPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import BattlePage from './pages/BattlePage';
 import FlashcardsPage from './pages/FlashcardsPage';
+import HomePage from './pages/HomePage';
 import OnboardingGuide, { shouldShowOnboarding } from './components/OnboardingGuide';
 
 // ── Profile button + dropdown ─────────────────────────────────────────
@@ -181,7 +182,7 @@ const ThemedApp = () => {
       <main className="pb-24">
         <AuthGate>
           <Routes>
-            <Route path="/"            element={<Navigate to="/vocabulary" replace />} />
+            <Route path="/"            element={<HomePage />}        />
             <Route path="/watch"       element={<WatchPage />}       />
             <Route path="/review"      element={<ReviewPage />}      />
             <Route path="/exam"        element={<ExamPage />}        />
@@ -192,7 +193,7 @@ const ThemedApp = () => {
             <Route path="/battle"      element={<BattlePage />}      />
             <Route path="/flashcards"  element={<FlashcardsPage />}  />
             <Route path="/categories"  element={<Navigate to="/folders" replace />} />
-            <Route path="*"            element={<Navigate to="/vocabulary" replace />} />
+            <Route path="*"            element={<Navigate to="/" replace />}        />
           </Routes>
         </AuthGate>
       </main>

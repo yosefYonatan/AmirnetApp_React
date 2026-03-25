@@ -81,9 +81,11 @@ const FlashcardsPage = () => {
 
   const dragStartX     = useRef(0);
   const dragStartY     = useRef(0);
-  const totalDragged   = useRef(0);
-  const dragXRef       = useRef(0);      // ref mirror of dragX — read in window handlers (no stale closure)
-  const isDraggingRef  = useRef(false);  // ref mirror of isDragging — read in window handlers
+  const prevClientX    = useRef(0);      // previous frame x — used to accumulate path length
+  const totalPathRef   = useRef(0);      // accumulated gesture path (not net displacement)
+  const dragXRef       = useRef(0);      // net X displacement — mirror of dragX state
+  const isDraggingRef  = useRef(false);  // mirror of isDragging — used in window handlers
+  const activePtrId    = useRef(null);   // pointerId that owns the current drag (blocks second finger)
   const decideRef      = useRef(null);   // always points to latest decide — read in window onPointerUp
   const xpMilestoneRef = useRef(0);      // avoids stale closure in decide's setSwiped
   const flyTimeoutRef  = useRef(null);   // track fly-off timeout so we can cancel on session reset
@@ -111,10 +113,15 @@ const FlashcardsPage = () => {
 
   const startSession = useCallback(() => {
     clearTimeout(flyTimeoutRef.current);
+    isDraggingRef.current = false;   // cancel any in-progress drag
+    activePtrId.current   = null;
+    dragXRef.current      = 0;
+    totalPathRef.current  = 0;
     setSessionWords(buildSession());
     setCurrentIdx(0);
     setFlipped(false);
     setDragX(0);
+    setIsDragging(false);
     setIsFlyingOff(null);
     setResults({ known: 0, unknown: 0 });
     setSwiped(0);
@@ -187,57 +194,72 @@ const FlashcardsPage = () => {
   // the card, etc.). This is the industry-standard drag pattern and eliminates
   // every stuck-card scenario.
   const onPointerDown = useCallback((e) => {
-    if (isFlyingOff) return;
+    if (isFlyingOff) return;           // block new drag during fly-off animation
+    if (isDraggingRef.current) return;  // block second finger starting a drag
+    activePtrId.current   = e.pointerId;
     dragStartX.current    = e.clientX;
     dragStartY.current    = e.clientY;
-    totalDragged.current  = 0;
+    prevClientX.current   = e.clientX;
+    totalPathRef.current  = 0;
     dragXRef.current      = 0;
     isDraggingRef.current = true;
     setDragX(0);
     setIsDragging(true);
   }, [isFlyingOff]);
 
-  // Window-level move / up / cancel — registered once, use refs only
+  // Window-level move / up / cancel — registered once, all refs (no stale closures)
   useEffect(() => {
+    const resetDrag = () => {
+      isDraggingRef.current = false;
+      activePtrId.current   = null;
+      dragXRef.current      = 0;
+      totalPathRef.current  = 0;
+      setIsDragging(false);
+      setDragX(0);
+    };
+
     const onMove = (e) => {
       if (!isDraggingRef.current) return;
+      if (e.pointerId !== activePtrId.current) return;  // ignore other fingers
       const dx = e.clientX - dragStartX.current;
-      totalDragged.current = Math.abs(dx);
+      const dy = e.clientY - dragStartY.current;
+      totalPathRef.current += Math.abs(e.clientX - prevClientX.current);
+      prevClientX.current   = e.clientX;
+      // Vertical scroll rejection: first 20px — if gesture is primarily vertical, cancel
+      if (totalPathRef.current < 20 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+        resetDrag(); return;
+      }
       dragXRef.current = dx;
       setDragX(dx);
     };
 
-    const onUp = () => {
+    const onUp = (e) => {
       if (!isDraggingRef.current) return;
-      isDraggingRef.current = false;
-      setIsDragging(false);
-      const finalDx = dragXRef.current;
-      if (totalDragged.current < 6) {
-        setDragX(0);
-        setFlipped(f => !f);
+      if (e.pointerId !== activePtrId.current) return;
+      const finalDx   = dragXRef.current;
+      const totalPath = totalPathRef.current;
+      resetDrag();
+      if (totalPath < 6) {
+        setFlipped(f => !f);                   // tap → flip card
       } else if (finalDx > SWIPE_THRESHOLD) {
         decideRef.current?.('right');
       } else if (finalDx < -SWIPE_THRESHOLD) {
         decideRef.current?.('left');
-      } else {
-        setDragX(0);
       }
+      // else: snap back (setDragX(0) already called by resetDrag)
     };
 
-    const onCancel = () => {
-      isDraggingRef.current = false;
-      setIsDragging(false);
-      setDragX(0);
-      dragXRef.current = 0;
-      totalDragged.current = 0;
+    const onCancel = (e) => {
+      if (e && e.pointerId !== activePtrId.current) return;
+      resetDrag();
     };
 
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerup',   onUp);
+    window.addEventListener('pointermove',   onMove);
+    window.addEventListener('pointerup',     onUp);
     window.addEventListener('pointercancel', onCancel);
     return () => {
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerup',   onUp);
+      window.removeEventListener('pointermove',   onMove);
+      window.removeEventListener('pointerup',     onUp);
       window.removeEventListener('pointercancel', onCancel);
     };
   }, []);
@@ -305,7 +327,7 @@ const FlashcardsPage = () => {
       </div>
 
       {/* Card stack */}
-      <div className="relative h-72 flex items-center justify-center" style={{ touchAction: 'none' }}>
+      <div className="relative h-72 flex items-center justify-center" style={{ touchAction: 'none', userSelect: 'none' }}>
         {/* Background stack cards (purely decorative) */}
         {[2, 1].map(offset => {
           const s = STACK_OFFSETS[offset];
@@ -313,7 +335,7 @@ const FlashcardsPage = () => {
           if (!stackWord) return null;
           return (
             <div
-              key={currentIdx + offset}
+              key={sessionWords[currentIdx + offset]?.word ?? offset}
               className="absolute inset-x-0 bg-slate-800 border border-slate-700 rounded-3xl h-72"
               style={{
                 transform:  `translateY(${s.y}px) scale(${s.scale})`,
@@ -330,11 +352,12 @@ const FlashcardsPage = () => {
           onPointerDown={onPointerDown}
           className="absolute inset-x-0 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-3xl h-72 flex flex-col items-center justify-center gap-4 px-6 cursor-grab active:cursor-grabbing overflow-hidden"
           style={{
-            zIndex:     4,
-            transform:  isFlyingOff
-              ? `translateX(${isFlyingOff === 'right' ? '160%' : '-160%'}) rotate(${isFlyingOff === 'right' ? '25deg' : '-25deg'})`
+            zIndex:      4,
+            touchAction: 'none',   // must be on the card itself, not just the container
+            transform:   isFlyingOff
+              ? `translateX(${isFlyingOff === 'right' ? 'calc(100vw + 100%)' : 'calc(-100vw - 100%)'}) rotate(${isFlyingOff === 'right' ? '25deg' : '-25deg'})`
               : `translateX(${dragX}px) rotate(${dragX * 0.05}deg)`,
-            transition: isFlyingOff
+            transition:  isFlyingOff
               ? `transform ${FLY_DURATION_MS}ms cubic-bezier(0.4,0,1,1)`
               : isDragging ? 'none' : 'transform 0.25s ease',
           }}
