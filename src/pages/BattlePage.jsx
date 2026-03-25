@@ -64,10 +64,26 @@ const BattleStyles = () => (
       0%, 100% { opacity: 0; }
       40%, 60%  { opacity: 0.4; }
     }
-    .star-c { animation: starFly  0.9s ease-out forwards; }
-    .star-r { animation: starFlyR 0.9s ease-out forwards; }
-    .star-l { animation: starFlyL 0.9s ease-out forwards; }
-    .alarm  { animation: alarmPulse 0.35s ease-in-out 3; }
+    /* Donald Duck — spring pop-in (overshoot simulates Framer Motion spring) */
+    @keyframes donaldPop {
+      0%   { transform: scale(0) rotate(-18deg); opacity: 0; }
+      45%  { transform: scale(1.28) rotate(10deg); opacity: 1; }
+      65%  { transform: scale(0.88) rotate(-6deg); opacity: 1; }
+      80%  { transform: scale(1.07) rotate(3deg);  opacity: 1; }
+      90%  { transform: scale(0.97) rotate(-1deg); opacity: 1; }
+      100% { transform: scale(1)    rotate(0deg);  opacity: 1; }
+    }
+    /* Donald Duck — quick exit: fade + slide up */
+    @keyframes donaldExit {
+      0%   { transform: scale(1) translateY(0);    opacity: 1; }
+      100% { transform: scale(0.7) translateY(-72px); opacity: 0; }
+    }
+    .star-c      { animation: starFly    0.9s ease-out forwards; }
+    .star-r      { animation: starFlyR   0.9s ease-out forwards; }
+    .star-l      { animation: starFlyL   0.9s ease-out forwards; }
+    .alarm       { animation: alarmPulse 0.35s ease-in-out 3; }
+    .donald-pop  { animation: donaldPop  0.58s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .donald-exit { animation: donaldExit 0.38s cubic-bezier(0.4,0,1,1) forwards; }
   `}</style>
 );
 
@@ -93,6 +109,30 @@ const StarBurst = ({ active }) => {
 // ── Alarm overlay ────────────────────────────────────────────────────
 const AlarmOverlay = ({ active }) =>
   active ? <div className="alarm pointer-events-none fixed inset-0 z-50 bg-red-600" /> : null;
+
+// ── Donald Duck celebration overlay ──────────────────────────────────
+// Place public/donald-duck.gif in the project's /public folder.
+// Appears on correct answers alongside StarBurst; exits after 1.2s.
+const DonaldCelebration = ({ active, exiting }) => {
+  if (!active) return null;
+  return (
+    <div className="pointer-events-none fixed inset-0 z-[60] flex items-end justify-center pb-36">
+      <img
+        src="/donald-duck.gif"
+        alt=""
+        draggable={false}
+        className={`w-36 h-36 object-contain select-none ${exiting ? 'donald-exit' : 'donald-pop'}`}
+        style={{
+          filter:
+            'drop-shadow(0 0 12px rgba(0,230,255,0.85)) ' +
+            'drop-shadow(0 0 28px rgba(0,200,255,0.50)) ' +
+            'drop-shadow(0 0 4px rgba(255,255,255,0.60))',
+          willChange: 'transform, opacity',
+        }}
+      />
+    </div>
+  );
+};
 
 // ── Bot logic ────────────────────────────────────────────────────────
 const BOT_NAME         = '🤖 AmirBot';
@@ -487,17 +527,21 @@ const BattlePage = () => {
   const [qIndex, setQIndex]       = useState(0);
   const [answered, setAnswered]   = useState(null);
   const [timeLeft, setTimeLeft]   = useState(12);
-  const [showStars, setShowStars] = useState(false);
-  const [showAlarm, setShowAlarm] = useState(false);
+  const [showStars,    setShowStars]    = useState(false);
+  const [showAlarm,    setShowAlarm]    = useState(false);
+  const [showDonald,   setShowDonald]   = useState(false);
+  const [donaldExiting,setDonaldExiting]= useState(false);
 
   const questions       = room?.questions ?? [];
   const currentQ        = questions[qIndex] ?? null;
   const questionTimeSec = (room?.question_time_ms ?? 12000) / 1000;
 
-  const timerRef      = useRef(null);
-  const channelRef    = useRef(null);
-  const playersRef    = useRef([]);     // always-fresh players for XP calc
-  const xpAwardedRef  = useRef(false);  // prevent double XP per battle
+  const timerRef        = useRef(null);
+  const channelRef      = useRef(null);
+  const playersRef      = useRef([]);     // always-fresh players for XP calc
+  const xpAwardedRef    = useRef(false);  // prevent double XP per battle
+  const showDonaldRef   = useRef(false);  // sync access inside async handleAnswer
+  const donaldTimerRef  = useRef(null);   // timeout handle for auto-hide
 
   // Keep playersRef in sync
   useEffect(() => { playersRef.current = players; }, [players]);
@@ -518,6 +562,7 @@ const BattlePage = () => {
   // Cleanup on unmount
   useEffect(() => () => {
     clearInterval(timerRef.current);
+    clearTimeout(donaldTimerRef.current);
     if (channelRef.current) supabase?.removeChannel(channelRef.current);
   }, []);
 
@@ -679,6 +724,20 @@ const BattlePage = () => {
     if (isCorrect) {
       setShowStars(true);
       setTimeout(() => setShowStars(false), 1400);
+      // Donald celebration — ref gives synchronous access; state drives render
+      clearTimeout(donaldTimerRef.current);
+      showDonaldRef.current = true;
+      setShowDonald(true);
+      setDonaldExiting(false);
+      // After 1.2s start exit animation, then unmount after exit finishes (380ms)
+      donaldTimerRef.current = setTimeout(() => {
+        setDonaldExiting(true);
+        donaldTimerRef.current = setTimeout(() => {
+          showDonaldRef.current = false;
+          setShowDonald(false);
+          setDonaldExiting(false);
+        }, 380);
+      }, 1200);
     } else {
       setShowAlarm(true);
       setTimeout(() => setShowAlarm(false), 1100);
@@ -746,6 +805,10 @@ const BattlePage = () => {
     setError(null);
     setShowStars(false);
     setShowAlarm(false);
+    clearTimeout(donaldTimerRef.current);
+    showDonaldRef.current = false;
+    setShowDonald(false);
+    setDonaldExiting(false);
     xpAwardedRef.current = false;
   };
 
@@ -766,6 +829,7 @@ const BattlePage = () => {
       <BattleStyles />
       <StarBurst active={showStars} />
       <AlarmOverlay active={showAlarm} />
+      <DonaldCelebration active={showDonald} exiting={donaldExiting} />
 
       {screen === 'landing' && (
         <Landing onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} onVsBot={() => handleVsBot(0, 12, 10)} />
