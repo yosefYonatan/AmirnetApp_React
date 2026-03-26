@@ -189,13 +189,21 @@ const FlashcardsPage = () => {
   useEffect(() => { decideRef.current = decide; }, [decide]);
 
   // ── Pointer events ────────────────────────────────────────────────
-  // Only pointerdown is on the card; move/up/cancel are on the window so they
-  // always fire regardless of where the pointer goes (browser window, outside
-  // the card, etc.). This is the industry-standard drag pattern and eliminates
-  // every stuck-card scenario.
+  // setPointerCapture in onPointerDown ensures move/up/cancel always fire on the
+  // card element even when the pointer moves outside it, preventing stuck cards.
+  const resetDrag = useCallback(() => {
+    isDraggingRef.current = false;
+    activePtrId.current   = null;
+    dragXRef.current      = 0;
+    totalPathRef.current  = 0;
+    setIsDragging(false);
+    setDragX(0);
+  }, []);
+
   const onPointerDown = useCallback((e) => {
     if (isFlyingOff) return;           // block new drag during fly-off animation
     if (isDraggingRef.current) return;  // block second finger starting a drag
+    e.currentTarget.setPointerCapture(e.pointerId); // capture pointer so move/up always fire on this element
     activePtrId.current   = e.pointerId;
     dragStartX.current    = e.clientX;
     dragStartY.current    = e.clientY;
@@ -207,62 +215,40 @@ const FlashcardsPage = () => {
     setIsDragging(true);
   }, [isFlyingOff]);
 
-  // Window-level move / up / cancel — registered once, all refs (no stale closures)
-  useEffect(() => {
-    const resetDrag = () => {
-      isDraggingRef.current = false;
-      activePtrId.current   = null;
-      dragXRef.current      = 0;
-      totalPathRef.current  = 0;
-      setIsDragging(false);
-      setDragX(0);
-    };
+  const onPointerMove = useCallback((e) => {
+    if (!isDraggingRef.current) return;
+    if (e.pointerId !== activePtrId.current) return;
+    const dx = e.clientX - dragStartX.current;
+    const dy = e.clientY - dragStartY.current;
+    totalPathRef.current += Math.abs(e.clientX - prevClientX.current);
+    prevClientX.current   = e.clientX;
+    // Vertical scroll rejection: first 20px — if gesture is primarily vertical, cancel
+    if (totalPathRef.current < 20 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+      resetDrag(); return;
+    }
+    dragXRef.current = dx;
+    setDragX(dx);
+  }, [resetDrag]);
 
-    const onMove = (e) => {
-      if (!isDraggingRef.current) return;
-      if (e.pointerId !== activePtrId.current) return;  // ignore other fingers
-      const dx = e.clientX - dragStartX.current;
-      const dy = e.clientY - dragStartY.current;
-      totalPathRef.current += Math.abs(e.clientX - prevClientX.current);
-      prevClientX.current   = e.clientX;
-      // Vertical scroll rejection: first 20px — if gesture is primarily vertical, cancel
-      if (totalPathRef.current < 20 && Math.abs(dy) > Math.abs(dx) * 1.5) {
-        resetDrag(); return;
-      }
-      dragXRef.current = dx;
-      setDragX(dx);
-    };
+  const onPointerUp = useCallback((e) => {
+    if (!isDraggingRef.current) return;
+    if (e.pointerId !== activePtrId.current) return;
+    const finalDx   = dragXRef.current;
+    const totalPath = totalPathRef.current;
+    resetDrag();
+    if (totalPath < 6) {
+      setFlipped(f => !f);                   // tap → flip card
+    } else if (finalDx > SWIPE_THRESHOLD) {
+      decideRef.current?.('right');
+    } else if (finalDx < -SWIPE_THRESHOLD) {
+      decideRef.current?.('left');
+    }
+    // else: snap back (setDragX(0) already called by resetDrag)
+  }, [resetDrag]);
 
-    const onUp = (e) => {
-      if (!isDraggingRef.current) return;
-      if (e.pointerId !== activePtrId.current) return;
-      const finalDx   = dragXRef.current;
-      const totalPath = totalPathRef.current;
-      resetDrag();
-      if (totalPath < 6) {
-        setFlipped(f => !f);                   // tap → flip card
-      } else if (finalDx > SWIPE_THRESHOLD) {
-        decideRef.current?.('right');
-      } else if (finalDx < -SWIPE_THRESHOLD) {
-        decideRef.current?.('left');
-      }
-      // else: snap back (setDragX(0) already called by resetDrag)
-    };
-
-    const onCancel = (e) => {
-      if (e && e.pointerId !== activePtrId.current) return;
-      resetDrag();
-    };
-
-    window.addEventListener('pointermove',   onMove);
-    window.addEventListener('pointerup',     onUp);
-    window.addEventListener('pointercancel', onCancel);
-    return () => {
-      window.removeEventListener('pointermove',   onMove);
-      window.removeEventListener('pointerup',     onUp);
-      window.removeEventListener('pointercancel', onCancel);
-    };
-  }, []);
+  const onPointerCancel = useCallback(() => {
+    resetDrag();
+  }, [resetDrag]);
 
   // ── Render guards ─────────────────────────────────────────────────
   if (vocabSyncing && swiped === 0) {
@@ -350,6 +336,9 @@ const FlashcardsPage = () => {
         <div
           ref={cardRef}
           onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerCancel}
           className="absolute inset-x-0 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-3xl h-72 flex flex-col items-center justify-center gap-4 px-6 cursor-grab active:cursor-grabbing overflow-hidden"
           style={{
             zIndex:      4,
