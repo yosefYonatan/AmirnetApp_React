@@ -334,6 +334,7 @@ const FlashcardsPage = () => {
 
         {/* Top (active) card */}
         <div
+          key={currentIdx}
           ref={cardRef}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
