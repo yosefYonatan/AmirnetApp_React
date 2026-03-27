@@ -1,6 +1,6 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
-import { BrainCircuit, Sun, Moon, LogOut, User } from 'lucide-react';
+import { BrainCircuit, Sun, Moon, LogOut, User, LayoutGrid } from 'lucide-react';
 import { VocabContextProvider, useVocab } from './context/VocabContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import NavBar from './components/NavBar';
@@ -17,7 +17,27 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import BattlePage from './pages/BattlePage';
 import FlashcardsPage from './pages/FlashcardsPage';
 import HomePage from './pages/HomePage';
+import SubjectHub from './pages/SubjectHub';
+import SubjectDashboard from './pages/SubjectDashboard';
 import OnboardingGuide, { shouldShowOnboarding } from './components/OnboardingGuide';
+
+// ── Portal-exit animation (CSS-only, no Framer Motion) ────────────────
+const PortalStyles = () => (
+  <style>{`
+    @keyframes portal-out {
+      from { transform: scale(1);    opacity: 1; }
+      to   { transform: scale(0.86); opacity: 0; }
+    }
+    .page-portal-exit { animation: portal-out 0.28s cubic-bezier(0.4,0,0.6,1) forwards; }
+  `}</style>
+);
+
+// ── Subject CSS variables — applied to root div so all pages can use var(--sub-*) ──
+const SUBJECT_VARS = {
+  english: { '--sub-from': '#9333ea', '--sub-to': '#ec4899', '--sub-accent': '#a855f7', '--sub-glow': '168,85,247' },
+  math:    { '--sub-from': '#2563eb', '--sub-to': '#06b6d4', '--sub-accent': '#3b82f6', '--sub-glow': '6,182,212'  },
+  hebrew:  { '--sub-from': '#f59e0b', '--sub-to': '#dc2626', '--sub-accent': '#f97316', '--sub-glow': '249,115,22' },
+};
 
 // ── Profile button + dropdown ─────────────────────────────────────────
 const ProfileButton = () => {
@@ -125,29 +145,51 @@ const ProfileButton = () => {
 };
 
 // ── Header ────────────────────────────────────────────────────────────
-const Header = () => (
-  <header
-    className="sticky top-0 z-30 border-b w-full
-      bg-white border-slate-200
-      dark:bg-slate-950 dark:border-slate-800/50"
-    style={{ paddingTop: 'env(safe-area-inset-top)' }}
-  >
-    <div className="max-w-2xl mx-auto px-5 py-4 flex items-center gap-3">
-      {/* Logo */}
-      <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-900/40 flex-shrink-0">
-        <BrainCircuit className="text-white w-6 h-6" />
+const Header = ({ onSwitchSubject }) => {
+  const { currentSubject } = useVocab();
+  return (
+    <header
+      className="sticky top-0 z-30 border-b w-full
+        bg-white border-slate-200
+        dark:bg-slate-950 dark:border-slate-800/50"
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+    >
+      <div className="max-w-2xl mx-auto px-5 py-4 flex items-center gap-3">
+        {/* Logo */}
+        <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-900/40 flex-shrink-0">
+          <BrainCircuit className="text-white w-6 h-6" />
+        </div>
+        <div className="flex-1">
+          <h1 className="text-lg font-black bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent leading-tight">
+            Amirnet TV
+          </h1>
+          <p className="text-xs text-slate-500 font-medium leading-tight">מילון צפייה לאמירנט</p>
+        </div>
+        {/* Switch subject button — shown when a subject is already selected */}
+        {currentSubject && (
+          <button
+            onClick={onSwitchSubject}
+            aria-label="החלף מקצוע"
+            className="w-9 h-9 rounded-xl flex items-center justify-center transition active:scale-90
+              text-slate-400 hover:text-white hover:bg-white/10 dark:hover:bg-white/10"
+            title="החלף מקצוע"
+          >
+            <LayoutGrid size={17} />
+          </button>
+        )}
+        {/* Profile button on physical left (logical end in RTL) */}
+        <ProfileButton />
       </div>
-      <div className="flex-1">
-        <h1 className="text-lg font-black bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent leading-tight">
-          Amirnet TV
-        </h1>
-        <p className="text-xs text-slate-500 font-medium leading-tight">מילון צפייה לאמירנט</p>
-      </div>
-      {/* Profile button on physical left (logical end in RTL) */}
-      <ProfileButton />
-    </div>
-  </header>
-);
+    </header>
+  );
+};
+
+// ── Subject guard — redirects to /hub until a subject is chosen ──────
+const SubjectGuard = ({ children }) => {
+  const { currentSubject } = useVocab();
+  if (!currentSubject) return <Navigate to="/hub" replace />;
+  return children;
+};
 
 // ── Forced auth gate ──────────────────────────────────────────────────
 const AuthGate = ({ children }) => {
@@ -166,34 +208,62 @@ const AuthGate = ({ children }) => {
   );
 };
 
+// ── Smart redirect for "/" ─────────────────────────────────────────────
+// Sends users to their subject dashboard, or /hub if none selected yet.
+const SmartRedirect = () => {
+  const { currentSubject } = useVocab();
+  return <Navigate to={currentSubject ? `/${currentSubject}` : '/hub'} replace />;
+};
+
 // ── Root with theme class ─────────────────────────────────────────────
 const ThemedApp = () => {
   const { isDark } = useTheme();
-  const { levelUpEvent, clearLevelUpEvent } = useVocab();
+  const { levelUpEvent, clearLevelUpEvent, currentSubject } = useVocab();
   const [showOnboarding, setShowOnboarding] = useState(shouldShowOnboarding);
+  const [pageExiting, setPageExiting] = useState(false);
+  const navigate = useNavigate();
+  const subjectVars = SUBJECT_VARS[currentSubject] ?? {};
+
+  const handleSwitchSubject = () => {
+    setPageExiting(true);
+    setTimeout(() => {
+      setPageExiting(false);
+      navigate('/hub');
+    }, 285);
+  };
 
   return (
     <div
       className={`${isDark ? 'dark' : ''} min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans`}
       dir="rtl"
+      style={subjectVars}
     >
-      <Header />
+      <PortalStyles />
+      <Header onSwitchSubject={handleSwitchSubject} />
 
-      <main className="pb-24">
+      <main className={`pb-24 ${pageExiting ? 'page-portal-exit' : ''}`}>
         <AuthGate>
           <Routes>
-            <Route path="/"            element={<HomePage />}        />
-            <Route path="/watch"       element={<WatchPage />}       />
-            <Route path="/review"      element={<ReviewPage />}      />
-            <Route path="/exam"        element={<ExamPage />}        />
-            <Route path="/results"     element={<ResultsPage />}     />
-            <Route path="/vocabulary"  element={<VocabularyPage />}  />
-            <Route path="/folders"     element={<FoldersPage />}     />
-            <Route path="/leaderboard" element={<LeaderboardPage />} />
-            <Route path="/battle"      element={<BattlePage />}      />
-            <Route path="/flashcards"  element={<FlashcardsPage />}  />
-            <Route path="/categories"  element={<Navigate to="/folders" replace />} />
-            <Route path="*"            element={<Navigate to="/" replace />}        />
+            {/* Subject hub — no guard needed */}
+            <Route path="/hub"     element={<SubjectHub />} />
+            {/* Subject dashboards — set currentSubject on load (handles refresh) */}
+            <Route path="/english" element={<SubjectDashboard subject="english" />} />
+            <Route path="/math"    element={<SubjectDashboard subject="math" />}    />
+            <Route path="/hebrew"  element={<SubjectDashboard subject="hebrew" />}  />
+            {/* Root smart-redirects to /{subject} or /hub */}
+            <Route path="/"        element={<SmartRedirect />} />
+            {/* All other routes require a subject to be selected */}
+            <Route path="/watch"       element={<SubjectGuard><WatchPage /></SubjectGuard>}        />
+            <Route path="/review"      element={<SubjectGuard><ReviewPage /></SubjectGuard>}       />
+            <Route path="/exam"        element={<SubjectGuard><ExamPage /></SubjectGuard>}         />
+            <Route path="/results"     element={<SubjectGuard><ResultsPage /></SubjectGuard>}      />
+            <Route path="/vocabulary"  element={<SubjectGuard><VocabularyPage /></SubjectGuard>}   />
+            <Route path="/folders"     element={<SubjectGuard><FoldersPage /></SubjectGuard>}      />
+            <Route path="/leaderboard" element={<SubjectGuard><LeaderboardPage /></SubjectGuard>}  />
+            <Route path="/battle"      element={<SubjectGuard><BattlePage /></SubjectGuard>}       />
+            <Route path="/flashcards"  element={<SubjectGuard><FlashcardsPage /></SubjectGuard>}   />
+            <Route path="/categories"  element={<Navigate to="/folders" replace />}               />
+            <Route path="*"            element={<Navigate to="/" replace />}                       />
           </Routes>
         </AuthGate>
       </main>

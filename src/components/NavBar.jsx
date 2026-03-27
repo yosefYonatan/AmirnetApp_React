@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Tv, BookOpen, GraduationCap, Trophy, Swords, Layers, Home } from 'lucide-react';
+import { useVocab } from '../context/VocabContext';
 
 // ==========================================
 // NavBar — Bottom navigation bar
@@ -10,8 +11,9 @@ import { Tv, BookOpen, GraduationCap, Trophy, Swords, Layers, Home } from 'lucid
 // and reset their local state (e.g. exam goes back to setup screen).
 // ==========================================
 
-const NAV_ITEMS = [
-  { to: '/',            icon: Home,          label: 'בית'     },
+const SUBJECT_ROUTES = ['/english', '/math', '/hebrew'];
+
+const STATIC_ITEMS = [
   { to: '/flashcards',  icon: Layers,        label: 'כרטיסים' },
   { to: '/battle',      icon: Swords,        label: 'קרב'     },
   { to: '/vocabulary',  icon: BookOpen,      label: 'מילים'   },
@@ -21,8 +23,23 @@ const NAV_ITEMS = [
 ];
 
 const NavBar = () => {
-  const navigate  = useNavigate();
-  const location  = useLocation();
+  const navigate        = useNavigate();
+  const location        = useLocation();
+  const { currentSubject } = useVocab();
+
+  if (location.pathname === '/hub') return null;
+
+  // Home goes to the active subject dashboard (or /hub if none selected)
+  const homeRoute = currentSubject ? `/${currentSubject}` : '/hub';
+  const isHomeActive =
+    location.pathname === homeRoute ||
+    SUBJECT_ROUTES.includes(location.pathname) ||
+    location.pathname === '/';
+
+  const navItems = [
+    { to: homeRoute, icon: Home, label: 'בית', isHome: true },
+    ...STATIC_ITEMS,
+  ];
 
   return (
     <nav
@@ -30,11 +47,11 @@ const NavBar = () => {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <ul className="flex justify-around items-center h-14 max-w-2xl mx-auto px-0">
-        {NAV_ITEMS.map(({ to, icon: Icon, label }) => {
-          const isActive = to === '/' ? location.pathname === '/' : location.pathname === to;
+        {navItems.map(({ to, icon: Icon, label, isHome }) => {
+          const isActive = isHome ? isHomeActive : location.pathname === to;
 
           return (
-            <li key={to} className="flex-1">
+            <li key={label} className="flex-1">
               <button
                 onClick={() => navigate(to, { state: { resetAt: Date.now() } })}
                 className={`w-full flex flex-col items-center justify-center gap-0.5 py-1 rounded-xl transition-all

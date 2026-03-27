@@ -23,6 +23,13 @@ export const WORD_STATUS = {
   UNCERTAIN: 'uncertain',
 };
 
+// Subject constants — the three Psychometric pillars
+export const SUBJECTS = {
+  ENGLISH: 'english',
+  MATH:    'math',
+  HEBREW:  'hebrew',
+};
+
 // ==========================================
 // VOCAB CONTEXT — the global brain of the app
 //
@@ -45,6 +52,18 @@ let localIdCounter = 1;
 // ── localStorage helpers ─────────────────────────────────────────────
 const LS_STATUSES = 'amirnet_word_statuses';
 const LS_SRS      = 'amirnet_word_srs';
+const LS_SUBJECT  = 'amirnet_current_subject';
+const LS_DAILY    = 'amirnet_daily_stats';
+
+const DAILY_XP_GOAL = 50;
+const todayISO = () => new Date().toISOString().slice(0, 10);
+const initDailyStats = () => {
+  const stored = loadLS(LS_DAILY, null);
+  if (!stored || stored.date !== todayISO()) {
+    return { date: todayISO(), xp: 0, subjects: [] };
+  }
+  return stored;
+};
 
 const loadLS = (key, fallback) => {
   try {
@@ -86,6 +105,20 @@ export const VocabContextProvider = ({ children }) => {
   // ── SRS metadata ──────────────────────────────────────────────────
   // { [wordLowercase]: { nextReviewDate, intervalDays, repetitions, easeFactor } }
   const [wordSRSData, setWordSRSData] = useState(() => loadLS(LS_SRS, {}));
+
+  // ── Daily activity tracking ───────────────────────────────────────
+  // Resets at midnight; tracks XP earned today + which subjects were studied
+  const [dailyStats, setDailyStats] = useState(initDailyStats);
+
+  // ── Subject selection ─────────────────────────────────────────────
+  // Which Psychometric pillar is active: 'english' | 'math' | 'hebrew'
+  const [currentSubject, setCurrentSubjectState] = useState(
+    () => loadLS(LS_SUBJECT, null)
+  );
+  const setCurrentSubject = useCallback((subject) => {
+    setCurrentSubjectState(subject);
+    saveLS(LS_SUBJECT, subject);
+  }, []);
 
   // ── Firebase Auth ─────────────────────────────────────────────────
   useEffect(() => {
@@ -307,8 +340,21 @@ export const VocabContextProvider = ({ children }) => {
   // ── Award XP ──────────────────────────────────────────────────────
   // Called by BattlePage, FlashcardsPage, ExamPage after correct answers.
   // Detects level-up by comparing old vs new level and fires levelUpEvent.
+  // Also updates local daily stats (XP + subject activity).
   const awardXP = async (points) => {
     if (!isSupabaseReady || !supabaseUser || points <= 0) return;
+
+    // Update daily stats locally (fire-and-forget — no await needed)
+    setDailyStats(prev => {
+      const today = todayISO();
+      const base  = prev.date === today ? prev : { date: today, xp: 0, subjects: [] };
+      const subSet = new Set(base.subjects);
+      if (currentSubject) subSet.add(currentSubject);
+      const next = { date: today, xp: base.xp + points, subjects: [...subSet] };
+      saveLS(LS_DAILY, next);
+      return next;
+    });
+
     const oldXP    = supabaseProfile?.xp_points ?? 0;
     const oldLevel = getLevelInfo(oldXP).level;
 
@@ -493,6 +539,11 @@ export const VocabContextProvider = ({ children }) => {
     .map(([w]) => w);
 
   const value = {
+    // Daily activity
+    dailyStats,
+    isDailyGoalMet: dailyStats.xp >= DAILY_XP_GOAL,
+    isCombo:        dailyStats.subjects.length > 1,
+    DAILY_XP_GOAL,
     // Firebase
     user,
     isAuthReady,
@@ -512,6 +563,9 @@ export const VocabContextProvider = ({ children }) => {
     startEpisode,
     setSelectedShow,
     setSelectedEpisode,
+    // Subject
+    currentSubject,
+    setCurrentSubject,
     // Word statuses
     wordStatuses,
     setWordStatus,
