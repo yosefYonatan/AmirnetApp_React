@@ -239,7 +239,7 @@ const ResultsScreen = ({ history, maxStreak, xpEarned, onReplay, onBack }) => {
 // ── Main component ────────────────────────────────────────────────────
 const MathSurvival = () => {
   const navigate = useNavigate();
-  const { awardXP, currentSubject } = useVocab();
+  const { awardXP, currentSubject, updateHighCombo } = useVocab();
 
   // Guard: only playable in math subject
   if (currentSubject !== SUBJECTS.MATH) {
@@ -339,6 +339,7 @@ const MathSurvival = () => {
     const earned = Math.max(streakRef.current * 3, 0);
     setXpEarned(earned);
     if (earned > 0) awardXP(earned);
+    updateHighCombo(streakRef.current);
     setScreen('gameover');
     // brief pause then jump to results
     setTimeout(() => setScreen('results'), 1800);

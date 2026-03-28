@@ -110,6 +110,14 @@ export const VocabContextProvider = ({ children }) => {
   // Resets at midnight; tracks XP earned today + which subjects were studied
   const [dailyStats, setDailyStats] = useState(initDailyStats);
 
+  // ── Session high combo ────────────────────────────────────────────
+  // Tracks the longest correct-answer streak achieved in the current session
+  // (reset to 0 when the user signs out). Shared by Battle and Survival.
+  const [sessionHighCombo, setSessionHighCombo] = useState(0);
+  const updateHighCombo = useCallback((combo) => {
+    setSessionHighCombo(prev => Math.max(prev, combo));
+  }, []);
+
   // ── Subject selection ─────────────────────────────────────────────
   // Which Psychometric pillar is active: 'english' | 'math' | 'hebrew'
   const [currentSubject, setCurrentSubjectState] = useState(
@@ -341,8 +349,9 @@ export const VocabContextProvider = ({ children }) => {
   // Called by BattlePage, FlashcardsPage, ExamPage after correct answers.
   // Detects level-up by comparing old vs new level and fires levelUpEvent.
   // Also updates local daily stats (XP + subject activity).
-  const awardXP = async (points) => {
-    if (!isSupabaseReady || !supabaseUser || points <= 0) return;
+  const awardXP = async (points, multiplier = 1.0) => {
+    const adjusted = Math.round(points * multiplier);
+    if (!isSupabaseReady || !supabaseUser || adjusted <= 0) return;
 
     // Update daily stats locally (fire-and-forget — no await needed)
     setDailyStats(prev => {
@@ -350,7 +359,7 @@ export const VocabContextProvider = ({ children }) => {
       const base  = prev.date === today ? prev : { date: today, xp: 0, subjects: [] };
       const subSet = new Set(base.subjects);
       if (currentSubject) subSet.add(currentSubject);
-      const next = { date: today, xp: base.xp + points, subjects: [...subSet] };
+      const next = { date: today, xp: base.xp + adjusted, subjects: [...subSet] };
       saveLS(LS_DAILY, next);
       return next;
     });
@@ -360,7 +369,7 @@ export const VocabContextProvider = ({ children }) => {
 
     await supabase.rpc('increment_xp', {
       user_uuid: supabaseUser.id,
-      points,
+      points: adjusted,
     }).catch(() => {});
 
     // Refresh local profile then check for level-up
@@ -544,6 +553,9 @@ export const VocabContextProvider = ({ children }) => {
     isDailyGoalMet: dailyStats.xp >= DAILY_XP_GOAL,
     isCombo:        dailyStats.subjects.length > 1,
     DAILY_XP_GOAL,
+    // Combo tracking
+    sessionHighCombo,
+    updateHighCombo,
     // Firebase
     user,
     isAuthReady,

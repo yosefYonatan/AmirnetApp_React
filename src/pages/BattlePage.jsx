@@ -5,12 +5,26 @@ import {
   Zap, CheckCircle2, XCircle, Clock, LogIn, RefreshCw, Settings, AlertTriangle
 } from 'lucide-react';
 import { supabase, isSupabaseReady } from '../services/supabaseClient';
-import { useVocab } from '../context/VocabContext';
+import { useVocab, SUBJECTS } from '../context/VocabContext';
 import rawData from '../data/academicDB.json';
+import { generateQuestion, CATEGORIES, CATEGORY_FINE_LABELS } from '../utils/mathLogic';
+import { getWordContext } from '../utils/folderSystem';
+import MathNumpad from '../components/MathNumpad';
 
 const ALL_WORDS   = [...rawData].sort((a, b) => a.word.localeCompare(b.word));
 const UNIT_SIZE   = 50;
 const TOTAL_UNITS = Math.ceil(ALL_WORDS.length / UNIT_SIZE);
+
+// ── Combo / multiplier helpers ────────────────────────────────────────
+/** XP multiplier based on answer speed (ms). */
+const speedMultiplier = (ms) => ms < 1000 ? 3 : ms < 2000 ? 2 : 1;
+const speedLabel      = (ms) => ms < 1000 ? '⚡ Perfect Blitz!' : ms < 2000 ? '⚡ Fast!' : '';
+
+/** Streak-bonus multiplier: +0.5× per 5-consecutive, capped at ×5. */
+const streakMultiplier = (streak) => Math.min(1 + Math.floor(streak / 5) * 0.5, 5);
+
+/** Detect whether a question came from mathLogic (has 'display' field). */
+const isMathQuestion = (q) => q && 'display' in q;
 
 const TIME_OPTIONS  = [5, 10, 13];
 const COUNT_OPTIONS = [5, 10, 15, 20];
@@ -43,6 +57,48 @@ const getPlayerName = (profile) => {
     localStorage.setItem('amirnet_battle_name', name);
   }
   return name;
+};
+
+// ── Floating XP popup component ──────────────────────────────────────
+const XpPopup = ({ points, mult, label, id }) => (
+  <div
+    key={id}
+    className="xp-popup pointer-events-none fixed left-1/2 top-1/3 z-[70] flex flex-col items-center"
+    style={{ transform: 'translateX(-50%)' }}
+  >
+    <span
+      className="font-black text-3xl"
+      style={{ color: '#facc15', textShadow: '0 0 14px #f59e0b, 0 0 30px #ea580c' }}
+    >
+      +{points} XP
+    </span>
+    {mult > 1 && (
+      <span className="font-black text-lg" style={{ color: '#a78bfa', textShadow: '0 0 10px #7c3aed' }}>
+        ×{mult.toFixed(1)}
+      </span>
+    )}
+    {label && <span className="text-xs font-bold text-cyan-300 mt-0.5">{label}</span>}
+  </div>
+);
+
+// ── Multiplier badge ─────────────────────────────────────────────────
+const MultBadge = ({ speedMult, streakMult }) => {
+  const total = Math.min(speedMult * streakMult, 5);
+  if (total <= 1) return null;
+  const color = total >= 3 ? '#f97316' : total >= 2 ? '#a855f7' : '#3b82f6';
+  return (
+    <span
+      className="mult-badge inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-black"
+      style={{
+        background: `${color}22`,
+        border: `1px solid ${color}66`,
+        color,
+        '--mult-color': color,
+      }}
+    >
+      ×{total.toFixed(1)}
+    </span>
+  );
 };
 
 // ── Animation styles (injected once) ────────────────────────────────
@@ -84,6 +140,28 @@ const BattleStyles = () => (
     .alarm       { animation: alarmPulse 0.35s ease-in-out 3; }
     .donald-pop  { animation: donaldPop  0.58s cubic-bezier(0.34,1.56,0.64,1) both; }
     .donald-exit { animation: donaldExit 0.38s cubic-bezier(0.4,0,1,1) forwards; }
+
+    /* Floating XP popup */
+    @keyframes xp-float {
+      0%   { opacity: 1; transform: translateX(-50%) translateY(0)     scale(1);    }
+      60%  { opacity: 1; transform: translateX(-50%) translateY(-50px)  scale(1.1); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-80px)  scale(0.85);}
+    }
+    .xp-popup { animation: xp-float 1.1s ease-out forwards; }
+
+    /* Multiplier badge glow pulse */
+    @keyframes mult-pulse {
+      0%, 100% { transform: scale(1);    box-shadow: 0 0 6px  var(--mult-color, #a855f7); }
+      50%       { transform: scale(1.1); box-shadow: 0 0 18px var(--mult-color, #a855f7); }
+    }
+    .mult-badge { animation: mult-pulse 1.4s ease infinite; }
+
+    /* Math question pop */
+    @keyframes math-q-pop {
+      from { opacity: 0; transform: scale(0.88) translateY(10px); }
+      to   { opacity: 1; transform: scale(1)    translateY(0);    }
+    }
+    .math-q-pop { animation: math-q-pop 0.2s cubic-bezier(0.22,1,0.36,1) both; }
   `}</style>
 );
 
@@ -145,9 +223,16 @@ const useBotOpponent = (question, onBotAnswer) => {
     clearTimeout(timerRef.current);
     const delay   = 3000 + Math.random() * 7000;
     const correct = Math.random() < BOT_CORRECT_RATE;
-    const answer  = correct
-      ? question.translation
-      : question.options.find(o => o !== question.translation) ?? question.options[0];
+    let answer;
+    if (isMathQuestion(question)) {
+      // Math mode: bot submits the correct number or a near-miss
+      const offset = correct ? 0 : Math.floor(Math.random() * 10) + 1;
+      answer = String(question.answer + (Math.random() < 0.5 ? offset : -offset));
+    } else {
+      answer = correct
+        ? question.translation
+        : question.options.find(o => o !== question.translation) ?? question.options[0];
+    }
     timerRef.current = setTimeout(() => onBotAnswer(answer), delay);
     return () => clearTimeout(timerRef.current);
   }, [question, onBotAnswer]);
@@ -213,11 +298,19 @@ const Landing = ({ onCreateRoom, onJoinRoom, onVsBot }) => {
   );
 };
 
-// ── Unit selector with admin settings ────────────────────────────────
-const UnitSelector = ({ onStart }) => {
+// ── Unit / Math selector with admin settings ─────────────────────────
+const UnitSelector = ({ onStart, isMath }) => {
   const [unit,     setUnit]     = useState(0);
-  const [timeSec,  setTimeSec]  = useState(12);
+  const [timeSec,  setTimeSec]  = useState(isMath ? 8 : 12);
   const [qCount,   setQCount]   = useState(10);
+  const [mathCats, setMathCats] = useState(Object.keys(CATEGORIES));
+
+  const toggleCat = (key) =>
+    setMathCats(prev =>
+      prev.includes(key)
+        ? prev.length > 1 ? prev.filter(k => k !== key) : prev
+        : [...prev, key]
+    );
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4 pt-6 space-y-4">
@@ -225,19 +318,38 @@ const UnitSelector = ({ onStart }) => {
         <Settings size={20} className="text-slate-400" /> הגדרות הקרב
       </h2>
 
-      {/* Unit */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">יחידת מילים</p>
-        <div className="grid grid-cols-4 gap-2">
-          {Array.from({ length: TOTAL_UNITS }, (_, i) => (
-            <button key={i} onClick={() => setUnit(i)}
-              className={`py-3 rounded-xl font-black transition active:scale-90 text-sm
-                ${i === unit ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>
-              {i + 1}
-            </button>
-          ))}
+      {/* Unit (vocab) OR Math categories */}
+      {isMath ? (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">קטגוריות מתמטיקה</p>
+          <div className="grid grid-cols-2 gap-2">
+            {Object.entries(CATEGORIES).map(([key, { label, icon }]) => {
+              const on = mathCats.includes(key);
+              return (
+                <button key={key} onClick={() => toggleCat(key)}
+                  className={`flex items-center gap-2 px-3 py-3 rounded-xl border text-xs font-bold transition active:scale-95
+                    ${on ? 'bg-blue-600/25 border-blue-500/50 text-white' : 'bg-slate-800 border-slate-700 text-slate-400'}`}>
+                  <span className="w-4 text-center">{icon}</span>
+                  <span className="text-right flex-1">{label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">יחידת מילים</p>
+          <div className="grid grid-cols-4 gap-2">
+            {Array.from({ length: TOTAL_UNITS }, (_, i) => (
+              <button key={i} onClick={() => setUnit(i)}
+                className={`py-3 rounded-xl font-black transition active:scale-90 text-sm
+                  ${i === unit ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>
+                {i + 1}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Time per question */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
@@ -271,16 +383,18 @@ const UnitSelector = ({ onStart }) => {
         </div>
       </div>
 
-      <button onClick={() => onStart(unit, timeSec, qCount)}
-        className="w-full py-5 bg-blue-600 hover:bg-blue-500 rounded-2xl font-black text-xl flex items-center justify-center gap-3 transition active:scale-95">
-        <Play size={24} /> צור חדר · יחידה {unit + 1}
+      <button onClick={() => onStart(unit, timeSec, qCount, mathCats)}
+        className={`w-full py-5 rounded-2xl font-black text-xl flex items-center justify-center gap-3 transition active:scale-95
+          ${isMath ? 'bg-gradient-to-r from-blue-600 to-cyan-500' : 'bg-blue-600 hover:bg-blue-500'}`}>
+        <Play size={24} />
+        {isMath ? `קרב מתמטיקה ⚡ · ${qCount} שאלות` : `צור חדר · יחידה ${unit + 1}`}
       </button>
     </div>
   );
 };
 
 // ── Pre-battle flash ──────────────────────────────────────────────────
-const PreBattleFlash = ({ questions, onDone }) => {
+const PreBattleFlash = ({ questions, onDone, isMath }) => {
   const [countdown, setCountdown] = useState(FLASH_SECONDS);
   // Use ref to avoid re-triggering the interval when onDone re-creates
   const onDoneRef = useRef(onDone);
@@ -316,22 +430,40 @@ const PreBattleFlash = ({ questions, onDone }) => {
         />
       </div>
 
-      {/* Word list */}
-      <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden">
-        <div className="p-3 border-b border-slate-800 flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">מילות הקרב</span>
-          <span className="text-xs text-slate-600">({questions.length} מילים)</span>
+      {/* Word / math list */}
+      {isMath ? (
+        <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden">
+          <div className="p-3 border-b border-slate-800 flex items-center gap-2">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">שאלות מתמטיקה</span>
+            <span className="text-xs text-slate-600">({questions.length} שאלות)</span>
+          </div>
+          <div className="divide-y divide-slate-800/50 max-h-64 overflow-y-auto">
+            {questions.map((q, i) => (
+              <div key={i} className="flex items-center gap-3 px-4 py-2.5">
+                <span className="text-slate-600 text-xs font-mono w-5 flex-shrink-0 text-left">{i + 1}</span>
+                <span dir="ltr" className="font-black text-white text-sm flex-1">{q.display}</span>
+                <span className="text-cyan-400 text-sm font-bold">{q.answer}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="divide-y divide-slate-800/50">
-          {questions.map((q, i) => (
-            <div key={i} className="flex items-center gap-3 px-4 py-2.5">
-              <span className="text-slate-600 text-xs font-mono w-5 flex-shrink-0 text-left">{i + 1}</span>
-              <span dir="ltr" className="font-black text-white text-sm flex-1">{q.word}</span>
-              <span className="text-slate-400 text-sm">{q.translation}</span>
-            </div>
-          ))}
+      ) : (
+        <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden">
+          <div className="p-3 border-b border-slate-800 flex items-center gap-2">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">מילות הקרב</span>
+            <span className="text-xs text-slate-600">({questions.length} מילים)</span>
+          </div>
+          <div className="divide-y divide-slate-800/50">
+            {questions.map((q, i) => (
+              <div key={i} className="flex items-center gap-3 px-4 py-2.5">
+                <span className="text-slate-600 text-xs font-mono w-5 flex-shrink-0 text-left">{i + 1}</span>
+                <span dir="ltr" className="font-black text-white text-sm flex-1">{q.word}</span>
+                <span className="text-slate-400 text-sm">{q.translation}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -465,11 +597,112 @@ const GameScreen = ({ question, qIndex, total, players, myPlayerId, timeLeft, qu
   );
 };
 
+// ── Math game screen ──────────────────────────────────────────────────
+const MathGameScreen = ({ question, qIndex, total, players, myPlayerId, timeLeft, questionTimeSec, onAnswer, answered, numpadInput, onNumpadChange, comboStreak }) => {
+  const me       = players.find(p => p.id === myPlayerId);
+  const opponent = players.find(p => p.id !== myPlayerId);
+  const strMult  = streakMultiplier(comboStreak);
+  const inputIsCorrect = answered && String(numpadInput || answered) === String(question.answer);
+
+  return (
+    <div className="w-full max-w-2xl mx-auto px-4 pt-4 space-y-4">
+      {/* VS banner */}
+      {players.length === 2 && opponent && (
+        <div className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-2xl px-4 py-2.5 text-sm font-bold">
+          <span className="text-cyan-300">{me?.name ?? 'אתה'}</span>
+          <span className="text-slate-500 text-xs font-black tracking-widest">VS</span>
+          <span className="text-slate-200">{opponent.is_bot ? '🤖 ' : ''}{opponent.name}</span>
+        </div>
+      )}
+
+      {/* Scoreboard */}
+      <div className="flex gap-2 overflow-x-auto pb-1 items-center">
+        {[...players].sort((a, b) => b.score - a.score).map((p, rank) => (
+          <div key={p.id}
+            className={`flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-xl border text-sm
+              ${p.id === myPlayerId ? 'bg-cyan-900/30 border-cyan-700/50' : 'bg-slate-900 border-slate-800'}`}>
+            <span>{rank === 0 ? '👑' : `${rank + 1}.`}</span>
+            <span className={`font-bold truncate max-w-[80px] ${p.id === myPlayerId ? 'text-cyan-300' : 'text-white'}`}>
+              {p.is_bot ? '🤖' : ''}{p.name}
+            </span>
+            <span className="font-black text-cyan-400">{p.score}</span>
+          </div>
+        ))}
+        {strMult > 1 && (
+          <MultBadge speedMult={1} streakMult={strMult} />
+        )}
+        {comboStreak >= 3 && (
+          <span className="text-xs font-black text-orange-400 animate-pulse ml-1">🔥×{comboStreak}</span>
+        )}
+      </div>
+
+      {/* Timer */}
+      <div className="flex items-center justify-between">
+        <span className="text-slate-400 font-bold">{qIndex + 1} / {total}</span>
+        <div className="flex items-center gap-2">
+          <Clock size={16} className={timeLeft <= 3 ? 'text-red-400' : 'text-slate-400'} />
+          <span className={`font-black text-lg ${timeLeft <= 3 ? 'text-red-400' : 'text-slate-300'}`}>{timeLeft}s</span>
+        </div>
+      </div>
+      <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+        <div
+          className="h-full rounded-full transition-all duration-1000"
+          style={{
+            width: `${(timeLeft / questionTimeSec) * 100}%`,
+            background: timeLeft <= 3 ? '#ef4444' : timeLeft <= 5 ? '#f59e0b' : 'linear-gradient(to right, #2563eb, #06b6d4)',
+          }}
+        />
+      </div>
+
+      {/* Question card */}
+      <div className={`math-q-pop bg-gradient-to-br from-slate-900 to-slate-800 border rounded-3xl p-8 text-center
+        ${answered ? (inputIsCorrect ? 'border-green-500/50' : 'border-red-500/50') : 'border-slate-700'}`}>
+        <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-4">{CATEGORY_FINE_LABELS[question.category] ?? CATEGORIES[question.type]?.label ?? 'חשב'}</p>
+        <p dir="ltr" className="text-5xl font-black text-white tracking-tight">{question.display}</p>
+        <div className="mt-4 h-12 flex items-center justify-center gap-3">
+          {answered ? (
+            <>
+              <span className={`text-4xl font-black ${inputIsCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                {answered}
+              </span>
+              {!inputIsCorrect && (
+                <span className="text-2xl text-slate-400">→ <span className="text-cyan-300 font-black">{question.answer}</span></span>
+              )}
+            </>
+          ) : (
+            <span className="text-4xl font-black text-cyan-300 min-w-[3ch] text-center" dir="ltr">
+              {numpadInput || <span className="opacity-30">?</span>}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Numpad */}
+      {!answered && (
+        <MathNumpad
+          value={numpadInput}
+          onChange={onNumpadChange}
+          onSubmit={() => onAnswer(numpadInput)}
+        />
+      )}
+    </div>
+  );
+};
+
 // ── Results ───────────────────────────────────────────────────────────
-const ResultsScreen = ({ players, myPlayerId, onRematch, onLeave }) => {
+const ResultsScreen = ({ players, myPlayerId, onRematch, onLeave, missedWords = [] }) => {
   const sorted  = [...players].sort((a, b) => b.score - a.score);
   const winner  = sorted[0];
   const iWon    = winner?.id === myPlayerId;
+
+  // Build hints for missed vocab words that have TV-show context (max 3)
+  const hints = missedWords.slice(0, 5).reduce((acc, w) => {
+    if (acc.length >= 3) return acc;
+    const ctx = getWordContext(w.word);
+    if (ctx) acc.push({ ...w, ctx });
+    return acc;
+  }, []);
+
   return (
     <div className="w-full max-w-2xl mx-auto px-4 pt-6 space-y-5">
       <div className="text-center">
@@ -495,6 +728,31 @@ const ResultsScreen = ({ players, myPlayerId, onRematch, onLeave }) => {
         ))}
       </div>
 
+      {/* Hints for missed vocab words */}
+      {hints.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-xs font-black text-slate-400 uppercase tracking-widest">💡 רמזים לפעם הבאה</p>
+          {hints.map(({ word, translation, ctx }) => (
+            <div key={word} className="rounded-2xl overflow-hidden border border-white/8 bg-slate-900/60">
+              <div className={`bg-gradient-to-r ${ctx.gradient ?? 'from-slate-700 to-slate-900'} px-4 py-2.5 flex items-center gap-2`}>
+                <span className="text-xl leading-none">{ctx.emoji}</span>
+                <span className="font-bold text-white text-sm flex-1 truncate">{ctx.showName}</span>
+                {ctx.episodeLabel && (
+                  <span className="text-white/60 text-xs font-bold">{ctx.episodeLabel}</span>
+                )}
+              </div>
+              <div className="px-4 py-3">
+                <p className="font-black text-white text-base" dir="ltr">{word}</p>
+                <p className="text-blue-300 text-sm">{translation}</p>
+                {ctx.summary && (
+                  <p className="text-slate-400 text-xs mt-1.5 leading-relaxed line-clamp-2">{ctx.summary}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="flex gap-3">
         <button onClick={onLeave}
           className="flex-1 py-4 bg-slate-800 hover:bg-slate-700 rounded-2xl font-bold transition flex items-center justify-center gap-2">
@@ -512,7 +770,8 @@ const ResultsScreen = ({ players, myPlayerId, onRematch, onLeave }) => {
 // ── Main component ────────────────────────────────────────────────────
 const BattlePage = () => {
   const location = useLocation();
-  const { awardXP, supabaseUser, supabaseProfile } = useVocab();
+  const { awardXP, supabaseUser, supabaseProfile, currentSubject, updateHighCombo } = useVocab();
+  const isMathBattle = currentSubject === SUBJECTS.MATH;
 
   const [screen, setScreen]         = useState('landing');
   const [room, setRoom]             = useState(null);
@@ -532,12 +791,22 @@ const BattlePage = () => {
   const [showDonald,   setShowDonald]   = useState(false);
   const [donaldExiting,setDonaldExiting]= useState(false);
 
+  // Combo / multiplier / numpad state
+  const [comboStreak,  setComboStreak]  = useState(0);
+  const [xpPopups,     setXpPopups]     = useState([]);
+  const [numpadInput,  setNumpadInput]  = useState('');
+
+  // Missed vocab words for "hints" section in results
+  const [missedWords,  setMissedWords]  = useState([]);
+
   const questions       = room?.questions ?? [];
   const currentQ        = questions[qIndex] ?? null;
   const questionTimeSec = (room?.question_time_ms ?? 12000) / 1000;
 
   const timerRef        = useRef(null);
   const channelRef      = useRef(null);
+  const questionStartRef = useRef(Date.now());
+  const pendingBotRef   = useRef(false);
   const playersRef      = useRef([]);     // always-fresh players for XP calc
   const xpAwardedRef    = useRef(false);  // prevent double XP per battle
   const showDonaldRef   = useRef(false);  // sync access inside async handleAnswer
@@ -601,11 +870,13 @@ const BattlePage = () => {
   // ── Create room ──────────────────────────────────────────────────
   const handleCreateRoom = () => setScreen('unit');
 
-  const handleStartRoom = async (unitIndex, timeSec, qCount) => {
-    if (!isSupabaseReady) { handleVsBot(unitIndex, timeSec, qCount); return; }
+  const handleStartRoom = async (unitIndex, timeSec, qCount, cats = Object.keys(CATEGORIES)) => {
+    if (!isSupabaseReady) { handleVsBot(unitIndex, timeSec, qCount, cats); return; }
 
     const code   = genCode();
-    const qs     = pickQuestions(unitIndex, qCount);
+    const qs     = isMathBattle
+      ? Array.from({ length: qCount }, () => generateQuestion(cats))
+      : pickQuestions(unitIndex, qCount);
     const myName = getPlayerName(supabaseProfile);
     const timeMs = timeSec * 1000;
 
@@ -679,6 +950,7 @@ const BattlePage = () => {
   // ── Timer ────────────────────────────────────────────────────────
   const startTimer = useCallback((qIdx, roomData) => {
     clearInterval(timerRef.current);
+    questionStartRef.current = Date.now();
     const timeS = (roomData?.question_time_ms ?? 12000) / 1000;
     setTimeLeft(timeS);
     timerRef.current = setInterval(() => {
@@ -714,22 +986,52 @@ const BattlePage = () => {
 
   // ── Answer ───────────────────────────────────────────────────────
   const handleAnswer = async (option) => {
-    if (answered || !currentQ) return;
-    setAnswered(option);
+    const input = option ?? numpadInput;
+    if (answered || !currentQ || !input) return;
+    setAnswered(input);
+    setNumpadInput('');
     clearInterval(timerRef.current);
 
-    const isCorrect = option === currentQ.translation;
-    const points    = isCorrect ? (timeLeft >= Math.ceil(questionTimeSec * 0.8) ? 15 : 10) : 0;
+    const elapsedMs = Date.now() - questionStartRef.current;
+    const isMath    = isMathQuestion(currentQ);
+    const isCorrect = isMath
+      ? String(input).trim() === String(currentQ.answer)
+      : input === currentQ.translation;
+
+    // Combo state
+    const newStreak = isCorrect ? comboStreak + 1 : 0;
+    setComboStreak(newStreak);
+    if (isCorrect) updateHighCombo(newStreak);
+
+    // Multipliers
+    const spdMult  = isMath ? speedMultiplier(elapsedMs) : 1;
+    const strMult  = streakMultiplier(comboStreak);
+    const mult     = Math.min(spdMult * strMult, 5);
+    const base     = isCorrect ? (isMath ? 10 : (timeLeft >= Math.ceil(questionTimeSec * 0.8) ? 15 : 10)) : 0;
+    const points   = Math.round(base * mult);
+    const spdLbl   = isMath ? speedLabel(elapsedMs) : '';
+
+    // Floating XP popup
+    if (isCorrect && points > 0) {
+      const popId = Date.now();
+      setXpPopups(prev => [...prev, { id: popId, points, mult, label: spdLbl }]);
+      setTimeout(() => setXpPopups(prev => prev.filter(p => p.id !== popId)), 1200);
+    }
+
+    // Track missed vocab words for hints
+    if (!isCorrect && !isMath) {
+      setMissedWords(prev =>
+        prev.some(m => m.word === currentQ.word) ? prev : [...prev, currentQ]
+      );
+    }
 
     if (isCorrect) {
       setShowStars(true);
       setTimeout(() => setShowStars(false), 1400);
-      // Donald celebration — ref gives synchronous access; state drives render
       clearTimeout(donaldTimerRef.current);
       showDonaldRef.current = true;
       setShowDonald(true);
       setDonaldExiting(false);
-      // After 1.2s start exit animation, then unmount after exit finishes (380ms)
       donaldTimerRef.current = setTimeout(() => {
         setDonaldExiting(true);
         donaldTimerRef.current = setTimeout(() => {
@@ -756,8 +1058,10 @@ const BattlePage = () => {
   };
 
   // ── Bot mode ─────────────────────────────────────────────────────
-  const handleVsBot = (unitIndex = 0, timeSec = 12, qCount = 10) => {
-    const qs     = pickQuestions(unitIndex, qCount);
+  const handleVsBot = (unitIndex = 0, timeSec = 8, qCount = 10, cats = Object.keys(CATEGORIES)) => {
+    const qs     = isMathBattle
+      ? Array.from({ length: qCount }, () => generateQuestion(cats))
+      : pickQuestions(unitIndex, qCount);
     const myName = getPlayerName(supabaseProfile);
     const timeMs = timeSec * 1000;
     const fakeRoom = { id: 'BOT', status: 'playing', word_unit: unitIndex, questions: qs, question_time_ms: timeMs };
@@ -777,7 +1081,9 @@ const BattlePage = () => {
     if (!isBotMode || answered) return;
     const q = (room?.questions ?? [])[qIndex];
     if (!q) return;
-    const correct = option === q.translation;
+    const correct = isMathQuestion(q)
+      ? String(option).trim() === String(q.answer)
+      : option === q.translation;
     if (correct) setPlayers(prev => prev.map(p => p.id === 'bot' ? { ...p, score: p.score + 10 } : p));
   }, [isBotMode, answered, room, qIndex]);
 
@@ -810,6 +1116,10 @@ const BattlePage = () => {
     setShowDonald(false);
     setDonaldExiting(false);
     xpAwardedRef.current = false;
+    setComboStreak(0);
+    setXpPopups([]);
+    setNumpadInput('');
+    setMissedWords([]);
   };
 
   // ── Render ────────────────────────────────────────────────────────
@@ -832,29 +1142,58 @@ const BattlePage = () => {
       <DonaldCelebration active={showDonald} exiting={donaldExiting} />
 
       {screen === 'landing' && (
-        <Landing onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} onVsBot={() => handleVsBot(0, 12, 10)} />
+        <Landing
+          onCreateRoom={handleCreateRoom}
+          onJoinRoom={handleJoinRoom}
+          onVsBot={() => {
+            if (isMathBattle) { pendingBotRef.current = true; setScreen('unit'); }
+            else handleVsBot(0, 12, 10);
+          }}
+        />
       )}
       {screen === 'unit' && (
-        <UnitSelector onStart={handleStartRoom} />
+        <UnitSelector
+          isMath={isMathBattle}
+          onStart={(unitIndex, timeSec, qCount, cats) => {
+            if (pendingBotRef.current) { pendingBotRef.current = false; handleVsBot(unitIndex, timeSec, qCount, cats); }
+            else handleStartRoom(unitIndex, timeSec, qCount, cats);
+          }}
+        />
       )}
       {screen === 'lobby' && (
         <Lobby room={room} players={players} myPlayerId={myPlayerId} isAdmin={isAdmin}
           onStart={handleAdminStart} onCopy={handleCopy} copied={copied} />
       )}
       {screen === 'flash' && (
-        <PreBattleFlash questions={questions} onDone={onFlashDone} />
+        <PreBattleFlash questions={questions} onDone={onFlashDone} isMath={isMathBattle} />
       )}
       {screen === 'results' && (
-        <ResultsScreen players={players} myPlayerId={myPlayerId} onRematch={handleLeave} onLeave={handleLeave} />
+        <ResultsScreen players={players} myPlayerId={myPlayerId} onRematch={handleLeave} onLeave={handleLeave} missedWords={missedWords} />
       )}
       {screen === 'game' && currentQ && (
-        <GameScreen
-          question={currentQ} qIndex={qIndex} total={questions.length}
-          players={players} myPlayerId={myPlayerId}
-          timeLeft={timeLeft} questionTimeSec={questionTimeSec}
-          onAnswer={handleAnswer} answered={answered}
-        />
+        isMathQuestion(currentQ) ? (
+          <MathGameScreen
+            question={currentQ} qIndex={qIndex} total={questions.length}
+            players={players} myPlayerId={myPlayerId}
+            timeLeft={timeLeft} questionTimeSec={questionTimeSec}
+            onAnswer={handleAnswer} answered={answered}
+            numpadInput={numpadInput} onNumpadChange={setNumpadInput}
+            comboStreak={comboStreak}
+          />
+        ) : (
+          <GameScreen
+            question={currentQ} qIndex={qIndex} total={questions.length}
+            players={players} myPlayerId={myPlayerId}
+            timeLeft={timeLeft} questionTimeSec={questionTimeSec}
+            onAnswer={handleAnswer} answered={answered}
+          />
+        )
       )}
+
+      {/* Floating XP popups */}
+      {xpPopups.map(p => (
+        <XpPopup key={p.id} id={p.id} points={p.points} mult={p.mult} label={p.label} />
+      ))}
     </>
   );
 };
