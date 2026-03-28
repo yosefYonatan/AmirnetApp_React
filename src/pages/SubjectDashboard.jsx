@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Layers, Swords } from 'lucide-react';
+import { Layers, Swords, Zap } from 'lucide-react';
 import { useVocab } from '../context/VocabContext';
 import GlobalStats from '../components/GlobalStats';
 import HomePage from './HomePage';
@@ -22,6 +22,7 @@ const SUBJECT_META = {
     gradientTo:   '#06b6d4',
     symbols: ['+', '√', 'x²'],
     ready: false,
+    survivalRoute: '/math-survival',  // Math has its own drill mode
   },
   hebrew: {
     label: 'עברית',
@@ -62,10 +63,29 @@ const ComingSoon = ({ meta }) => {
 
       {/* Quick actions */}
       <div className="space-y-3">
+        {/* Survival Blitz — shown only for math subject */}
+        {meta.survivalRoute && (
+          <button
+            onClick={() => navigate(meta.survivalRoute)}
+            className="w-full flex items-center gap-4 p-5 rounded-2xl transition-all active:scale-[0.98] relative overflow-hidden"
+            style={{ background: `linear-gradient(135deg, ${meta.gradientFrom}, ${meta.gradientTo})` }}
+          >
+            {/* Animated shimmer */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-700 pointer-events-none" />
+            <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center flex-shrink-0">
+              <Zap size={24} className="text-white" />
+            </div>
+            <div className="text-right flex-1">
+              <p className="font-black text-white text-lg leading-tight">Survival Blitz ⚡</p>
+              <p className="text-white/75 text-sm leading-tight">3 שניות לשאלה · ריבועים · שורשים · פעולות</p>
+            </div>
+          </button>
+        )}
+
         <button
           onClick={() => navigate('/flashcards')}
           className="w-full flex items-center gap-4 p-5 rounded-2xl transition-all active:scale-[0.98]"
-          style={{ background: `linear-gradient(135deg, ${meta.gradientFrom}cc, ${meta.gradientTo}cc)` }}
+          style={{ background: `linear-gradient(135deg, ${meta.gradientFrom}88, ${meta.gradientTo}88)` }}
         >
           <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center flex-shrink-0">
             <Layers size={24} className="text-white" />

@@ -19,6 +19,7 @@ import FlashcardsPage from './pages/FlashcardsPage';
 import HomePage from './pages/HomePage';
 import SubjectHub from './pages/SubjectHub';
 import SubjectDashboard from './pages/SubjectDashboard';
+import MathSurvival from './pages/MathSurvival';
 import OnboardingGuide, { shouldShowOnboarding } from './components/OnboardingGuide';
 
 // ── Portal-exit animation (CSS-only, no Framer Motion) ────────────────
@@ -261,8 +262,9 @@ const ThemedApp = () => {
             <Route path="/folders"     element={<SubjectGuard><FoldersPage /></SubjectGuard>}      />
             <Route path="/leaderboard" element={<SubjectGuard><LeaderboardPage /></SubjectGuard>}  />
             <Route path="/battle"      element={<SubjectGuard><BattlePage /></SubjectGuard>}       />
-            <Route path="/flashcards"  element={<SubjectGuard><FlashcardsPage /></SubjectGuard>}   />
-            <Route path="/categories"  element={<Navigate to="/folders" replace />}               />
+            <Route path="/flashcards"    element={<SubjectGuard><FlashcardsPage /></SubjectGuard>}   />
+            <Route path="/math-survival" element={<SubjectGuard><MathSurvival /></SubjectGuard>}    />
+            <Route path="/categories"    element={<Navigate to="/folders" replace />}              />
             <Route path="*"            element={<Navigate to="/" replace />}                       />
           </Routes>
         </AuthGate>
