@@ -1,50 +1,54 @@
-Act as a BMAD Lead Analyst and Product Manager. Below is the updated Product Requirements Document (PRD) for "Amirnet TV / Psychometric Learning Platform". Please read this PRD to understand the current system architecture and our future roadmap. 
+# 📺 AmirneTV
 
-Once you have processed this PRD, acknowledge it, and then we will begin executing the "Roadmap & Future Aspirations" phase, starting with the new Subject Selection Screen.
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+![Supabase](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
----
-
-# 📱 PRD: Amirnet TV / Psychometric Learning Platform
-
-## 🎯 Executive Summary (Current State)
-The application is designed to transform the grueling process of memorizing vocabulary (for the Amir/Amirnet and Psychometric exams) into a competitive, gamified, and context-driven experience. Instead of dry memorization, users learn through TV show contexts, Tinder-style swipe mechanics, and real-time 1v1 battles.
-
-### Current End-to-End User Flow:
-* Dashboard & Personal Hub: The user logs in to view their progress, XP level, and daily learning Streak.
-* Contextual Learning (Watch Mode): Connects vocabulary to pop-culture and TV show contexts to improve cognitive retrieval.
-* Active Practice (Flashcards): A smart, "Tinder-style" flashcard system. The user swipes cards left or right to sort them in real-time into three states: V (Known), X (Unknown), or ? (Unsure).
-* Battle Mode (The Core Engine): Users can open rooms and compete 1v1 or in groups in real-time.
-  * Battles are based on high-speed translation under time pressure.
-  * Includes visual feedback and victory animations (e.g., Donald Duck, stars).
-  * Features a Smart Waiting Room that holds until all players finish, followed by a Post-Battle Review Screen detailing mistakes.
+**AmirneTV** is an interactive, real-time vocabulary learning and multiplayer battle platform designed to gamify preparation for the Israeli Psychometric and Amirnet English exams. Whether you are passively absorbing vocabulary while watching TV or actively competing against peers in a high-speed arena, AmirneTV transforms exam prep into an engaging, data-driven experience.
 
 ---
 
-## 🚀 Roadmap & Future Aspirations
-The next phase expands the application from a niche "English Vocabulary" tool into a comprehensive Psychometric learning envelope, while upgrading the UX and refining the learning algorithms.
+## ✨ Core Features
 
-### 1. The Major Expansion: Subject Selection Screen
-Upon opening the app, the user will no longer default strictly to English. They will land on a Main Hub to select between the three core pillars of the Psychometric exam:
-* 🔤 English (The existing application logic)
-* ➗ Mathematics (Quantitative Reasoning)
-* 📖 Hebrew (Verbal Reasoning)
+*   ⏱️ **TV Companion Mode:** A real-time episode stopwatch synchronized with live word capture. Users can input words via fast typing or speech-to-text transcription while watching their favorite shows.
+*   🧠 **Intelligent Vocabulary Engine:** 
+    *   Automatically cross-references inputs against a built-in high-frequency Psychometric/Amirnet database.
+    *   Utilizes dynamic scoring (1–100 scale) to evaluate word difficulty.
+    *   Provides instant, contextual Hebrew translations.
+*   ⚔️ **Real-Time Multiplayer Battle Arena:** A live quiz room supporting up to 10 simultaneous players.
+*   🔐 **User Management & Architecture:** Robust state handling, user authentication, and real-time match lifecycle routing.
 
-### 2. Mathematics (Quantitative) Module Implementation
-Creating a dedicated zone for training rapid recall and automatic memory, which are critical for the quantitative section of the exam. This module will include:
-* Rapid Basic Operations: Addition, subtraction, multiplication, and division under time pressure.
-* Powers & Roots: Dedicated drills for memorizing numbers 1 through 20 and their squares/roots by heart.
-* Factorials: Rapid identification and calculation of factorials (up to 7!).
+---
 
-### 3. English Module Upgrade: Difficulty Hierarchy
-Reorganizing the existing 14 English vocabulary folders. Instead of random or strictly alphabetical distribution, folders will be structured in a linear progression based on difficulty:
-* Folder 1: Will contain the easiest and most common words (A through Z).
-* Folder 14: Will contain the hardest, rarest, and most complex academic words (A through Z).
-* Progression through these folders will create a genuine "Leveling Up" sensation for the user.
+## 🎮 Multiplayer Game Rules & Flow
 
-### 4. Multi-Subject Battle Arenas
-Expanding the highly successful 1v1 mechanics from English to the new subjects:
-* Math Duels: Who can solve 20 power/root equations the fastest.
-* Hebrew Duels: Competitions based on high-register Hebrew vocabulary, analogies, or psychometric idioms.
+The Battle Arena is designed for rapid recall and high-pressure performance:
 
-### 5. UI/UX Revolution
-A comprehensive visual and functional facelift across the entire system. The goal is to tighten the "Game-UI", improve navigation flow, refine Framer Motion animations, and make the learning experience seamless, visually striking, and positively addictive.
+1.  **Lobby & Matchmaking:** Up to 10 players join a synchronized live room.
+2.  **Rapid-Fire Rounds:** The game serves 10 consecutive multiple-choice questions (one target English word, four Hebrew translation options).
+3.  **Speed Scoring:** Points are awarded exclusively to the *fastest* player to select the correct answer. 
+4.  **Live State:** The UI updates in real-time for all connected clients.
+5.  **Victory Screen:** A real-time leaderboard is displayed at the end of the match, crowning the arena champion.
+
+---
+
+## 🛠️ Tech Stack
+
+| Component | Technology | Description |
+| :--- | :--- | :--- |
+| **Frontend / UI** | React & JavaScript | Dynamic, component-based user interface designed for seamless real-time interactions. |
+| **Backend & Database** | Supabase | Handles PostgreSQL database, user authentication, and real-time subscriptions for the multiplayer arena. |
+| **Deployment** | Vercel | Fast, scalable hosting with continuous integration/continuous deployment (CI/CD). |
+| **AI & APIs** | LLM & Speech-to-Text | API integrations for dynamic word scoring and voice input transcription. |
+
+---
+
+## 🚀 Installation & Local Setup
+
+Follow these steps to run AmirneTV on your local machine:
+
+**1. Clone the repository:**
+```bash
+git clone [https://github.com/yourusername/AmirneTV.git](https://github.com/yourusername/AmirneTV.git)
+cd AmirneTV
